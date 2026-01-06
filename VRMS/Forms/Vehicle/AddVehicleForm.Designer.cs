@@ -1,0 +1,533 @@
+﻿namespace VRMS.Forms
+{
+    partial class AddVehicleForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cbCategory = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtPlate = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtColor = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numYear = new System.Windows.Forms.NumericUpDown();
+            this.labelaeq = new System.Windows.Forms.Label();
+            this.txtModel = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtMake = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.txtVIN = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.numMileage = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.numSeats = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cbFuel = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.cbTransmission = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.numRate = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.picVehicleImage = new System.Windows.Forms.PictureBox();
+            this.btnSelectImage = new System.Windows.Forms.Button();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numYear)).BeginInit();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMileage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSeats)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picVehicleImage)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.lblTitle.Location = new System.Drawing.Point(15, 15);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(206, 32);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Vehicle Information";
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel1.Controls.Add(this.cbCategory);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.txtPlate);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.txtColor);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.numYear);
+            this.panel1.Controls.Add(this.labelaeq);
+            this.panel1.Controls.Add(this.txtModel);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.txtMake);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Location = new System.Drawing.Point(20, 65);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(205, 330);
+            this.panel1.TabIndex = 1;
+            // 
+            // cbCategory
+            // 
+            this.cbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCategory.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cbCategory.FormattingEnabled = true;
+            this.cbCategory.Items.AddRange(new object[] {
+            "Hatchback",
+            "Sedan",
+            "SUV",
+            "Pick-up",
+            "Van/Minibus"});
+            this.cbCategory.Location = new System.Drawing.Point(10, 290);
+            this.cbCategory.Name = "cbCategory";
+            this.cbCategory.Size = new System.Drawing.Size(185, 23);
+            this.cbCategory.TabIndex = 11;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label5.ForeColor = System.Drawing.Color.DimGray;
+            this.label5.Location = new System.Drawing.Point(10, 272);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 15);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Category:";
+            // 
+            // txtPlate
+            // 
+            this.txtPlate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtPlate.Location = new System.Drawing.Point(10, 238);
+            this.txtPlate.Name = "txtPlate";
+            this.txtPlate.Size = new System.Drawing.Size(185, 23);
+            this.txtPlate.TabIndex = 9;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.DimGray;
+            this.label4.Location = new System.Drawing.Point(10, 220);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 15);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "License Plate:";
+            // 
+            // txtColor
+            // 
+            this.txtColor.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtColor.Location = new System.Drawing.Point(10, 186);
+            this.txtColor.Name = "txtColor";
+            this.txtColor.Size = new System.Drawing.Size(185, 23);
+            this.txtColor.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.DimGray;
+            this.label3.Location = new System.Drawing.Point(10, 168);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(39, 15);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Color:";
+            // 
+            // numYear
+            // 
+            this.numYear.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.numYear.Location = new System.Drawing.Point(10, 134);
+            this.numYear.Maximum = new decimal(new int[] {
+            2100,
+            0,
+            0,
+            0});
+            this.numYear.Minimum = new decimal(new int[] {
+            1990,
+            0,
+            0,
+            0});
+            this.numYear.Name = "numYear";
+            this.numYear.Size = new System.Drawing.Size(185, 23);
+            this.numYear.TabIndex = 5;
+            this.numYear.Value = new decimal(new int[] {
+            2024,
+            0,
+            0,
+            0});
+            // 
+            // labelaeq
+            // 
+            this.labelaeq.AutoSize = true;
+            this.labelaeq.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.labelaeq.ForeColor = System.Drawing.Color.DimGray;
+            this.labelaeq.Location = new System.Drawing.Point(10, 116);
+            this.labelaeq.Name = "labelaeq";
+            this.labelaeq.Size = new System.Drawing.Size(32, 15);
+            this.labelaeq.TabIndex = 4;
+            this.labelaeq.Text = "Year:";
+            // 
+            // txtModel
+            // 
+            this.txtModel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtModel.Location = new System.Drawing.Point(10, 82);
+            this.txtModel.Name = "txtModel";
+            this.txtModel.Size = new System.Drawing.Size(185, 23);
+            this.txtModel.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.DimGray;
+            this.label2.Location = new System.Drawing.Point(10, 64);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 15);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Model:";
+            // 
+            // txtMake
+            // 
+            this.txtMake.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtMake.Location = new System.Drawing.Point(10, 30);
+            this.txtMake.Name = "txtMake";
+            this.txtMake.Size = new System.Drawing.Size(185, 23);
+            this.txtMake.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label1.ForeColor = System.Drawing.Color.DimGray;
+            this.label1.Location = new System.Drawing.Point(10, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 15);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Make:";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel2.Controls.Add(this.txtVIN);
+            this.panel2.Controls.Add(this.label11);
+            this.panel2.Controls.Add(this.numMileage);
+            this.panel2.Controls.Add(this.label10);
+            this.panel2.Controls.Add(this.numSeats);
+            this.panel2.Controls.Add(this.label9);
+            this.panel2.Controls.Add(this.cbFuel);
+            this.panel2.Controls.Add(this.label8);
+            this.panel2.Controls.Add(this.cbTransmission);
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.numRate);
+            this.panel2.Controls.Add(this.label6);
+            this.panel2.Location = new System.Drawing.Point(235, 65);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(205, 330);
+            this.panel2.TabIndex = 2;
+            // 
+            // txtVIN
+            // 
+            this.txtVIN.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtVIN.Location = new System.Drawing.Point(10, 290);
+            this.txtVIN.Name = "txtVIN";
+            this.txtVIN.Size = new System.Drawing.Size(185, 23);
+            this.txtVIN.TabIndex = 20;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label11.ForeColor = System.Drawing.Color.DimGray;
+            this.label11.Location = new System.Drawing.Point(10, 272);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(30, 15);
+            this.label11.TabIndex = 19;
+            this.label11.Text = "VIN:";
+            // 
+            // numMileage
+            // 
+            this.numMileage.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.numMileage.Location = new System.Drawing.Point(10, 238);
+            this.numMileage.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.numMileage.Name = "numMileage";
+            this.numMileage.Size = new System.Drawing.Size(185, 23);
+            this.numMileage.TabIndex = 18;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label10.ForeColor = System.Drawing.Color.DimGray;
+            this.label10.Location = new System.Drawing.Point(10, 220);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(95, 15);
+            this.label10.TabIndex = 17;
+            this.label10.Text = "Current Mileage:";
+            // 
+            // numSeats
+            // 
+            this.numSeats.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.numSeats.Location = new System.Drawing.Point(10, 186);
+            this.numSeats.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numSeats.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numSeats.Name = "numSeats";
+            this.numSeats.Size = new System.Drawing.Size(185, 23);
+            this.numSeats.TabIndex = 16;
+            this.numSeats.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label9.ForeColor = System.Drawing.Color.DimGray;
+            this.label9.Location = new System.Drawing.Point(10, 168);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(38, 15);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "Seats:";
+            // 
+            // cbFuel
+            // 
+            this.cbFuel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbFuel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cbFuel.FormattingEnabled = true;
+            this.cbFuel.Items.AddRange(new object[] {
+            "Gasoline",
+            "Diesel",
+            "Electric",
+            "Hybrid"});
+            this.cbFuel.Location = new System.Drawing.Point(10, 134);
+            this.cbFuel.Name = "cbFuel";
+            this.cbFuel.Size = new System.Drawing.Size(185, 23);
+            this.cbFuel.TabIndex = 14;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label8.ForeColor = System.Drawing.Color.DimGray;
+            this.label8.Location = new System.Drawing.Point(10, 116);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(61, 15);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Fuel type:";
+            // 
+            // cbTransmission
+            // 
+            this.cbTransmission.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTransmission.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cbTransmission.FormattingEnabled = true;
+            this.cbTransmission.Items.AddRange(new object[] {
+            "Manual",
+            "Automatic",
+            "Electric",
+            "Hybrid"});
+            this.cbTransmission.Location = new System.Drawing.Point(10, 82);
+            this.cbTransmission.Name = "cbTransmission";
+            this.cbTransmission.Size = new System.Drawing.Size(185, 23);
+            this.cbTransmission.TabIndex = 12;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label7.ForeColor = System.Drawing.Color.DimGray;
+            this.label7.Location = new System.Drawing.Point(10, 64);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(79, 15);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "Transmission:";
+            // 
+            // numRate
+            // 
+            this.numRate.DecimalPlaces = 2;
+            this.numRate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.numRate.Location = new System.Drawing.Point(10, 30);
+            this.numRate.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numRate.Name = "numRate";
+            this.numRate.Size = new System.Drawing.Size(185, 23);
+            this.numRate.TabIndex = 6;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label6.ForeColor = System.Drawing.Color.DimGray;
+            this.label6.Location = new System.Drawing.Point(10, 12);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 15);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Daily Rate:";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(195)))), ((int)(((byte)(199)))));
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.btnCancel.Location = new System.Drawing.Point(395, 435);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(120, 45);
+            this.btnCancel.TabIndex = 3;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            // 
+            // btnSave
+            // 
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(525, 435);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(120, 45);
+            this.btnSave.TabIndex = 4;
+            this.btnSave.Text = "Save Vehicle";
+            this.btnSave.UseVisualStyleBackColor = false;
+            // 
+            // picVehicleImage
+            // 
+            this.picVehicleImage.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.picVehicleImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picVehicleImage.Location = new System.Drawing.Point(450, 65);
+            this.picVehicleImage.Name = "picVehicleImage";
+            this.picVehicleImage.Size = new System.Drawing.Size(195, 185);
+            this.picVehicleImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picVehicleImage.TabIndex = 11;
+            this.picVehicleImage.TabStop = false;
+            // 
+            // btnSelectImage
+            // 
+            this.btnSelectImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnSelectImage.FlatAppearance.BorderSize = 0;
+            this.btnSelectImage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSelectImage.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSelectImage.ForeColor = System.Drawing.Color.White;
+            this.btnSelectImage.Location = new System.Drawing.Point(450, 260);
+            this.btnSelectImage.Name = "btnSelectImage";
+            this.btnSelectImage.Size = new System.Drawing.Size(195, 35);
+            this.btnSelectImage.TabIndex = 12;
+            this.btnSelectImage.Text = "Browse Image...";
+            this.btnSelectImage.UseVisualStyleBackColor = false;
+            // 
+            // AddVehicleForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(664, 500);
+            this.Controls.Add(this.btnSelectImage);
+            this.Controls.Add(this.picVehicleImage);
+            this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lblTitle);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "AddVehicleForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Vehicle Management";
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numYear)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMileage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSeats)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picVehicleImage)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox txtMake;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numYear;
+        private System.Windows.Forms.Label labelaeq;
+        private System.Windows.Forms.TextBox txtModel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtColor;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cbCategory;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtPlate;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.NumericUpDown numRate;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cbFuel;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox cbTransmission;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NumericUpDown numSeats;
+        private System.Windows.Forms.TextBox txtVIN;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown numMileage;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.PictureBox picVehicleImage;
+        private System.Windows.Forms.Button btnSelectImage;
+    }
+}
