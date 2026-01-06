@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using VRMS.Database;
+using VRMS.Terminal;
 
 namespace VRMS;
 
@@ -9,30 +10,30 @@ static class Program
     ///  The main entry point for the application.
     /// </summary>
     [STAThread]
-    static void Main()
+    static void Main(string[] args)
     {
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
+        
+        // Configure Database
         var config = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false)
             .Build();
         
-        DB.Initialize(config.GetConnectionString("Default"));
+        //Get Connection String
+        var connectionString = config.GetConnectionString("Default");
+    
+        //Validate Connection String
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new InvalidOperationException(
+                "Connection string 'Default' is missing in appsettings.json");
+
+        DB.Initialize(connectionString);
         
-        // ======== Database Migrations ===================================== //
-        /* UNCOMMENT EACH LINE IF USED */
-        
-        //1. Drop All Tables (for migrating fresh)
-        DropTables.Run(DB.ExecuteNonQuery);
-        
-        //2. Create All Tables
-        CreateTables.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
-        
-        
-        // UNCOMMENT FOR TESTING
-        // Stop here. Do NOT start WinForms. 
-        return;
+        //Run Project Commands
+        if (CommandDispatcher.TryExecute(args))
+            return;
         
         ApplicationConfiguration.Initialize();
     }

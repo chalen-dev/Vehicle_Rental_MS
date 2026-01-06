@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
 using System.Data;
 
 namespace VRMS.Database
@@ -13,7 +12,27 @@ namespace VRMS.Database
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new InvalidOperationException("Database connection string is missing.");
 
-            _connectionString = connectionString;
+            var builder = new MySqlConnectionStringBuilder(connectionString);
+
+            if (string.IsNullOrWhiteSpace(builder.Database))
+                throw new InvalidOperationException("Database name is missing in connection string.");
+
+            string databaseName = builder.Database;
+
+            // Connect WITHOUT database
+            builder.Database = string.Empty;
+
+            using (var conn = new MySqlConnection(builder.ConnectionString))
+            using (var cmd = new MySqlCommand(
+                $"CREATE DATABASE IF NOT EXISTS `{databaseName}`;", conn))
+            {
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+            // Restore database and save final connection string
+            builder.Database = databaseName;
+            _connectionString = builder.ConnectionString;
         }
 
         private static MySqlConnection GetConnection()
