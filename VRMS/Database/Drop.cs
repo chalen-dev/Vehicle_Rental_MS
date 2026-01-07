@@ -4,7 +4,7 @@ using VRMS.Database.Migrations.Tables;
 
 namespace VRMS.Database;
 
-public static class DropTables
+public static class Drop
 {
     public static void Run(Action<string> executeNonQuery)
     {

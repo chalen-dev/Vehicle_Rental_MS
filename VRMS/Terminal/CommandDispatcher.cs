@@ -11,8 +11,10 @@ public static class CommandDispatcher
         new FreshCommand()
     };
 
-    public static bool TryExecute(string[] args)
+    public static bool TryExecute(string[] args, out CommandResult? result)
     {
+        result = null;
+
         if (args.Length == 0)
             return false;
 
@@ -21,11 +23,12 @@ public static class CommandDispatcher
 
         if (command == null)
         {
-            Console.WriteLine($"Unknown command: {args[0]}");
+            result = new CommandResult(false, $"Unknown command: {args[0]}");
             return true;
         }
 
-        command.Execute();
+        result = command.Execute();
         return true;
     }
+
 }

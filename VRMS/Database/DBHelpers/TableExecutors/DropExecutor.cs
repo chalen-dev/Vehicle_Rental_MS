@@ -29,19 +29,21 @@ public static class DropExecutor
 
         foreach (var type in tableTypes)
         {
+            string sql = string.Empty;
+
             try
             {
-                ExecuteMethod(type, "Drop", executeNonQuery);
+                sql = ExecuteMethod(type, "Drop", executeNonQuery);
                 Console.WriteLine($"[OK] {type.Name}");
             }
             catch (Exception ex)
             {
-                HandleError(type, ex, strictMode, "drop");
+                HandleError(type, ex, strictMode, "create", sql);
             }
         }
     }
 
-    private static void ExecuteMethod(
+    private static string ExecuteMethod(
         Type tableType,
         string methodName,
         Action<string> executeNonQuery
@@ -55,18 +57,20 @@ public static class DropExecutor
         );
 
         var sql = method.Invoke(null, null) as string
-            ?? throw new InvalidOperationException(
-                $"{methodName}() on {tableType.Name} did not return SQL"
-            );
+                  ?? throw new InvalidOperationException(
+                      $"{methodName}() on {tableType.Name} did not return SQL"
+                  );
 
         executeNonQuery(sql);
+        return sql;
     }
 
     private static void HandleError(
         Type type,
         Exception ex,
         bool strictMode,
-        string action
+        string action,
+        string sql
     )
     {
         var root = ex is TargetInvocationException tie && tie.InnerException != null
@@ -78,8 +82,10 @@ public static class DropExecutor
 
         if (strictMode)
         {
-            throw new InvalidOperationException(
-                $"Schema {action} failed at {type.Name}",
+            throw new SchemaExecutionException(
+                type.Name,
+                action,
+                sql,
                 root
             );
         }

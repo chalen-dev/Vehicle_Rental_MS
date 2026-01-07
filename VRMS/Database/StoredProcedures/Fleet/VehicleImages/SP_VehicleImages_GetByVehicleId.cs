@@ -3,8 +3,6 @@
 public static class SP_VehicleImages_GetByVehicleId
 {
     public static string Sql() => """
-                                  DELIMITER $$
-
                                   CREATE PROCEDURE sp_vehicle_images_get_by_vehicle_id (
                                       IN p_vehicle_id INT
                                   )
@@ -15,8 +13,6 @@ public static class SP_VehicleImages_GetByVehicleId
                                           image_path
                                       FROM vehicle_images
                                       WHERE vehicle_id = p_vehicle_id;
-                                  END$$
-
-                                  DELIMITER ;
+                                  END;
                                   """;
 }

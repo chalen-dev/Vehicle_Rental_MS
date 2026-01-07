@@ -39,15 +39,42 @@ namespace VRMS
             // ----------------------------
             // Handle terminal commands
             // ----------------------------
-            if (CommandDispatcher.TryExecute(args))
+            if (CommandDispatcher.TryExecute(args, out var result))
+            {
+                ApplicationConfiguration.Initialize();
+
+                using var context = new ApplicationContext();
+
+                Task.Run(() =>
+                {
+                    MessageBox.Show(
+                        result!.Message,
+                        result.Success ? "Success" : "Error",
+                        MessageBoxButtons.OK,
+                        result.Success
+                            ? MessageBoxIcon.Information
+                            : MessageBoxIcon.Error
+                    );
+
+                    context.ExitThread();
+                });
+
+                Application.Run(context);
                 return;
+            }
+            
+            //Uncomment for testing (Migration testing)
+            //Drop.Run(DB.ExecuteNonQuery);
+            //Create.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
+
+            return;
 
             // ----------------------------
             // Start WinForms UI
             // ----------------------------
             ApplicationConfiguration.Initialize();
 
-            // 🔑 IMPORTANT: Welcome is in namespace VRMS
+            // IMPORTANT: Welcome is in namespace VRMS
             Application.Run(new Welcome());
         }
     }

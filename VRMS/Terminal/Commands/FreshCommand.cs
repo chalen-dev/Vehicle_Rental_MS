@@ -6,10 +6,32 @@ public class FreshCommand : ICommand
 {
     public string Name => "fresh";
 
-    public void Execute()
+    public CommandResult Execute()
     {
-        DropTables.Run(DB.ExecuteNonQuery);
-        CreateTables.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
-        MessageBox.Show("Database migrated fresh successfully.");
+        try
+        {
+            Drop.Run(DB.ExecuteNonQuery);
+            Create.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
+            return new CommandResult(true, "Database migrated fresh successfully.");
+        }
+        catch (SchemaExecutionException ex)
+        {
+            return new CommandResult(
+                false,
+                $"""
+                 Migration failed.
+
+                 Table: {ex.TableName}
+                 Action: {ex.Action}
+
+                 Error:
+                 {ex.InnerException?.Message}
+
+                 SQL:
+                 {ex.Sql}
+                 """
+            );
+        }
     }
+
 }

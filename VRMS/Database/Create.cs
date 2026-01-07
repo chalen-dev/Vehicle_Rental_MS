@@ -5,7 +5,7 @@ using VRMS.Database.Migrations.Tables;
 
 namespace VRMS.Database;
 
-public static class CreateTables
+public static class Create
 {
     public static void Run(
         Func<string, object?> executeScalar,
