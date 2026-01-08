@@ -36,7 +36,6 @@
             panelToolbar = new Panel();
             panelSearch = new Panel();
             txtSearch = new TextBox();
-            lblSearchIcon = new Label();
             btnFilter = new Button();
             btnExport = new Button();
             btnDelete = new Button();
@@ -93,7 +92,7 @@
             // 
             // panelHeader
             // 
-            panelHeader.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            panelHeader.BackColor = Color.FromArgb(30, 60, 90);
             panelHeader.Controls.Add(label1);
             panelHeader.Controls.Add(lblVehicleCount);
             panelHeader.Dock = DockStyle.Top;
@@ -109,7 +108,7 @@
             label1.ForeColor = Color.White;
             label1.Location = new Point(20, 15);
             label1.Name = "label1";
-            label1.Size = new Size(118, 41);
+            label1.Size = new Size(127, 41);
             label1.TabIndex = 0;
             label1.Text = "Vehicles";
             // 
@@ -117,7 +116,7 @@
             // 
             lblVehicleCount.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblVehicleCount.Font = new Font("Segoe UI", 10F);
-            lblVehicleCount.ForeColor = Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(200)))));
+            lblVehicleCount.ForeColor = Color.FromArgb(200, 200, 200);
             lblVehicleCount.Location = new Point(932, 15);
             lblVehicleCount.Name = "lblVehicleCount";
             lblVehicleCount.Size = new Size(180, 40);
@@ -144,10 +143,9 @@
             // panelSearch
             // 
             panelSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            panelSearch.BackColor = Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            panelSearch.BackColor = Color.FromArgb(248, 249, 250);
             panelSearch.BorderStyle = BorderStyle.FixedSingle;
             panelSearch.Controls.Add(txtSearch);
-            panelSearch.Controls.Add(lblSearchIcon);
             panelSearch.Location = new Point(15, 10);
             panelSearch.Name = "panelSearch";
             panelSearch.Size = new Size(350, 40);
@@ -163,21 +161,10 @@
             txtSearch.Size = new Size(310, 23);
             txtSearch.TabIndex = 1;
             // 
-            // lblSearchIcon
-            // 
-            lblSearchIcon.AutoSize = true;
-            lblSearchIcon.Font = new Font("Segoe UI", 12F);
-            lblSearchIcon.Location = new Point(10, 8);
-            lblSearchIcon.Name = "lblSearchIcon";
-            lblSearchIcon.Size = new Size(28, 28);
-            lblSearchIcon.TabIndex = 0;
-            lblSearchIcon.Text = "🔍";
-            lblSearchIcon.TextAlign = ContentAlignment.MiddleCenter;
-            // 
             // btnFilter
             // 
             btnFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnFilter.BackColor = Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(122)))), ((int)(((byte)(137)))));
+            btnFilter.BackColor = Color.FromArgb(108, 122, 137);
             btnFilter.FlatAppearance.BorderSize = 0;
             btnFilter.FlatStyle = FlatStyle.Flat;
             btnFilter.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
@@ -192,7 +179,7 @@
             // btnExport
             // 
             btnExport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnExport.BackColor = Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            btnExport.BackColor = Color.FromArgb(155, 89, 182);
             btnExport.FlatAppearance.BorderSize = 0;
             btnExport.FlatStyle = FlatStyle.Flat;
             btnExport.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
@@ -207,7 +194,7 @@
             // btnDelete
             // 
             btnDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDelete.BackColor = Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            btnDelete.BackColor = Color.FromArgb(231, 76, 60);
             btnDelete.FlatAppearance.BorderSize = 0;
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
@@ -222,7 +209,7 @@
             // btnEdit
             // 
             btnEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnEdit.BackColor = Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(156)))), ((int)(((byte)(18)))));
+            btnEdit.BackColor = Color.FromArgb(243, 156, 18);
             btnEdit.FlatAppearance.BorderSize = 0;
             btnEdit.FlatStyle = FlatStyle.Flat;
             btnEdit.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
@@ -238,7 +225,7 @@
             // btnAdd
             // 
             btnAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnAdd.BackColor = Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            btnAdd.BackColor = Color.FromArgb(46, 204, 113);
             btnAdd.FlatAppearance.BorderSize = 0;
             btnAdd.FlatStyle = FlatStyle.Flat;
             btnAdd.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
@@ -294,11 +281,11 @@
             dgvVehicles.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvVehicles.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
             dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvVehicles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
@@ -307,9 +294,9 @@
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
             dataGridViewCellStyle2.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(236, 240, 241);
             dataGridViewCellStyle2.SelectionForeColor = Color.Black;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dgvVehicles.DefaultCellStyle = dataGridViewCellStyle2;
@@ -344,7 +331,7 @@
             // 
             // btnAll
             // 
-            btnAll.BackColor = Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            btnAll.BackColor = Color.FromArgb(52, 152, 219);
             btnAll.FlatAppearance.BorderSize = 0;
             btnAll.FlatStyle = FlatStyle.Flat;
             btnAll.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -358,7 +345,7 @@
             // 
             // btnAvailable
             // 
-            btnAvailable.BackColor = Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            btnAvailable.BackColor = Color.FromArgb(46, 204, 113);
             btnAvailable.FlatAppearance.BorderSize = 0;
             btnAvailable.FlatStyle = FlatStyle.Flat;
             btnAvailable.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -372,7 +359,7 @@
             // 
             // btnRented
             // 
-            btnRented.BackColor = Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            btnRented.BackColor = Color.FromArgb(231, 76, 60);
             btnRented.FlatAppearance.BorderSize = 0;
             btnRented.FlatStyle = FlatStyle.Flat;
             btnRented.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -386,7 +373,7 @@
             // 
             // btnMaintenance
             // 
-            btnMaintenance.BackColor = Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(156)))), ((int)(((byte)(18)))));
+            btnMaintenance.BackColor = Color.FromArgb(243, 156, 18);
             btnMaintenance.FlatAppearance.BorderSize = 0;
             btnMaintenance.FlatStyle = FlatStyle.Flat;
             btnMaintenance.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -400,7 +387,7 @@
             // 
             // btnReserved
             // 
-            btnReserved.BackColor = Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(89)))), ((int)(((byte)(182)))));
+            btnReserved.BackColor = Color.FromArgb(155, 89, 182);
             btnReserved.FlatAppearance.BorderSize = 0;
             btnReserved.FlatStyle = FlatStyle.Flat;
             btnReserved.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
@@ -416,10 +403,10 @@
             // 
             lblStatusFilter.AutoSize = true;
             lblStatusFilter.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
-            lblStatusFilter.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblStatusFilter.ForeColor = Color.FromArgb(30, 60, 90);
             lblStatusFilter.Location = new Point(10, 6);
             lblStatusFilter.Name = "lblStatusFilter";
-            lblStatusFilter.Size = new Size(44, 20);
+            lblStatusFilter.Size = new Size(49, 20);
             lblStatusFilter.TabIndex = 0;
             lblStatusFilter.Text = "Filter:";
             // 
@@ -433,8 +420,7 @@
             panelVehicleDetails.Dock = DockStyle.Fill;
             panelVehicleDetails.Location = new Point(10, 10);
             panelVehicleDetails.Name = "panelVehicleDetails";
-            // REMOVED fixed Size property - let it fill the available space
-            // panelVehicleDetails.Size = new Size(350, 650); // THIS WAS THE PROBLEM
+            panelVehicleDetails.Size = new Size(350, 650);
             panelVehicleDetails.TabIndex = 0;
             // 
             // panelFeatures
@@ -442,12 +428,11 @@
             panelFeatures.BackColor = Color.White;
             panelFeatures.Controls.Add(flowLayoutPanelFeatures);
             panelFeatures.Controls.Add(lblFeaturesTitle);
-            panelFeatures.Dock = DockStyle.Fill; // CHANGED: Now fills remaining space
+            panelFeatures.Dock = DockStyle.Fill;
             panelFeatures.Location = new Point(0, 530);
             panelFeatures.Name = "panelFeatures";
             panelFeatures.Padding = new Padding(10);
-            // REMOVED fixed Size property
-            // panelFeatures.Size = new Size(350, 120); // THIS WAS THE PROBLEM
+            panelFeatures.Size = new Size(350, 120);
             panelFeatures.TabIndex = 7;
             // 
             // flowLayoutPanelFeatures
@@ -455,17 +440,17 @@
             flowLayoutPanelFeatures.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             flowLayoutPanelFeatures.Location = new Point(10, 40);
             flowLayoutPanelFeatures.Name = "flowLayoutPanelFeatures";
-            flowLayoutPanelFeatures.Size = new Size(330, 70);
+            flowLayoutPanelFeatures.Size = new Size(480, 70);
             flowLayoutPanelFeatures.TabIndex = 1;
             // 
             // lblFeaturesTitle
             // 
             lblFeaturesTitle.AutoSize = true;
             lblFeaturesTitle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            lblFeaturesTitle.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblFeaturesTitle.ForeColor = Color.FromArgb(30, 60, 90);
             lblFeaturesTitle.Location = new Point(10, 10);
             lblFeaturesTitle.Name = "lblFeaturesTitle";
-            lblFeaturesTitle.Size = new Size(71, 23);
+            lblFeaturesTitle.Size = new Size(75, 23);
             lblFeaturesTitle.TabIndex = 0;
             lblFeaturesTitle.Text = "Features";
             // 
@@ -486,23 +471,21 @@
             panelVehicleInfo.Controls.Add(lblCategory);
             panelVehicleInfo.Controls.Add(lblMakeModel);
             panelVehicleInfo.Controls.Add(lblDetailsTitle);
-            panelVehicleInfo.Dock = DockStyle.Top; // CHANGED: Now docks at top
+            panelVehicleInfo.Dock = DockStyle.Top;
             panelVehicleInfo.Location = new Point(0, 290);
             panelVehicleInfo.Name = "panelVehicleInfo";
             panelVehicleInfo.Padding = new Padding(10);
-            // REMOVED fixed Size property
-            // panelVehicleInfo.Size = new Size(350, 240); // THIS WAS THE PROBLEM
-            panelVehicleInfo.Size = new Size(350, 240); // Keep this but it will be adjusted
+            panelVehicleInfo.Size = new Size(350, 240);
             panelVehicleInfo.TabIndex = 6;
             // 
             // lblMileageValue
             // 
             lblMileageValue.AutoSize = true;
             lblMileageValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
-            lblMileageValue.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblMileageValue.ForeColor = Color.FromArgb(30, 60, 90);
             lblMileageValue.Location = new Point(85, 200);
             lblMileageValue.Name = "lblMileageValue";
-            lblMileageValue.Size = new Size(81, 20);
+            lblMileageValue.Size = new Size(79, 20);
             lblMileageValue.TabIndex = 13;
             lblMileageValue.Text = "25,450 km";
             // 
@@ -510,10 +493,10 @@
             // 
             lblMileage.AutoSize = true;
             lblMileage.Font = new Font("Segoe UI", 8.5F);
-            lblMileage.ForeColor = Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            lblMileage.ForeColor = Color.FromArgb(100, 100, 100);
             lblMileage.Location = new Point(10, 200);
             lblMileage.Name = "lblMileage";
-            lblMileage.Size = new Size(62, 20);
+            lblMileage.Size = new Size(66, 20);
             lblMileage.TabIndex = 12;
             lblMileage.Text = "Mileage:";
             // 
@@ -521,10 +504,10 @@
             // 
             lblPlateValue.AutoSize = true;
             lblPlateValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
-            lblPlateValue.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblPlateValue.ForeColor = Color.FromArgb(30, 60, 90);
             lblPlateValue.Location = new Point(85, 170);
             lblPlateValue.Name = "lblPlateValue";
-            lblPlateValue.Size = new Size(80, 20);
+            lblPlateValue.Size = new Size(74, 20);
             lblPlateValue.TabIndex = 11;
             lblPlateValue.Text = "ABC-1234";
             // 
@@ -532,10 +515,10 @@
             // 
             lblPlate.AutoSize = true;
             lblPlate.Font = new Font("Segoe UI", 8.5F);
-            lblPlate.ForeColor = Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            lblPlate.ForeColor = Color.FromArgb(100, 100, 100);
             lblPlate.Location = new Point(10, 170);
             lblPlate.Name = "lblPlate";
-            lblPlate.Size = new Size(75, 20);
+            lblPlate.Size = new Size(72, 20);
             lblPlate.TabIndex = 10;
             lblPlate.Text = "Plate No.:";
             // 
@@ -543,10 +526,10 @@
             // 
             lblDailyRateValue.AutoSize = true;
             lblDailyRateValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
-            lblDailyRateValue.ForeColor = Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            lblDailyRateValue.ForeColor = Color.FromArgb(46, 204, 113);
             lblDailyRateValue.Location = new Point(85, 140);
             lblDailyRateValue.Name = "lblDailyRateValue";
-            lblDailyRateValue.Size = new Size(61, 20);
+            lblDailyRateValue.Size = new Size(53, 20);
             lblDailyRateValue.TabIndex = 9;
             lblDailyRateValue.Text = "$65.00";
             // 
@@ -554,10 +537,10 @@
             // 
             lblDailyRate.AutoSize = true;
             lblDailyRate.Font = new Font("Segoe UI", 8.5F);
-            lblDailyRate.ForeColor = Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            lblDailyRate.ForeColor = Color.FromArgb(100, 100, 100);
             lblDailyRate.Location = new Point(10, 140);
             lblDailyRate.Name = "lblDailyRate";
-            lblDailyRate.Size = new Size(75, 20);
+            lblDailyRate.Size = new Size(80, 20);
             lblDailyRate.TabIndex = 8;
             lblDailyRate.Text = "Daily Rate:";
             // 
@@ -565,10 +548,10 @@
             // 
             lblYearColorValue.AutoSize = true;
             lblYearColorValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
-            lblYearColorValue.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblYearColorValue.ForeColor = Color.FromArgb(30, 60, 90);
             lblYearColorValue.Location = new Point(85, 110);
             lblYearColorValue.Name = "lblYearColorValue";
-            lblYearColorValue.Size = new Size(76, 20);
+            lblYearColorValue.Size = new Size(74, 20);
             lblYearColorValue.TabIndex = 7;
             lblYearColorValue.Text = "2024/Red";
             // 
@@ -576,10 +559,10 @@
             // 
             lblYearColor.AutoSize = true;
             lblYearColor.Font = new Font("Segoe UI", 8.5F);
-            lblYearColor.ForeColor = Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            lblYearColor.ForeColor = Color.FromArgb(100, 100, 100);
             lblYearColor.Location = new Point(10, 110);
             lblYearColor.Name = "lblYearColor";
-            lblYearColor.Size = new Size(76, 20);
+            lblYearColor.Size = new Size(82, 20);
             lblYearColor.TabIndex = 6;
             lblYearColor.Text = "Year/Color:";
             // 
@@ -587,10 +570,10 @@
             // 
             lblCategoryValue.AutoSize = true;
             lblCategoryValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
-            lblCategoryValue.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblCategoryValue.ForeColor = Color.FromArgb(30, 60, 90);
             lblCategoryValue.Location = new Point(85, 80);
             lblCategoryValue.Name = "lblCategoryValue";
-            lblCategoryValue.Size = new Size(49, 20);
+            lblCategoryValue.Size = new Size(51, 20);
             lblCategoryValue.TabIndex = 5;
             lblCategoryValue.Text = "Sedan";
             // 
@@ -598,10 +581,10 @@
             // 
             lblStatusValue.AutoSize = true;
             lblStatusValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
-            lblStatusValue.ForeColor = Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            lblStatusValue.ForeColor = Color.FromArgb(231, 76, 60);
             lblStatusValue.Location = new Point(85, 50);
             lblStatusValue.Name = "lblStatusValue";
-            lblStatusValue.Size = new Size(55, 20);
+            lblStatusValue.Size = new Size(57, 20);
             lblStatusValue.TabIndex = 4;
             lblStatusValue.Text = "Rented";
             // 
@@ -609,7 +592,7 @@
             // 
             lblStatus.AutoSize = true;
             lblStatus.Font = new Font("Segoe UI", 8.5F);
-            lblStatus.ForeColor = Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            lblStatus.ForeColor = Color.FromArgb(100, 100, 100);
             lblStatus.Location = new Point(10, 50);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(52, 20);
@@ -620,10 +603,10 @@
             // 
             lblCategory.AutoSize = true;
             lblCategory.Font = new Font("Segoe UI", 8.5F);
-            lblCategory.ForeColor = Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            lblCategory.ForeColor = Color.FromArgb(100, 100, 100);
             lblCategory.Location = new Point(10, 80);
             lblCategory.Name = "lblCategory";
-            lblCategory.Size = new Size(69, 20);
+            lblCategory.Size = new Size(72, 20);
             lblCategory.TabIndex = 2;
             lblCategory.Text = "Category:";
             // 
@@ -631,10 +614,10 @@
             // 
             lblMakeModel.AutoSize = true;
             lblMakeModel.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            lblMakeModel.ForeColor = Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            lblMakeModel.ForeColor = Color.FromArgb(44, 62, 80);
             lblMakeModel.Location = new Point(10, 15);
             lblMakeModel.Name = "lblMakeModel";
-            lblMakeModel.Size = new Size(125, 25);
+            lblMakeModel.Size = new Size(131, 25);
             lblMakeModel.TabIndex = 1;
             lblMakeModel.Text = "Toyota Camry";
             // 
@@ -642,7 +625,7 @@
             // 
             lblDetailsTitle.AutoSize = true;
             lblDetailsTitle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            lblDetailsTitle.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblDetailsTitle.ForeColor = Color.FromArgb(30, 60, 90);
             lblDetailsTitle.Location = new Point(10, -10);
             lblDetailsTitle.Name = "lblDetailsTitle";
             lblDetailsTitle.Size = new Size(0, 23);
@@ -650,10 +633,10 @@
             // 
             // panelPreviewHeader
             // 
-            panelPreviewHeader.BackColor = Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            panelPreviewHeader.BackColor = Color.FromArgb(248, 249, 250);
             panelPreviewHeader.Controls.Add(lblVehicleDetails);
             panelPreviewHeader.Dock = DockStyle.Top;
-            panelPreviewHeader.Location = new Point(0, 0);
+            panelPreviewHeader.Location = new Point(0, 250);
             panelPreviewHeader.Name = "panelPreviewHeader";
             panelPreviewHeader.Size = new Size(350, 40);
             panelPreviewHeader.TabIndex = 5;
@@ -662,7 +645,7 @@
             // 
             lblVehicleDetails.Dock = DockStyle.Fill;
             lblVehicleDetails.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            lblVehicleDetails.ForeColor = Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
+            lblVehicleDetails.ForeColor = Color.FromArgb(30, 60, 90);
             lblVehicleDetails.Location = new Point(0, 0);
             lblVehicleDetails.Name = "lblVehicleDetails";
             lblVehicleDetails.Size = new Size(350, 40);
@@ -674,12 +657,10 @@
             // 
             picVehiclePreview.BackColor = Color.White;
             picVehiclePreview.BorderStyle = BorderStyle.FixedSingle;
-            picVehiclePreview.Dock = DockStyle.Top; // CHANGED: Now docks at top
-            picVehiclePreview.Location = new Point(0, 40);
+            picVehiclePreview.Dock = DockStyle.Top;
+            picVehiclePreview.Location = new Point(0, 0);
             picVehiclePreview.Name = "picVehiclePreview";
-            // REMOVED fixed Size property
-            // picVehiclePreview.Size = new Size(350, 250); // THIS WAS THE PROBLEM
-            picVehiclePreview.Size = new Size(350, 250); // Keep this but it will be adjusted
+            picVehiclePreview.Size = new Size(350, 250);
             picVehiclePreview.SizeMode = PictureBoxSizeMode.Zoom;
             picVehiclePreview.TabIndex = 0;
             picVehiclePreview.TabStop = false;
@@ -741,7 +722,6 @@
         private Button btnExport;
         private Panel panelSearch;
         private TextBox txtSearch;
-        private Label lblSearchIcon;
         private Label lblVehicleCount;
         private Panel panelPreviewHeader;
         private Label lblVehicleDetails;
