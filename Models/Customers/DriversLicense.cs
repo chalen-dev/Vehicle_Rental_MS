@@ -7,4 +7,5 @@ public class DriversLicense
     public DateTime IssueDate { get; set; }
     public DateTime ExpiryDate { get; set; }
     public string IssuingCountry { get; set; } = string.Empty;
+    public string? PhotoPath { get; set; }
 }

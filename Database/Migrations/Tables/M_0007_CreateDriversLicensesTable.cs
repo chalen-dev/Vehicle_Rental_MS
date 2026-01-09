@@ -8,7 +8,8 @@ public static class M_0007_CreateDriversLicensesTable
                                          license_number VARCHAR(50) NOT NULL UNIQUE,
                                          issue_date DATE NOT NULL,
                                          expiry_date DATE NOT NULL,
-                                         issuing_country VARCHAR(50) NOT NULL
+                                         issuing_country VARCHAR(50) NOT NULL,
+                                         photo_path VARCHAR(255) NULL
                                      );
                                      """;
     

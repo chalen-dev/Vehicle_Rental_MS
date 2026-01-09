@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using VRMS.Database;
@@ -10,81 +11,19 @@ namespace VRMS.Services;
 
 public class CustomerService
 {
-    private const string DefaultCustomerPhotoPath = "Assets/profile_img.png";
     private const string StorageRoot = "Storage";
+    
+    private const string DefaultCustomerPhotoPath = "Assets/profile_img.png";
     private const string CustomerPhotoFolder = "Customers";
     private const string CustomerPhotoFileName = "profile";
     
-    // ----------------------------
-    // DRIVERS LICENSES
-    // ----------------------------
-
-    public int CreateDriversLicense(
-        string licenseNumber,
-        DateTime issueDate,
-        DateTime expiryDate,
-        string issuingCountry
-    )
+    private readonly DriversLicenseService _driversLicenseService;
+    
+    public CustomerService(DriversLicenseService driversLicenseService)
     {
-        if (expiryDate <= issueDate)
-            throw new InvalidOperationException("Expiry date must be after issue date.");
-
-        var table = DB.ExecuteQuery($"""
-            CALL sp_drivers_licenses_create(
-                '{Sql.Esc(licenseNumber)}',
-                '{issueDate:yyyy-MM-dd}',
-                '{expiryDate:yyyy-MM-dd}',
-                '{Sql.Esc(issuingCountry)}'
-            );
-        """);
-
-        return Convert.ToInt32(table.Rows[0]["drivers_license_id"]);
+        _driversLicenseService = driversLicenseService;
     }
 
-    public DriversLicense GetDriversLicenseById(int licenseId)
-    {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_drivers_licenses_get_by_id({licenseId});"
-        );
-
-        if (table.Rows.Count == 0)
-            throw new InvalidOperationException("Drivers license not found.");
-
-        return MapDriversLicense(table.Rows[0]);
-    }
-
-    public DriversLicense? GetDriversLicenseByNumber(string licenseNumber)
-    {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_drivers_licenses_get_by_number('{Sql.Esc(licenseNumber)}');"
-        );
-
-        if (table.Rows.Count == 0)
-            return null;
-
-        return MapDriversLicense(table.Rows[0]);
-    }
-
-    public void UpdateDriversLicense(int licenseId, DateTime issueDate, DateTime expiryDate, string issuingCountry)
-    {
-        if (expiryDate <= issueDate)
-            throw new InvalidOperationException("Expiry date must be after issue date.");
-
-        DB.ExecuteNonQuery($"""
-            CALL sp_drivers_licenses_update(
-                {licenseId},
-                '{issueDate:yyyy-MM-dd}',
-                '{expiryDate:yyyy-MM-dd}',
-                '{Sql.Esc(issuingCountry)}'
-            );
-        """);
-    }
-
-    public void DeleteDriversLicense(int licenseId)
-    {
-        // Note: database has RESTRICT on customers referencing licenses.
-        DB.ExecuteNonQuery($"CALL sp_drivers_licenses_delete({licenseId});");
-    }
 
     // ----------------------------
     // CUSTOMERS
@@ -101,7 +40,7 @@ public class CustomerService
         string? photoPath = null
     )
     {
-        var license = GetDriversLicenseById(driversLicenseId);
+        var license = _driversLicenseService.GetDriversLicenseById(driversLicenseId);
 
         if (license.ExpiryDate < DateTime.UtcNow.Date)
             throw new InvalidOperationException("Drivers license is expired.");
@@ -275,7 +214,7 @@ public class CustomerService
         if (customer.CustomerType == CustomerType.Blacklisted)
             throw new InvalidOperationException("Customer is blacklisted and cannot rent.");
 
-        var license = GetDriversLicenseById(customer.DriversLicenseId);
+        var license = _driversLicenseService.GetDriversLicenseById(customer.DriversLicenseId);
 
         if (license.ExpiryDate < asOfDate.Date)
             throw new InvalidOperationException("Customer's driver's license is expired.");
@@ -285,20 +224,18 @@ public class CustomerService
     // MAPPING HELPERS
     // ----------------------------
 
-    private static DriversLicense MapDriversLicense(DataRow row)
-    {
-        return new DriversLicense
-        {
-            Id = Convert.ToInt32(row["id"]),
-            LicenseNumber = row["license_number"].ToString()!,
-            IssueDate = Convert.ToDateTime(row["issue_date"]),
-            ExpiryDate = Convert.ToDateTime(row["expiry_date"]),
-            IssuingCountry = row["issuing_country"].ToString()!
-        };
-    }
+    
+
 
     private static Customer MapCustomer(DataRow row)
     {
+        var photoPath = row["photo_path"] == DBNull.Value
+            ? DefaultCustomerPhotoPath
+            : row["photo_path"].ToString();
+
+        if (string.IsNullOrWhiteSpace(photoPath))
+            photoPath = DefaultCustomerPhotoPath;
+
         return new Customer
         {
             Id = Convert.ToInt32(row["id"]),
@@ -308,9 +245,7 @@ public class CustomerService
             Phone = row["phone"].ToString()!,
             DateOfBirth = Convert.ToDateTime(row["date_of_birth"]),
             CustomerType = Enum.Parse<CustomerType>(row["customer_type"].ToString()!, true),
-            PhotoPath = row["photo_path"] == DBNull.Value
-                ? null
-                : row["photo_path"].ToString(),
+            PhotoPath = photoPath,
             DriversLicenseId = Convert.ToInt32(row["drivers_license_id"])
         };
     }
@@ -324,11 +259,5 @@ public class CustomerService
         );
     }
     
-    private static string BuildCustomerPhotoPath(int customerId, string extension)
-    {
-        return Path.Combine(
-            GetCustomerPhotoDirectory(customerId),
-            $"{CustomerPhotoFileName}{extension}"
-        );
-    }
+    
 }

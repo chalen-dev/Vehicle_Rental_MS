@@ -10,11 +10,12 @@ public static class SP_DriversLicenses_GetById
                                   )
                                   BEGIN
                                       SELECT
-                                          id,
-                                          license_number,
-                                          issue_date,
-                                          expiry_date,
-                                          issuing_country
+                                      id,
+                                      license_number,
+                                      issue_date,
+                                      expiry_date,
+                                      issuing_country,
+                                      photo_path
                                       FROM drivers_licenses
                                       WHERE id = p_license_id;
                                   END;
