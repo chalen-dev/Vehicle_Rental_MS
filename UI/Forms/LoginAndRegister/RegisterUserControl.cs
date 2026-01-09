@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using VRMS.Services;
+using VRMS.Services.Account;
 using VRMS.Enums;
 
 namespace VRMS.Controls
@@ -29,7 +29,7 @@ namespace VRMS.Controls
         private void btnRegister_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text.Trim();
-            string email = txtEmail.Text.Trim(); // kept for future use
+            string email = txtEmail.Text.Trim(); // reserved for future use
             string password = txtPassword.Text;
             string confirm = txtConfirmPass.Text;
 
@@ -85,7 +85,6 @@ namespace VRMS.Controls
             }
             catch (InvalidOperationException ex)
             {
-                // Expected errors (e.g. duplicate username)
                 MessageBox.Show(
                     ex.Message,
                     "Registration Failed",
@@ -95,7 +94,6 @@ namespace VRMS.Controls
             }
             catch (Exception ex)
             {
-                // Unexpected DB/system errors
                 MessageBox.Show(
                     $"Registration error: {ex.Message}",
                     "Error",

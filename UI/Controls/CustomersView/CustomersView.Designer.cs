@@ -846,7 +846,6 @@
             // 
             cbCustomerType.Font = new Font("Segoe UI", 10F);
             cbCustomerType.FormattingEnabled = true;
-            cbCustomerType.Items.AddRange(new object[] { "Individual", "Corporate" });
             cbCustomerType.Location = new Point(27, 39);
             cbCustomerType.Margin = new Padding(3, 4, 3, 4);
             cbCustomerType.Name = "cbCustomerType";

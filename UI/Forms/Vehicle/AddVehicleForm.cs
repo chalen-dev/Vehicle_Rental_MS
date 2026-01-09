@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using VRMS.Services;
 using VRMS.Models.Fleet;
 using VRMS.Enums;
+using VRMS.Services.Vehicle;
 using VRMS.UI.Forms;
 
 namespace VRMS.Forms
@@ -28,11 +28,9 @@ namespace VRMS.Forms
 
         private void AddVehicleForm_Load(object sender, EventArgs e)
         {
-            // Enums
             cbTransmission.DataSource = Enum.GetValues(typeof(TransmissionType));
             cbFuel.DataSource = Enum.GetValues(typeof(FuelType));
 
-            // Vehicle always starts as Available
             cbStatus.DataSource = new[] { VehicleStatus.Available };
             cbStatus.SelectedItem = VehicleStatus.Available;
 
@@ -59,6 +57,9 @@ namespace VRMS.Forms
 
                 var vehicle = new Vehicle
                 {
+                    // ✅ REQUIRED
+                    VehicleCode = $"VEH-{DateTime.UtcNow:yyyyMMddHHmmss}",
+
                     Make = txtMake.Text.Trim(),
                     Model = txtModel.Text.Trim(),
                     Year = (int)numYear.Value,
@@ -76,7 +77,7 @@ namespace VRMS.Forms
 
                 int vehicleId = _vehicleService.CreateVehicle(vehicle);
 
-                // Save images (optional)
+                // Optional images
                 foreach (var item in lstImages.Items)
                 {
                     _vehicleService.AddVehicleImage(vehicleId, item.ToString()!);

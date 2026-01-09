@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using VRMS.Models.Fleet;
-using VRMS.Services;
+using VRMS.Services.Vehicle;
 
 namespace VRMS.UI.Forms
 {
@@ -20,7 +20,6 @@ namespace VRMS.UI.Forms
 
             btnSave.Click += BtnSave_Click;
             btnCancel.Click += (_, __) => Close();
-            // btnDelete.Click += BtnDelete_Click;
 
             LoadCategories();
         }
@@ -59,7 +58,6 @@ namespace VRMS.UI.Forms
 
             try
             {
-                // ✅ Capture created ID
                 CreatedCategoryId = _vehicleService.CreateCategory(
                     name,
                     string.IsNullOrWhiteSpace(description) ? null : description
@@ -73,7 +71,6 @@ namespace VRMS.UI.Forms
                     MessageBoxIcon.Information
                 );
 
-                // ✅ Signal success to caller
                 DialogResult = DialogResult.OK;
                 Close();
             }

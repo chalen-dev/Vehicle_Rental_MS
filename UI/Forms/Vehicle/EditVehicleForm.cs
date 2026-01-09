@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using VRMS.Services;
 using VRMS.Models.Fleet;
 using VRMS.Enums;
+using VRMS.Services.Vehicle;
 
 namespace VRMS.Forms
 {
@@ -73,7 +73,7 @@ namespace VRMS.Forms
 
             numSeats.Value = _vehicle.SeatingCapacity;
 
-            // 🔒 Lock immutable fields (VERY IMPORTANT)
+            // 🔒 Lock immutable fields
             txtMake.ReadOnly = true;
             txtModel.ReadOnly = true;
             numYear.Enabled = false;
@@ -95,15 +95,13 @@ namespace VRMS.Forms
             {
                 ValidateForm();
 
-                // Update allowed vehicle fields
                 _vehicleService.UpdateVehicle(
                     vehicleId: _vehicleId,
                     color: txtColor.Text.Trim(),
                     newOdometer: (int)numMileage.Value,
-                    categoryId: _vehicle.VehicleCategoryId // unchanged
+                    categoryId: _vehicle.VehicleCategoryId
                 );
 
-                // Handle status change separately
                 var newStatus = (VehicleStatus)cbStatus.SelectedItem!;
                 if (newStatus != _vehicle.Status)
                 {

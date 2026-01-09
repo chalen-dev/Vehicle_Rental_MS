@@ -1,10 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using VRMS.Models.Fleet;
-using VRMS.Services;
 using VRMS.Enums;
 using VRMS.Forms;
+using VRMS.Models.Fleet;
+
+
+using VRMS.Services.Vehicle;
+using VRMS.Services.Customer;
+using VRMS.Services.Rental;
 
 namespace VRMS.Controls
 {
@@ -15,17 +18,25 @@ namespace VRMS.Controls
         // =========================
 
         private readonly VehicleService _vehicleService;
+        private readonly DriversLicenseService _driversLicenseService;
         private readonly CustomerService _customerService;
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
+
+        // =========================
+        // CONSTRUCTOR
+        // =========================
 
         public VehiclesView()
         {
             InitializeComponent();
 
-            // 🔹 Base services (no dependencies)
+            // 🔹 Base services
             _vehicleService = new VehicleService();
-            _customerService = new CustomerService();
+            _driversLicenseService = new DriversLicenseService();
+
+            // 🔹 Depends on DriversLicenseService
+            _customerService = new CustomerService(_driversLicenseService);
 
             // 🔹 Depends on Customer + Vehicle
             _reservationService = new ReservationService(
@@ -46,7 +57,7 @@ namespace VRMS.Controls
         // LOAD
         // =========================
 
-        private void VehiclesView_Load(object sender, EventArgs e)
+        private void VehiclesView_Load(object? sender, EventArgs e)
         {
             ConfigureGrid();
             LoadVehicles();
@@ -114,6 +125,7 @@ namespace VRMS.Controls
         {
             try
             {
+                dgvVehicles.DataSource = null;
                 dgvVehicles.DataSource = _vehicleService.GetAllVehicles();
             }
             catch (Exception ex)
@@ -144,7 +156,6 @@ namespace VRMS.Controls
             }
         }
 
-
         // =========================
         // EDIT VEHICLE
         // =========================
@@ -154,8 +165,7 @@ namespace VRMS.Controls
             if (dgvVehicles.SelectedRows.Count == 0)
                 return;
 
-            var vehicle = dgvVehicles.SelectedRows[0].DataBoundItem as Vehicle;
-            if (vehicle == null)
+            if (dgvVehicles.SelectedRows[0].DataBoundItem is not Vehicle vehicle)
                 return;
 
             using var editForm = new EditVehicleForm(vehicle.Id)
@@ -164,7 +174,9 @@ namespace VRMS.Controls
             };
 
             if (editForm.ShowDialog(this) == DialogResult.OK)
+            {
                 LoadVehicles();
+            }
         }
     }
 }

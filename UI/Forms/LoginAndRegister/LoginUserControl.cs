@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Windows.Forms;
-using VRMS.Services;
+using VRMS.Services.Account;
 using VRMS.Models.Accounts;
 
 namespace VRMS.Controls
 {
     public partial class LoginUserControl : UserControl
     {
-        public event EventHandler GoToRegisterRequest;
-        public event Action<User> LoginSuccess;
-        public event EventHandler ExitApplication;
+        public event EventHandler? GoToRegisterRequest;
+        public event EventHandler? LoginSuccess;
+        public event EventHandler? ExitApplication;
 
         private readonly UserService _userService = new();
+
+        // ✅ Store logged-in user
+        public User? LoggedInUser { get; private set; }
 
         public LoginUserControl()
         {
@@ -55,7 +58,6 @@ namespace VRMS.Controls
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text;
 
-            // 1️⃣ Validation
             if (string.IsNullOrWhiteSpace(username) ||
                 string.IsNullOrWhiteSpace(password))
             {
@@ -65,21 +67,13 @@ namespace VRMS.Controls
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
-
-                if (string.IsNullOrWhiteSpace(username))
-                    txtUsername.Focus();
-                else
-                    txtPassword.Focus();
-
                 return;
             }
 
             try
             {
-                // 2️⃣ Authenticate via UserService
-                User user = _userService.Authenticate(username, password);
+                var user = _userService.Authenticate(username, password);
 
-                // Optional safety check
                 if (!user.IsActive)
                 {
                     MessageBox.Show(
@@ -91,26 +85,25 @@ namespace VRMS.Controls
                     return;
                 }
 
-                // 3️⃣ Success
+                // ✅ Save user
+                LoggedInUser = user;
+
                 txtPassword.Clear();
-                LoginSuccess?.Invoke(user);
+
+                // ✅ EventHandler signature is correct
+                LoginSuccess?.Invoke(this, EventArgs.Empty);
             }
             catch (InvalidOperationException ex)
             {
-                // Expected login failures (wrong user/pass)
                 MessageBox.Show(
                     ex.Message,
                     "Login Failed",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
-
-                txtPassword.SelectAll();
-                txtPassword.Focus();
             }
             catch (Exception ex)
             {
-                // Unexpected errors (DB down, etc.)
                 MessageBox.Show(
                     $"Login error: {ex.Message}",
                     "Error",
@@ -118,13 +111,6 @@ namespace VRMS.Controls
                     MessageBoxIcon.Error
                 );
             }
-        }
-
-        public void ClearForm()
-        {
-            txtUsername.Clear();
-            txtPassword.Clear();
-            txtUsername.Focus();
         }
 
         public void FocusUsername()
