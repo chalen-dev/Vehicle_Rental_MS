@@ -1,4 +1,4 @@
-﻿namespace VRMS.Database.DBHelpers.SqlEscape;
+﻿namespace VRMS.Helpers.SqlEscape;
 
 public static class Sql
 {

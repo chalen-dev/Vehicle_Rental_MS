@@ -3,8 +3,8 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 using VRMS.Database;
-using VRMS.Database.DBHelpers.SqlEscape;
 using VRMS.Enums;
+using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Accounts;
 
 namespace VRMS.Services;
@@ -120,6 +120,55 @@ public class UserService
 
         return user;
     }
+    // ----------------------------
+    // PASSWORD MANAGEMENT
+    // ----------------------------
+
+    public void ChangePassword(
+        int userId,
+        string currentPlainPassword,
+        string newPlainPassword
+    )
+    {
+        var user = GetById(userId);
+
+        if (!VerifyPassword(currentPlainPassword, user.PasswordHash))
+            throw new InvalidOperationException("Current password is incorrect.");
+
+        var newHash = HashPassword(newPlainPassword);
+
+        DB.ExecuteNonQuery($"""
+                                CALL sp_users_update_password(
+                                    {userId},
+                                    '{Sql.Esc(newHash)}'
+                                );
+                            """);
+    }
+    
+    // ----------------------------
+    // PROFILE MANAGEMENT
+    // ----------------------------
+
+    public void UpdateUserProfile(
+        int userId,
+        string username,
+        UserRole role,
+        bool isActive
+    )
+    {
+        if (string.IsNullOrWhiteSpace(username))
+            throw new InvalidOperationException("Username cannot be empty.");
+
+        DB.ExecuteNonQuery($"""
+                                CALL sp_users_update_profile(
+                                    {userId},
+                                    '{Sql.Esc(username)}',
+                                    '{role}',
+                                    {(isActive ? "TRUE" : "FALSE")}
+                                );
+                            """);
+    }
+    
 
     // ----------------------------
     // PASSWORD SECURITY

@@ -10,6 +10,8 @@ public static class M_1001_CreateUserProcedures
                                       {SP_Users_GetByUsername.Sql()}
                                       {SP_Users_Authenticate.Sql()}
                                       {SP_Users_Deactivate.Sql()}
+                                      {SP_Users_UpdatePassword.Sql()}
+                                      {SP_Users_UpdateProfile.Sql()}
                                       """;
 
     public static string Drop() => """
@@ -18,5 +20,7 @@ public static class M_1001_CreateUserProcedures
                                    DROP PROCEDURE IF EXISTS sp_users_get_by_username;
                                    DROP PROCEDURE IF EXISTS sp_users_authenticate;
                                    DROP PROCEDURE IF EXISTS sp_users_deactivate;
+                                   DROP PROCEDURE IF EXISTS sp_users_update_password;
+                                   DROP PROCEDURE IF EXISTS sp_users_update_profile;
                                    """;
 }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using VRMS.Database;
-using VRMS.Database.DBHelpers.SqlEscape;
 using VRMS.Enums;
+using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Customers;
 
 namespace VRMS.Services;
