@@ -24,7 +24,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Assets\" />
       <Folder Include="Database\Seeders\" />
+      <Folder Include="Storage\" />
     </ItemGroup>
 
 </Project>
