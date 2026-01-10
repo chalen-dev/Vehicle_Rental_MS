@@ -11,6 +11,7 @@ public static class M_1012_CreateDamageReportProcedures
                                       {SP_DamageReports_Approve.Sql()}
                                       {SP_DamageReports_SetPhoto.Sql()}
                                       {SP_DamageReports_ResetPhoto.Sql()}
+                                      {SP_DamageReports_GetApprovedByRental.Sql()}
                                       """;
 
     public static string Drop() => """
@@ -20,5 +21,6 @@ public static class M_1012_CreateDamageReportProcedures
                                    DROP PROCEDURE IF EXISTS sp_damage_reports_approve;
                                    DROP PROCEDURE IF EXISTS sp_damage_reports_set_photo;
                                    DROP PROCEDURE IF EXISTS sp_damage_reports_reset_photo;
+                                   DROP PROCEDURE IF EXISTS sp_damage_reports_get_approved_by_rental;
                                    """;
 }

@@ -14,12 +14,14 @@ public static class SP_Invoices_Create
                                       INSERT INTO invoices (
                                           rental_id,
                                           total_amount,
-                                          generated_date
+                                          generated_date,
+                                          status
                                       )
                                       VALUES (
                                           p_rental_id,
                                           p_total_amount,
-                                          p_generated_date
+                                          p_generated_date,
+                                          'Unpaid'
                                       );
 
                                       SELECT LAST_INSERT_ID() AS invoice_id;

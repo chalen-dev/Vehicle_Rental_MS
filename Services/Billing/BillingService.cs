@@ -1,6 +1,7 @@
 ﻿using VRMS.Enums;
 using VRMS.Models.Billing;
 using VRMS.Repositories.Billing;
+using VRMS.Repositories.Damages;
 using VRMS.Repositories.Rentals;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
@@ -16,6 +17,7 @@ public class BillingService
     private readonly InvoiceRepository _invoiceRepo;
     private readonly PaymentRepository _paymentRepo;
     private readonly InvoiceLineItemRepository _lineItemRepo;
+    private readonly DamageReportRepository _damageReportRepo;
 
     public BillingService(
         RentalRepository rentalRepo,
@@ -23,16 +25,18 @@ public class BillingService
         VehicleService vehicleService,
         RateService rateService,
         InvoiceRepository invoiceRepo,
+        InvoiceLineItemRepository lineItemRepo,
         PaymentRepository paymentRepo,
-        InvoiceLineItemRepository lineItemRepo)
+        DamageReportRepository damageReportRepo)
     {
         _rentalRepo = rentalRepo;
         _reservationService = reservationService;
         _vehicleService = vehicleService;
         _rateService = rateService;
         _invoiceRepo = invoiceRepo;
-        _paymentRepo = paymentRepo;
         _lineItemRepo = lineItemRepo;
+        _paymentRepo = paymentRepo;
+        _damageReportRepo = damageReportRepo;
     }
 
     // ---------------- INVOICES ----------------
@@ -122,7 +126,23 @@ public class BillingService
                 invoice.Id,
                 "Mileage overage charge",
                 mileageCharge);
+        
+        // ---------------- DAMAGE CHARGES ----------------
+        var approvedDamages =
+            _damageReportRepo.GetApprovedByRental(rentalId);
 
+        foreach (var d in approvedDamages)
+        {
+            _lineItemRepo.Create(
+                invoice.Id,
+                $"Damage: {d.Description} (Report #{d.DamageReportId})",
+                d.EstimatedCost);
+        }
+        
+        if (invoice.Status == InvoiceStatus.Paid)
+            throw new InvalidOperationException(
+                "Invoice is already paid.");
+        
         // -------- FINAL TOTAL --------
         var items =
             _lineItemRepo.GetByInvoice(invoice.Id);
@@ -155,17 +175,32 @@ public class BillingService
             throw new InvalidOperationException(
                 "Payment amount must be greater than zero.");
 
+        var invoice =
+            _invoiceRepo.GetById(invoiceId);
+
+        if (invoice.Status == InvoiceStatus.Paid)
+            throw new InvalidOperationException(
+                "Invoice is already paid.");
+
         var balance = GetInvoiceBalance(invoiceId);
         if (amount > balance)
             throw new InvalidOperationException(
                 "Payment exceeds outstanding balance.");
 
-        return _paymentRepo.Create(
-            invoiceId,
-            amount,
-            method,
-            date);
+        var paymentId =
+            _paymentRepo.Create(
+                invoiceId,
+                amount,
+                method,
+                date);
+
+        //  AUTO-MARK PAID
+        if (GetInvoiceBalance(invoiceId) == 0m)
+            _invoiceRepo.MarkPaid(invoiceId);
+
+        return paymentId;
     }
+
 
     public List<Payment> GetPaymentsByInvoice(int invoiceId)
         => _paymentRepo.GetByInvoice(invoiceId);

@@ -96,4 +96,31 @@ public class DamageReportRepository
             Approved = Convert.ToBoolean(row["approved"])
         };
     }
+    
+    // ----------------------------
+    // BILLING SUPPORT
+    // ----------------------------
+    // Returns approved damages for a rental, with cost info
+    public List<(int DamageReportId, string Description, decimal EstimatedCost)>
+        GetApprovedByRental(int rentalId)
+    {
+        var table = DB.Query(
+            "CALL sp_damage_reports_get_approved_by_rental(@rid);",
+            ("@rid", rentalId)
+        );
+
+        var list =
+            new List<(int, string, decimal)>();
+
+        foreach (DataRow row in table.Rows)
+        {
+            list.Add((
+                Convert.ToInt32(row["damage_report_id"]),
+                row["description"].ToString()!,
+                Convert.ToDecimal(row["estimated_cost"])
+            ));
+        }
+
+        return list;
+    }
 }

@@ -74,4 +74,6 @@ public class DamageRepository
             EstimatedCost = Convert.ToDecimal(row["estimated_cost"])
         };
     }
+    
+    
 }

@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using VRMS.Database;
+using VRMS.Enums;
 using VRMS.Models.Billing;
 
 namespace VRMS.Repositories.Billing;
@@ -57,6 +58,13 @@ public class InvoiceRepository
         );
     }
     
+    public void MarkPaid(int invoiceId)
+    {
+        DB.Execute(
+            "CALL sp_invoices_mark_paid(@id);",
+            ("@id", invoiceId)
+        );
+    }
 
     // ---------------- MAPPING ----------------
 
@@ -69,7 +77,10 @@ public class InvoiceRepository
             TotalAmount =
                 Convert.ToDecimal(row["total_amount"]),
             GeneratedDate =
-                Convert.ToDateTime(row["generated_date"])
+                Convert.ToDateTime(row["generated_date"]),
+            Status =
+                Enum.Parse<InvoiceStatus>(
+                    row["status"].ToString()!, true)
         };
     }
 }
