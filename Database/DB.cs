@@ -11,6 +11,10 @@ namespace VRMS.Database
         public static string DatabaseName =>
             _databaseName ?? throw new InvalidOperationException("DB.Initialize() was not called.");
 
+        // -------------------------------------------------
+        // INITIALIZATION
+        // -------------------------------------------------
+
         public static void Initialize(string connectionString)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
@@ -23,7 +27,7 @@ namespace VRMS.Database
 
             _databaseName = builder.Database;
 
-            // Connect WITHOUT database
+            // Connect WITHOUT database first
             builder.Database = string.Empty;
 
             using (var conn = new MySqlConnection(builder.ConnectionString))
@@ -34,7 +38,7 @@ namespace VRMS.Database
                 cmd.ExecuteNonQuery();
             }
 
-            // Restore database and save final connection string
+            // Restore database
             builder.Database = _databaseName;
             _connectionString = builder.ConnectionString;
         }
@@ -47,7 +51,57 @@ namespace VRMS.Database
             return new MySqlConnection(_connectionString);
         }
 
-        public static void ExecuteNonQuery(string sql)
+        // -------------------------------------------------
+        // SAFE EXECUTION (DEFAULT)
+        // -------------------------------------------------
+
+        public static DataTable Query(
+            string sql,
+            params (string name, object? value)[] parameters
+        )
+        {
+            using var conn = GetConnection();
+            using var cmd = CreateCommand(conn, sql, parameters);
+            using var adapter = new MySqlDataAdapter(cmd);
+
+            var table = new DataTable();
+            adapter.Fill(table);
+            return table;
+        }
+
+        public static void Execute(
+            string sql,
+            params (string name, object? value)[] parameters
+        )
+        {
+            using var conn = GetConnection();
+            using var cmd = CreateCommand(conn, sql, parameters);
+
+            conn.Open();
+            cmd.ExecuteNonQuery();
+        }
+
+        public static object? Scalar(
+            string sql,
+            params (string name, object? value)[] parameters
+        )
+        {
+            using var conn = GetConnection();
+            using var cmd = CreateCommand(conn, sql, parameters);
+
+            conn.Open();
+            return cmd.ExecuteScalar();
+        }
+
+        // -------------------------------------------------
+        // UNSAFE ESCAPE HATCH (MIGRATIONS ONLY)
+        // -------------------------------------------------
+
+        /// <summary>
+        /// ⚠️ USE ONLY FOR STATIC SQL (migrations, bootstrap).
+        /// NEVER use with user input.
+        /// </summary>
+        public static void ExecuteRaw(string sql)
         {
             using var conn = GetConnection();
             using var cmd = new MySqlCommand(sql, conn);
@@ -56,16 +110,7 @@ namespace VRMS.Database
             cmd.ExecuteNonQuery();
         }
 
-        public static object? ExecuteScalar(string sql)
-        {
-            using var conn = GetConnection();
-            using var cmd = new MySqlCommand(sql, conn);
-
-            conn.Open();
-            return cmd.ExecuteScalar();
-        }
-
-        public static DataTable ExecuteQuery(string sql)
+        public static DataTable QueryRaw(string sql)
         {
             using var conn = GetConnection();
             using var cmd = new MySqlCommand(sql, conn);
@@ -74,6 +119,24 @@ namespace VRMS.Database
             var table = new DataTable();
             adapter.Fill(table);
             return table;
+        }
+
+        // -------------------------------------------------
+        // INTERNAL
+        // -------------------------------------------------
+
+        private static MySqlCommand CreateCommand(
+            MySqlConnection conn,
+            string sql,
+            (string name, object? value)[] parameters
+        )
+        {
+            var cmd = new MySqlCommand(sql, conn);
+
+            foreach (var (name, value) in parameters)
+                cmd.Parameters.AddWithValue(name, value ?? DBNull.Value);
+
+            return cmd;
         }
     }
 }

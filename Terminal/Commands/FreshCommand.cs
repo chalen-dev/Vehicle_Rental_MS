@@ -12,8 +12,8 @@ public class FreshCommand : ICommand
     {
         try
         {
-            Drop.Run(DB.ExecuteNonQuery);
-            Create.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
+            Drop.Run(DB.ExecuteRaw);
+            Create.Run(DB.QueryRaw, DB.ExecuteRaw);
             return new CommandResult(true, "Database migrated fresh successfully.");
         }
         catch (SchemaExecutionException ex)

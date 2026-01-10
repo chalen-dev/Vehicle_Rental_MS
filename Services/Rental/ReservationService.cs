@@ -45,15 +45,14 @@ public class ReservationService
         // Overlap check
         EnsureNoOverlap(vehicleId, startDate, endDate);
 
-        var table = DB.ExecuteQuery($"""
-            CALL sp_reservations_create(
-                {customerId},
-                {vehicleId},
-                '{startDate:yyyy-MM-dd HH:mm:ss}',
-                '{endDate:yyyy-MM-dd HH:mm:ss}',
-                '{ReservationStatus.Pending}'
-            );
-        """);
+        var table = DB.Query(
+            "CALL sp_reservations_create(@customerId, @vehicleId, @start, @end, @status);",
+            ("@customerId", customerId),
+            ("@vehicleId", vehicleId),
+            ("@start", startDate),
+            ("@end", endDate),
+            ("@status", ReservationStatus.Pending.ToString())
+        );
 
         return Convert.ToInt32(table.Rows[0]["reservation_id"]);
     }
@@ -91,8 +90,9 @@ public class ReservationService
 
         EnsureStatusTransition(reservation.Status, ReservationStatus.Cancelled);
 
-        DB.ExecuteNonQuery(
-            $"CALL sp_reservations_cancel({reservationId});"
+        DB.Execute(
+            "CALL sp_reservations_cancel(@id);",
+            ("@id", reservationId)
         );
 
         // Release vehicle only if no other active reservations exist
@@ -114,8 +114,9 @@ public class ReservationService
 
     public Reservation GetReservationById(int reservationId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_reservations_get_by_id({reservationId});"
+        var table = DB.Query(
+            "CALL sp_reservations_get_by_id(@id);",
+            ("@id", reservationId)
         );
 
         if (table.Rows.Count == 0)
@@ -126,8 +127,9 @@ public class ReservationService
 
     public List<Reservation> GetReservationsByCustomer(int customerId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_reservations_get_by_customer({customerId});"
+        var table = DB.Query(
+            "CALL sp_reservations_get_by_customer(@customerId);",
+            ("@customerId", customerId)
         );
 
         return MapReservations(table);
@@ -135,8 +137,9 @@ public class ReservationService
 
     public List<Reservation> GetReservationsByVehicle(int vehicleId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_reservations_get_by_vehicle({vehicleId});"
+        var table = DB.Query(
+            "CALL sp_reservations_get_by_vehicle(@vehicleId);",
+            ("@vehicleId", vehicleId)
         );
 
         return MapReservations(table);
@@ -146,14 +149,15 @@ public class ReservationService
     // INTERNAL HELPERS
     // -------------------------------------------------
 
-    private void UpdateReservationStatus(int reservationId, ReservationStatus status)
+    private void UpdateReservationStatus(
+        int reservationId,
+        ReservationStatus status)
     {
-        DB.ExecuteNonQuery($"""
-            CALL sp_reservations_update_status(
-                {reservationId},
-                '{status}'
-            );
-        """);
+        DB.Execute(
+            "CALL sp_reservations_update_status(@id, @status);",
+            ("@id", reservationId),
+            ("@status", status.ToString())
+        );
     }
 
     private void EnsureStatusTransition(
@@ -207,7 +211,9 @@ public class ReservationService
         }
     }
 
-    private bool HasActiveReservations(int vehicleId, int excludingReservationId)
+    private bool HasActiveReservations(
+        int vehicleId,
+        int excludingReservationId)
     {
         var reservations = GetReservationsByVehicle(vehicleId);
 
@@ -216,12 +222,17 @@ public class ReservationService
             if (r.Id == excludingReservationId)
                 continue;
 
-            if (r.Status is ReservationStatus.Pending or ReservationStatus.Confirmed)
+            if (r.Status is ReservationStatus.Pending
+                or ReservationStatus.Confirmed)
                 return true;
         }
 
         return false;
     }
+
+    // -------------------------------------------------
+    // MAPPING
+    // -------------------------------------------------
 
     private static Reservation MapReservation(DataRow row)
     {

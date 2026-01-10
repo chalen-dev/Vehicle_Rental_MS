@@ -4,13 +4,13 @@ namespace VRMS.Database.Executors;
 
 public static class Drop
 {
-    public static void Run(Action<string> executeNonQuery)
+    public static void Run(Action<string> executeRawSql)
     {
         Console.WriteLine("\n[INFO] Dropping tables and stored procedures.\n");
-        // Drop all tables in reverse order
-        DropExecutor.Execute(executeNonQuery); 
+
+        DropExecutor.Execute(executeRawSql);
 
         // Finally drop schema_info itself
-        executeNonQuery(M_0001_CreateSchemaInfoTable.Drop());
+        executeRawSql(M_0001_CreateSchemaInfoTable.Drop());
     }
 }

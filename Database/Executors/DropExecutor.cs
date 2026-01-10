@@ -7,12 +7,13 @@ namespace VRMS.Database.Executors;
 public static class DropExecutor
 {
     public static void Execute(
-        Action<string> executeNonQuery,
+        Action<string> executeRawSql,
         bool strictMode = true
     )
     {
         var assembly = Assembly.GetAssembly(typeof(M_0001_CreateSchemaInfoTable))
-            ?? throw new InvalidOperationException("Failed to locate tables assembly.");
+            ?? throw new InvalidOperationException(
+                "Failed to locate tables assembly.");
 
         var tableTypes = assembly
             .GetTypes()
@@ -21,9 +22,12 @@ public static class DropExecutor
                 t.IsAbstract &&
                 t.IsSealed &&
                 t.Name.StartsWith("M_") &&
-                t.GetMethod("Drop", BindingFlags.Public | BindingFlags.Static) != null
+                t.GetMethod(
+                    "Drop",
+                    BindingFlags.Public | BindingFlags.Static
+                ) != null
             )
-            .OrderByDescending(t => t.Name) // descending
+            .OrderByDescending(t => t.Name)
             .ToList();
 
         foreach (var type in tableTypes)
@@ -32,35 +36,38 @@ public static class DropExecutor
 
             try
             {
-                sql = ExecuteMethod(type, "Drop", executeNonQuery);
+                sql = ExecuteMethod(type, executeRawSql);
                 Console.WriteLine($"[OK] {type.Name}");
             }
             catch (Exception ex)
             {
-                HandleError(type, ex, strictMode, "create", sql);
+                HandleError(type, ex, strictMode, "drop", sql);
             }
         }
     }
 
+    // -------------------------------------------------
+    // INTERNAL
+    // -------------------------------------------------
+
     private static string ExecuteMethod(
         Type tableType,
-        string methodName,
-        Action<string> executeNonQuery
+        Action<string> executeRawSql
     )
     {
         var method = tableType.GetMethod(
-            methodName,
+            "Drop",
             BindingFlags.Public | BindingFlags.Static
         ) ?? throw new InvalidOperationException(
-            $"{methodName}() not found on {tableType.Name}"
+            $"Drop() not found on {tableType.Name}"
         );
 
         var sql = method.Invoke(null, null) as string
-                  ?? throw new InvalidOperationException(
-                      $"{methodName}() on {tableType.Name} did not return SQL"
-                  );
+            ?? throw new InvalidOperationException(
+                $"Drop() on {tableType.Name} did not return SQL"
+            );
 
-        executeNonQuery(sql);
+        executeRawSql(sql);
         return sql;
     }
 
@@ -72,7 +79,8 @@ public static class DropExecutor
         string sql
     )
     {
-        var root = ex is TargetInvocationException tie && tie.InnerException != null
+        var root = ex is TargetInvocationException tie &&
+                   tie.InnerException != null
             ? tie.InnerException
             : ex;
 

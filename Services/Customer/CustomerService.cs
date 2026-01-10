@@ -8,18 +8,17 @@ namespace VRMS.Services.Customer;
 public class CustomerService
 {
     private const string StorageRoot = "Storage";
-    
+
     private const string DefaultCustomerPhotoPath = "Assets/profile_img.png";
     private const string CustomerPhotoFolder = "Customers";
     private const string CustomerPhotoFileName = "profile";
-    
+
     private readonly DriversLicenseService _driversLicenseService;
-    
+
     public CustomerService(DriversLicenseService driversLicenseService)
     {
         _driversLicenseService = driversLicenseService;
     }
-
 
     // ----------------------------
     // CUSTOMERS
@@ -40,22 +39,20 @@ public class CustomerService
         if (license.ExpiryDate < DateTime.UtcNow.Date)
             throw new InvalidOperationException("Drivers license is expired.");
 
-        var table = DB.ExecuteQuery($"""
-                                         CALL sp_customers_create(
-                                             '{Sql.Esc(firstName)}',
-                                             '{Sql.Esc(lastName)}',
-                                             '{Sql.Esc(email)}',
-                                             '{Sql.Esc(phone)}',
-                                             '{dateOfBirth:yyyy-MM-dd}',
-                                             '{customerType}',
-                                             '{Sql.Esc(DefaultCustomerPhotoPath)}',
-                                             {driversLicenseId}
-                                         );
-                                     """);
+        var table = DB.Query(
+            "CALL sp_customers_create(@first, @last, @email, @phone, @dob, @type, @photo, @licenseId);",
+            ("@first", firstName),
+            ("@last", lastName),
+            ("@email", email),
+            ("@phone", phone),
+            ("@dob", dateOfBirth),
+            ("@type", customerType.ToString()),
+            ("@photo", DefaultCustomerPhotoPath),
+            ("@licenseId", driversLicenseId)
+        );
 
         return Convert.ToInt32(table.Rows[0]["customer_id"]);
     }
-
 
     public void UpdateCustomer(
         int customerId,
@@ -66,23 +63,22 @@ public class CustomerService
         CustomerType customerType
     )
     {
-        DB.ExecuteNonQuery($"""
-                                CALL sp_customers_update(
-                                    {customerId},
-                                    '{Sql.Esc(firstName)}',
-                                    '{Sql.Esc(lastName)}',
-                                    '{Sql.Esc(email)}',
-                                    '{Sql.Esc(phone)}',
-                                    '{customerType}'
-                                );
-                            """);
+        DB.Execute(
+            "CALL sp_customers_update(@id, @first, @last, @email, @phone, @type);",
+            ("@id", customerId),
+            ("@first", firstName),
+            ("@last", lastName),
+            ("@email", email),
+            ("@phone", phone),
+            ("@type", customerType.ToString())
+        );
     }
-
 
     public Models.Customers.Customer GetCustomerById(int customerId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_customers_get_by_id({customerId});"
+        var table = DB.Query(
+            "CALL sp_customers_get_by_id(@id);",
+            ("@id", customerId)
         );
 
         if (table.Rows.Count == 0)
@@ -93,7 +89,7 @@ public class CustomerService
 
     public List<Models.Customers.Customer> GetAllCustomers()
     {
-        var table = DB.ExecuteQuery("CALL sp_customers_get_all();");
+        var table = DB.Query("CALL sp_customers_get_all();");
 
         var list = new List<Models.Customers.Customer>();
         foreach (DataRow row in table.Rows)
@@ -109,9 +105,16 @@ public class CustomerService
         if (Directory.Exists(directory))
             Directory.Delete(directory, true);
 
-        DB.ExecuteNonQuery($"CALL sp_customers_delete({customerId});");
+        DB.Execute(
+            "CALL sp_customers_delete(@id);",
+            ("@id", customerId)
+        );
     }
-    
+
+    // ----------------------------
+    // CUSTOMER PHOTO
+    // ----------------------------
+
     public void SetCustomerPhoto(
         int customerId,
         Stream photoStream,
@@ -139,15 +142,13 @@ public class CustomerService
         using var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
         photoStream.CopyTo(fs);
 
-        DB.ExecuteNonQuery($"""
-                                CALL sp_customers_set_photo(
-                                    {customerId},
-                                    '{Sql.Esc(relativePath)}'
-                                );
-                            """);
+        DB.Execute(
+            "CALL sp_customers_set_photo(@id, @path);",
+            ("@id", customerId),
+            ("@path", relativePath)
+        );
     }
 
-    
     public void DeleteCustomerPhoto(int customerId)
     {
         var directory = GetCustomerPhotoDirectory(customerId);
@@ -155,21 +156,16 @@ public class CustomerService
         if (Directory.Exists(directory))
             Directory.Delete(directory, true);
 
-        DB.ExecuteNonQuery($"""
-                                CALL sp_customers_reset_photo({customerId});
-                            """);
+        DB.Execute(
+            "CALL sp_customers_reset_photo(@id);",
+            ("@id", customerId)
+        );
     }
-
 
     // ----------------------------
     // ELIGIBILITY GUARDS
     // ----------------------------
 
-    /// <summary>
-    /// Throws if customer is not eligible to rent at the given date.
-    /// Checks blacklisting and driver's license expiry.
-    /// Age checks (e.g., minimum age) should be enforced in RentalService.
-    /// </summary>
     public void EnsureCustomerCanRent(int customerId, DateTime asOfDate)
     {
         var customer = GetCustomerById(customerId);
@@ -184,11 +180,8 @@ public class CustomerService
     }
 
     // ----------------------------
-    // MAPPING HELPERS
+    // MAPPING
     // ----------------------------
-
-    
-
 
     private static Models.Customers.Customer MapCustomer(DataRow row)
     {
@@ -207,12 +200,13 @@ public class CustomerService
             Email = row["email"].ToString()!,
             Phone = row["phone"].ToString()!,
             DateOfBirth = Convert.ToDateTime(row["date_of_birth"]),
-            CustomerType = Enum.Parse<CustomerType>(row["customer_type"].ToString()!, true),
+            CustomerType = Enum.Parse<CustomerType>(
+                row["customer_type"].ToString()!, true),
             PhotoPath = photoPath,
             DriversLicenseId = Convert.ToInt32(row["drivers_license_id"])
         };
     }
-    
+
     private static string GetCustomerPhotoDirectory(int customerId)
     {
         return Path.Combine(
@@ -221,6 +215,4 @@ public class CustomerService
             customerId.ToString()
         );
     }
-    
-    
 }

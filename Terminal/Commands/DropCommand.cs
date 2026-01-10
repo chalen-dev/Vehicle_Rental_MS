@@ -11,7 +11,7 @@ public class DropCommand : ICommand
     {
         try
         {
-            Drop.Run(DB.ExecuteNonQuery);
+            Drop.Run(DB.ExecuteRaw);
             return new CommandResult(true, "Database tables dropped successfully.");
         }
         catch (SchemaExecutionException ex)

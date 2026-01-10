@@ -2,23 +2,21 @@
 using VRMS.Database;
 using VRMS.Enums;
 using VRMS.Helpers.Security;
-using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Accounts;
 
 namespace VRMS.Services.Account;
 
 public class UserService
 {
-
-    
     // ----------------------------
     // AUTHENTICATION
     // ----------------------------
 
     public User Authenticate(string username, string plainPassword)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_users_authenticate('{Sql.Esc(username)}');"
+        var table = DB.Query(
+            "CALL sp_users_authenticate(@username);",
+            ("@username", username)
         );
 
         if (table.Rows.Count == 0)
@@ -46,16 +44,15 @@ public class UserService
     {
         var hash = Password.Hash(plainPassword);
 
-        var result = DB.ExecuteQuery(
-            $"CALL sp_users_create(" +
-            $"'{Sql.Esc(username)}'," +
-            $"'{Sql.Esc(hash)}'," +
-            $"'{role}'," +
-            $"{(isActive ? "TRUE" : "FALSE")}" +
-            $");"
+        var table = DB.Query(
+            "CALL sp_users_create(@username, @hash, @role, @active);",
+            ("@username", username),
+            ("@hash", hash),
+            ("@role", role.ToString()),
+            ("@active", isActive)
         );
 
-        return Convert.ToInt32(result.Rows[0]["user_id"]);
+        return Convert.ToInt32(table.Rows[0]["user_id"]);
     }
 
     // ----------------------------
@@ -64,8 +61,9 @@ public class UserService
 
     public User GetById(int userId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_users_get_by_id({userId});"
+        var table = DB.Query(
+            "CALL sp_users_get_by_id(@id);",
+            ("@id", userId)
         );
 
         if (table.Rows.Count == 0)
@@ -76,8 +74,9 @@ public class UserService
 
     public User GetByUsername(string username)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_users_get_by_username('{Sql.Esc(username)}');"
+        var table = DB.Query(
+            "CALL sp_users_get_by_username(@username);",
+            ("@username", username)
         );
 
         if (table.Rows.Count == 0)
@@ -92,8 +91,56 @@ public class UserService
 
     public void Deactivate(int userId)
     {
-        DB.ExecuteNonQuery(
-            $"CALL sp_users_deactivate({userId});"
+        DB.Execute(
+            "CALL sp_users_deactivate(@id);",
+            ("@id", userId)
+        );
+    }
+
+    // ----------------------------
+    // PASSWORD MANAGEMENT
+    // ----------------------------
+
+    public void ChangePassword(
+        int userId,
+        string currentPlainPassword,
+        string newPlainPassword
+    )
+    {
+        var user = GetById(userId);
+
+        if (!VerifyPassword(currentPlainPassword, user.PasswordHash))
+            throw new InvalidOperationException("Current password is incorrect.");
+
+        var newHash = Password.Hash(newPlainPassword);
+
+        DB.Execute(
+            "CALL sp_users_update_password(@id, @hash);",
+            ("@id", userId),
+            ("@hash", newHash)
+        );
+    }
+
+    // ----------------------------
+    // PROFILE MANAGEMENT
+    // ----------------------------
+
+    public void UpdateUserProfile(
+        int userId,
+        string username,
+        UserRole role,
+        bool isActive
+    )
+    {
+        if (string.IsNullOrWhiteSpace(username))
+            throw new InvalidOperationException("Username cannot be empty.");
+
+        DB.Execute(
+            "CALL sp_users_update_profile(@id, @username, @role, @active);",
+            ("@id", userId),
+            ("@username", username),
+            ("@role", role.ToString()),
+            ("@active", isActive)
         );
     }
 
@@ -120,55 +167,6 @@ public class UserService
 
         return user;
     }
-    // ----------------------------
-    // PASSWORD MANAGEMENT
-    // ----------------------------
-
-    public void ChangePassword(
-        int userId,
-        string currentPlainPassword,
-        string newPlainPassword
-    )
-    {
-        var user = GetById(userId);
-
-        if (!VerifyPassword(currentPlainPassword, user.PasswordHash))
-            throw new InvalidOperationException("Current password is incorrect.");
-
-        var newHash = Password.Hash(newPlainPassword);
-
-        DB.ExecuteNonQuery($"""
-                                CALL sp_users_update_password(
-                                    {userId},
-                                    '{Sql.Esc(newHash)}'
-                                );
-                            """);
-    }
-    
-    // ----------------------------
-    // PROFILE MANAGEMENT
-    // ----------------------------
-
-    public void UpdateUserProfile(
-        int userId,
-        string username,
-        UserRole role,
-        bool isActive
-    )
-    {
-        if (string.IsNullOrWhiteSpace(username))
-            throw new InvalidOperationException("Username cannot be empty.");
-
-        DB.ExecuteNonQuery($"""
-                                CALL sp_users_update_profile(
-                                    {userId},
-                                    '{Sql.Esc(username)}',
-                                    '{role}',
-                                    {(isActive ? "TRUE" : "FALSE")}
-                                );
-                            """);
-    }
-    
 
     // ----------------------------
     // PASSWORD SECURITY
@@ -176,7 +174,8 @@ public class UserService
 
     private static bool VerifyPassword(string plain, string hash)
     {
+        // NOTE: This assumes Password.Hash() is deterministic.
+        // Strongly recommended: switch to Password.Verify() with salt.
         return Password.Hash(plain) == hash;
     }
-    
 }

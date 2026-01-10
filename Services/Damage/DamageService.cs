@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using VRMS.Database;
-using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Damages;
 
 namespace VRMS.Services.Damage;
@@ -8,7 +7,7 @@ namespace VRMS.Services.Damage;
 public class DamageService
 {
     private const string DefaultDamagePhotoPath = "Assets/img_placeholder.png";
-    
+
     // -------------------------------------------------
     // DAMAGE CATALOG (ADMIN)
     // -------------------------------------------------
@@ -21,12 +20,11 @@ public class DamageService
         if (estimatedCost < 0)
             throw new InvalidOperationException("Estimated cost cannot be negative.");
 
-        var table = DB.ExecuteQuery($"""
-            CALL sp_damages_create(
-                '{Sql.Esc(description)}',
-                {estimatedCost}
-            );
-        """);
+        var table = DB.Query(
+            "CALL sp_damages_create(@desc, @cost);",
+            ("@desc", description),
+            ("@cost", estimatedCost)
+        );
 
         return Convert.ToInt32(table.Rows[0]["damage_id"]);
     }
@@ -39,25 +37,28 @@ public class DamageService
         if (estimatedCost < 0)
             throw new InvalidOperationException("Estimated cost cannot be negative.");
 
-        DB.ExecuteNonQuery($"""
-            CALL sp_damages_update(
-                {damageId},
-                '{Sql.Esc(description)}',
-                {estimatedCost}
-            );
-        """);
+        DB.Execute(
+            "CALL sp_damages_update(@id, @desc, @cost);",
+            ("@id", damageId),
+            ("@desc", description),
+            ("@cost", estimatedCost)
+        );
     }
 
     public void DeleteDamage(int damageId)
     {
         // DB enforces RESTRICT if referenced by reports
-        DB.ExecuteNonQuery($"CALL sp_damages_delete({damageId});");
+        DB.Execute(
+            "CALL sp_damages_delete(@id);",
+            ("@id", damageId)
+        );
     }
 
     public Models.Damages.Damage GetDamageById(int damageId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_damages_get_by_id({damageId});"
+        var table = DB.Query(
+            "CALL sp_damages_get_by_id(@id);",
+            ("@id", damageId)
         );
 
         if (table.Rows.Count == 0)
@@ -78,17 +79,15 @@ public class DamageService
         // Ensure damage exists
         GetDamageById(damageId);
 
-        var table = DB.ExecuteQuery($"""
-                                         CALL sp_damage_reports_create(
-                                             {vehicleInspectionId},
-                                             {damageId},
-                                             '{Sql.Esc(DefaultDamagePhotoPath)}'
-                                         );
-                                     """);
+        var table = DB.Query(
+            "CALL sp_damage_reports_create(@inspectionId, @damageId, @photo);",
+            ("@inspectionId", vehicleInspectionId),
+            ("@damageId", damageId),
+            ("@photo", DefaultDamagePhotoPath)
+        );
 
         return Convert.ToInt32(table.Rows[0]["damage_report_id"]);
     }
-
 
     public void ApproveDamageReport(int damageReportId)
     {
@@ -97,15 +96,17 @@ public class DamageService
         if (report.Approved)
             throw new InvalidOperationException("Damage report is already approved.");
 
-        DB.ExecuteNonQuery(
-            $"CALL sp_damage_reports_approve({damageReportId});"
+        DB.Execute(
+            "CALL sp_damage_reports_approve(@id);",
+            ("@id", damageReportId)
         );
     }
 
     public DamageReport GetDamageReportById(int damageReportId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_damage_reports_get_by_id({damageReportId});"
+        var table = DB.Query(
+            "CALL sp_damage_reports_get_by_id(@id);",
+            ("@id", damageReportId)
         );
 
         if (table.Rows.Count == 0)
@@ -116,8 +117,9 @@ public class DamageService
 
     public List<DamageReport> GetDamageReportsByInspection(int vehicleInspectionId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_damage_reports_get_by_inspection({vehicleInspectionId});"
+        var table = DB.Query(
+            "CALL sp_damage_reports_get_by_inspection(@inspectionId);",
+            ("@inspectionId", vehicleInspectionId)
         );
 
         var list = new List<DamageReport>();
@@ -126,27 +128,26 @@ public class DamageService
 
         return list;
     }
-    
+
     public void SetDamageReportPhoto(
         int damageReportId,
         string photoPath
     )
     {
-        DB.ExecuteNonQuery($"""
-                                CALL sp_damage_reports_set_photo(
-                                    {damageReportId},
-                                    '{Sql.Esc(photoPath)}'
-                                );
-                            """);
-    }
-    
-    public void DeleteDamageReportPhoto(int damageReportId)
-    {
-        DB.ExecuteNonQuery($"""
-                                CALL sp_damage_reports_reset_photo({damageReportId});
-                            """);
+        DB.Execute(
+            "CALL sp_damage_reports_set_photo(@id, @path);",
+            ("@id", damageReportId),
+            ("@path", photoPath)
+        );
     }
 
+    public void DeleteDamageReportPhoto(int damageReportId)
+    {
+        DB.Execute(
+            "CALL sp_damage_reports_reset_photo(@id);",
+            ("@id", damageReportId)
+        );
+    }
 
     // -------------------------------------------------
     // MAPPING
@@ -180,5 +181,4 @@ public class DamageService
             Approved = Convert.ToBoolean(row["approved"])
         };
     }
-
 }

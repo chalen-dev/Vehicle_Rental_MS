@@ -7,12 +7,14 @@ namespace VRMS.Database.Executors;
 public static class CreateExecutor
 {
     public static void Execute(
-        Action<string> executeNonQuery,
+        Action<string> executeRawSql,
         bool strictMode = true
     )
     {
-        var assembly = Assembly.GetAssembly(typeof(M_0001_CreateSchemaInfoTable))
-            ?? throw new InvalidOperationException("Failed to locate tables assembly.");
+        var assembly = Assembly.GetAssembly(
+            typeof(M_0001_CreateSchemaInfoTable)
+        ) ?? throw new InvalidOperationException(
+            "Failed to locate tables assembly.");
 
         var tableTypes = assembly
             .GetTypes()
@@ -21,9 +23,12 @@ public static class CreateExecutor
                 t.IsAbstract &&
                 t.IsSealed &&
                 t.Name.StartsWith("M_") &&
-                t.GetMethod("Create", BindingFlags.Public | BindingFlags.Static) != null
+                t.GetMethod(
+                    "Create",
+                    BindingFlags.Public | BindingFlags.Static
+                ) != null
             )
-            .OrderBy(t => t.Name) // ascending
+            .OrderBy(t => t.Name)
             .ToList();
 
         foreach (var type in tableTypes)
@@ -32,7 +37,7 @@ public static class CreateExecutor
 
             try
             {
-                sql = ExecuteMethod(type, "Create", executeNonQuery);
+                sql = ExecuteCreate(type, executeRawSql);
                 Console.WriteLine($"[OK] {type.Name}");
             }
             catch (Exception ex)
@@ -42,47 +47,48 @@ public static class CreateExecutor
         }
     }
 
-    private static string ExecuteMethod(
+    // -------------------------------------------------
+    // INTERNAL
+    // -------------------------------------------------
+
+    private static string ExecuteCreate(
         Type tableType,
-        string methodName,
-        Action<string> executeNonQuery
+        Action<string> executeRawSql
     )
     {
         var method = tableType.GetMethod(
-            methodName,
+            "Create",
             BindingFlags.Public | BindingFlags.Static
         ) ?? throw new InvalidOperationException(
-            $"{methodName}() not found on {tableType.Name}"
+            $"Create() not found on {tableType.Name}"
         );
 
         var result = method.Invoke(null, null)
-                     ?? throw new InvalidOperationException(
-                         $"{methodName}() on {tableType.Name} returned null"
-                     );
+            ?? throw new InvalidOperationException(
+                $"Create() on {tableType.Name} returned null"
+            );
 
         if (result is string singleSql)
         {
-            // Tables (and legacy SPs)
-            executeNonQuery(singleSql);
+            executeRawSql(singleSql);
             return singleSql;
         }
 
         if (result is IEnumerable<string> multipleSql)
         {
-            // Stored procedures (MySql.Data safe path)
             string last = string.Empty;
 
             foreach (var sql in multipleSql)
             {
                 last = sql;
-                executeNonQuery(sql);
+                executeRawSql(sql);
             }
 
             return last;
         }
 
         throw new InvalidOperationException(
-            $"{methodName}() on {tableType.Name} must return string or IEnumerable<string>"
+            $"Create() on {tableType.Name} must return string or IEnumerable<string>"
         );
     }
 
@@ -94,7 +100,8 @@ public static class CreateExecutor
         string sql
     )
     {
-        var root = ex is TargetInvocationException tie && tie.InnerException != null
+        var root = ex is TargetInvocationException tie &&
+                   tie.InnerException != null
             ? tie.InnerException
             : ex;
 
@@ -111,5 +118,4 @@ public static class CreateExecutor
             );
         }
     }
-
 }

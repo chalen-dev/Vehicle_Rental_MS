@@ -24,28 +24,28 @@ public class BillingService
         var rental = _rentalService.GetRentalById(rentalId);
 
         if (rental.Status is not (RentalStatus.Completed or RentalStatus.Late))
-            throw new InvalidOperationException("Invoice can only be generated for completed or late rentals.");
+            throw new InvalidOperationException(
+                "Invoice can only be generated for completed or late rentals.");
 
-        // Ensure only one invoice per rental
         var existing = GetInvoiceByRental(rentalId);
         if (existing != null)
             throw new InvalidOperationException("Invoice already exists for this rental.");
 
-        var table = DB.ExecuteQuery($"""
-            CALL sp_invoices_create(
-                {rentalId},
-                {totalAmount},
-                '{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}'
-            );
-        """);
+        var table = DB.Query(
+            "CALL sp_invoices_create(@rentalId, @total, @generated);",
+            ("@rentalId", rentalId),
+            ("@total", totalAmount),
+            ("@generated", DateTime.UtcNow)
+        );
 
         return Convert.ToInt32(table.Rows[0]["invoice_id"]);
     }
 
     public Invoice GetInvoiceById(int invoiceId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_invoices_get_by_id({invoiceId});"
+        var table = DB.Query(
+            "CALL sp_invoices_get_by_id(@id);",
+            ("@id", invoiceId)
         );
 
         if (table.Rows.Count == 0)
@@ -56,8 +56,9 @@ public class BillingService
 
     public Invoice? GetInvoiceByRental(int rentalId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_invoices_get_by_rental({rentalId});"
+        var table = DB.Query(
+            "CALL sp_invoices_get_by_rental(@rentalId);",
+            ("@rentalId", rentalId)
         );
 
         if (table.Rows.Count == 0)
@@ -77,30 +78,32 @@ public class BillingService
         DateTime paymentDate)
     {
         if (amount <= 0)
-            throw new InvalidOperationException("Payment amount must be greater than zero.");
+            throw new InvalidOperationException(
+                "Payment amount must be greater than zero.");
 
         var invoice = GetInvoiceById(invoiceId);
         var balance = GetInvoiceBalance(invoiceId);
 
         if (amount > balance)
-            throw new InvalidOperationException("Payment exceeds outstanding invoice balance.");
+            throw new InvalidOperationException(
+                "Payment exceeds outstanding invoice balance.");
 
-        var table = DB.ExecuteQuery($"""
-            CALL sp_payments_create(
-                {invoiceId},
-                {amount},
-                '{paymentMethod}',
-                '{paymentDate:yyyy-MM-dd HH:mm:ss}'
-            );
-        """);
+        var table = DB.Query(
+            "CALL sp_payments_create(@invoiceId, @amount, @method, @date);",
+            ("@invoiceId", invoiceId),
+            ("@amount", amount),
+            ("@method", paymentMethod.ToString()),
+            ("@date", paymentDate)
+        );
 
         return Convert.ToInt32(table.Rows[0]["payment_id"]);
     }
 
     public Payment GetPaymentById(int paymentId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_payments_get_by_id({paymentId});"
+        var table = DB.Query(
+            "CALL sp_payments_get_by_id(@id);",
+            ("@id", paymentId)
         );
 
         if (table.Rows.Count == 0)
@@ -111,8 +114,9 @@ public class BillingService
 
     public List<Payment> GetPaymentsByInvoice(int invoiceId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_payments_get_by_invoice({invoiceId});"
+        var table = DB.Query(
+            "CALL sp_payments_get_by_invoice(@invoiceId);",
+            ("@invoiceId", invoiceId)
         );
 
         var list = new List<Payment>();
@@ -151,15 +155,14 @@ public class BillingService
     {
         ValidateRates(dailyRate, weeklyRate, monthlyRate, hourlyRate);
 
-        var table = DB.ExecuteQuery($"""
-            CALL sp_rate_configurations_create(
-                {vehicleCategoryId},
-                {dailyRate},
-                {weeklyRate},
-                {monthlyRate},
-                {hourlyRate}
-            );
-        """);
+        var table = DB.Query(
+            "CALL sp_rate_configurations_create(@cat, @daily, @weekly, @monthly, @hourly);",
+            ("@cat", vehicleCategoryId),
+            ("@daily", dailyRate),
+            ("@weekly", weeklyRate),
+            ("@monthly", monthlyRate),
+            ("@hourly", hourlyRate)
+        );
 
         return Convert.ToInt32(table.Rows[0]["rate_configuration_id"]);
     }
@@ -173,28 +176,29 @@ public class BillingService
     {
         ValidateRates(dailyRate, weeklyRate, monthlyRate, hourlyRate);
 
-        DB.ExecuteNonQuery($"""
-            CALL sp_rate_configurations_update(
-                {rateConfigurationId},
-                {dailyRate},
-                {weeklyRate},
-                {monthlyRate},
-                {hourlyRate}
-            );
-        """);
+        DB.Execute(
+            "CALL sp_rate_configurations_update(@id, @daily, @weekly, @monthly, @hourly);",
+            ("@id", rateConfigurationId),
+            ("@daily", dailyRate),
+            ("@weekly", weeklyRate),
+            ("@monthly", monthlyRate),
+            ("@hourly", hourlyRate)
+        );
     }
 
     public void DeleteRateConfiguration(int rateConfigurationId)
     {
-        DB.ExecuteNonQuery(
-            $"CALL sp_rate_configurations_delete({rateConfigurationId});"
+        DB.Execute(
+            "CALL sp_rate_configurations_delete(@id);",
+            ("@id", rateConfigurationId)
         );
     }
 
     public RateConfiguration GetRateConfigurationById(int rateConfigurationId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_rate_configurations_get_by_id({rateConfigurationId});"
+        var table = DB.Query(
+            "CALL sp_rate_configurations_get_by_id(@id);",
+            ("@id", rateConfigurationId)
         );
 
         if (table.Rows.Count == 0)
@@ -205,12 +209,14 @@ public class BillingService
 
     public RateConfiguration GetRateConfigurationByCategory(int vehicleCategoryId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_rate_configurations_get_by_category({vehicleCategoryId});"
+        var table = DB.Query(
+            "CALL sp_rate_configurations_get_by_category(@cat);",
+            ("@cat", vehicleCategoryId)
         );
 
         if (table.Rows.Count == 0)
-            throw new InvalidOperationException("Rate configuration not found for category.");
+            throw new InvalidOperationException(
+                "Rate configuration not found for category.");
 
         return MapRateConfiguration(table.Rows[0]);
     }

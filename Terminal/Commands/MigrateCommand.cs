@@ -12,7 +12,7 @@ public class MigrateCommand : ICommand
     {
         try
         {
-            Create.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
+            Create.Run(DB.QueryRaw, DB.ExecuteRaw);
             return new CommandResult(true, "Database migrated successfully.");
         }
         catch (SchemaExecutionException ex)
@@ -34,5 +34,4 @@ public class MigrateCommand : ICommand
             );
         }
     }
-
 }

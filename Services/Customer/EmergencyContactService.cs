@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using VRMS.Database;
-using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Customers;
 
 namespace VRMS.Services.Customer;
@@ -18,18 +17,16 @@ public class EmergencyContactService
         string relationship
     )
     {
-        var table = DB.ExecuteQuery($"""
-            CALL sp_emergency_contacts_create(
-                {customerId},
-                '{Sql.Esc(firstName)}',
-                '{Sql.Esc(lastName)}',
-                '{Sql.Esc(relationship)}'
-            );
-        """);
+        var table = DB.Query(
+            "CALL sp_emergency_contacts_create(@customerId, @first, @last, @relationship);",
+            ("@customerId", customerId),
+            ("@first", firstName),
+            ("@last", lastName),
+            ("@relationship", relationship)
+        );
 
         return Convert.ToInt32(table.Rows[0]["emergency_contact_id"]);
     }
-
 
     public void UpdateEmergencyContact(
         int emergencyContactId,
@@ -38,30 +35,29 @@ public class EmergencyContactService
         string relationship
     )
     {
-        DB.ExecuteNonQuery($"""
-            CALL sp_emergency_contacts_update(
-                {emergencyContactId},
-                '{Sql.Esc(firstName)}',
-                '{Sql.Esc(lastName)}',
-                '{Sql.Esc(relationship)}'
-            );
-        """);
+        DB.Execute(
+            "CALL sp_emergency_contacts_update(@id, @first, @last, @relationship);",
+            ("@id", emergencyContactId),
+            ("@first", firstName),
+            ("@last", lastName),
+            ("@relationship", relationship)
+        );
     }
-
 
     public void DeleteEmergencyContact(int emergencyContactId)
     {
-        DB.ExecuteNonQuery($"""
-            CALL sp_emergency_contacts_delete({emergencyContactId});
-        """);
+        DB.Execute(
+            "CALL sp_emergency_contacts_delete(@id);",
+            ("@id", emergencyContactId)
+        );
     }
-
 
     public List<EmergencyContact> GetEmergencyContactsByCustomerId(int customerId)
     {
-        var table = DB.ExecuteQuery($"""
-                                         CALL sp_emergency_contacts_get_by_customer_id({customerId});
-                                     """);
+        var table = DB.Query(
+            "CALL sp_emergency_contacts_get_by_customer_id(@customerId);",
+            ("@customerId", customerId)
+        );
 
         var list = new List<EmergencyContact>();
         foreach (DataRow row in table.Rows)
@@ -69,7 +65,6 @@ public class EmergencyContactService
 
         return list;
     }
-
 
     // ----------------------------
     // EMERGENCY CONTACT PHONE NUMBERS
@@ -80,46 +75,41 @@ public class EmergencyContactService
         string phoneNumber
     )
     {
-        var table = DB.ExecuteQuery($"""
-            CALL sp_emergency_contact_phone_numbers_create(
-                {emergencyContactId},
-                '{Sql.Esc(phoneNumber)}'
-            );
-        """);
+        var table = DB.Query(
+            "CALL sp_emergency_contact_phone_numbers_create(@contactId, @phone);",
+            ("@contactId", emergencyContactId),
+            ("@phone", phoneNumber)
+        );
 
         return Convert.ToInt32(table.Rows[0]["phone_number_id"]);
     }
-
 
     public void UpdateEmergencyContactPhoneNumber(
         int phoneNumberId,
         string phoneNumber
     )
     {
-        DB.ExecuteNonQuery($"""
-            CALL sp_emergency_contact_phone_numbers_update(
-                {phoneNumberId},
-                '{Sql.Esc(phoneNumber)}'
-            );
-        """);
+        DB.Execute(
+            "CALL sp_emergency_contact_phone_numbers_update(@id, @phone);",
+            ("@id", phoneNumberId),
+            ("@phone", phoneNumber)
+        );
     }
-
 
     public void DeleteEmergencyContactPhoneNumber(int phoneNumberId)
     {
-        DB.ExecuteNonQuery($"""
-            CALL sp_emergency_contact_phone_numbers_delete({phoneNumberId});
-        """);
+        DB.Execute(
+            "CALL sp_emergency_contact_phone_numbers_delete(@id);",
+            ("@id", phoneNumberId)
+        );
     }
-
 
     public List<string> GetEmergencyContactPhoneNumbers(int emergencyContactId)
     {
-        var table = DB.ExecuteQuery($"""
-                                         CALL sp_emergency_contact_phone_numbers_get_by_contact_id(
-                                             {emergencyContactId}
-                                         );
-                                     """);
+        var table = DB.Query(
+            "CALL sp_emergency_contact_phone_numbers_get_by_contact_id(@contactId);",
+            ("@contactId", emergencyContactId)
+        );
 
         var list = new List<string>();
         foreach (DataRow row in table.Rows)

@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using VRMS.Database;
-using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Customers;
 
 namespace VRMS.Services.Customer;
@@ -8,11 +7,11 @@ namespace VRMS.Services.Customer;
 public class DriversLicenseService
 {
     private const string StorageRoot = "Storage";
-    
+
     private const string DefaultDriversLicensePhotoPath = "Assets/img_placeholder.png";
     private const string DriversLicensePhotoFolder = "DriversLicenses";
     private const string DriversLicensePhotoFileName = "license";
-    
+
     // ----------------------------
     // DRIVERS LICENSES
     // ----------------------------
@@ -22,30 +21,29 @@ public class DriversLicenseService
         DateTime issueDate,
         DateTime expiryDate,
         string issuingCountry
-            
     )
     {
         if (expiryDate <= issueDate)
-            throw new InvalidOperationException("Expiry date must be after issue date.");
+            throw new InvalidOperationException(
+                "Expiry date must be after issue date.");
 
-        var table = DB.ExecuteQuery($"""
-                                         CALL sp_drivers_licenses_create(
-                                             '{Sql.Esc(licenseNumber)}',
-                                             '{issueDate:yyyy-MM-dd}',
-                                             '{expiryDate:yyyy-MM-dd}',
-                                             '{Sql.Esc(issuingCountry)}',
-                                             '{Sql.Esc(DefaultDriversLicensePhotoPath)}'
-                                         );
-                                     """);
+        var table = DB.Query(
+            "CALL sp_drivers_licenses_create(@number, @issue, @expiry, @country, @photo);",
+            ("@number", licenseNumber),
+            ("@issue", issueDate),
+            ("@expiry", expiryDate),
+            ("@country", issuingCountry),
+            ("@photo", DefaultDriversLicensePhotoPath)
+        );
 
         return Convert.ToInt32(table.Rows[0]["drivers_license_id"]);
     }
 
-
     public DriversLicense GetDriversLicenseById(int licenseId)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_drivers_licenses_get_by_id({licenseId});"
+        var table = DB.Query(
+            "CALL sp_drivers_licenses_get_by_id(@id);",
+            ("@id", licenseId)
         );
 
         if (table.Rows.Count == 0)
@@ -56,8 +54,9 @@ public class DriversLicenseService
 
     public DriversLicense? GetDriversLicenseByNumber(string licenseNumber)
     {
-        var table = DB.ExecuteQuery(
-            $"CALL sp_drivers_licenses_get_by_number('{Sql.Esc(licenseNumber)}');"
+        var table = DB.Query(
+            "CALL sp_drivers_licenses_get_by_number(@number);",
+            ("@number", licenseNumber)
         );
 
         if (table.Rows.Count == 0)
@@ -74,19 +73,22 @@ public class DriversLicenseService
     )
     {
         if (expiryDate <= issueDate)
-            throw new InvalidOperationException("Expiry date must be after issue date.");
+            throw new InvalidOperationException(
+                "Expiry date must be after issue date.");
 
-        DB.ExecuteNonQuery($"""
-                                CALL sp_drivers_licenses_update(
-                                    {licenseId},
-                                    '{issueDate:yyyy-MM-dd}',
-                                    '{expiryDate:yyyy-MM-dd}',
-                                    '{Sql.Esc(issuingCountry)}'
-                                );
-                            """);
+        DB.Execute(
+            "CALL sp_drivers_licenses_update(@id, @issue, @expiry, @country);",
+            ("@id", licenseId),
+            ("@issue", issueDate),
+            ("@expiry", expiryDate),
+            ("@country", issuingCountry)
+        );
     }
 
-    
+    // ----------------------------
+    // UPSERT-LIKE HELPER
+    // ----------------------------
+
     public int SaveDriversLicense(
         int? licenseId,
         string licenseNumber,
@@ -132,13 +134,19 @@ public class DriversLicenseService
         return resolvedLicenseId;
     }
 
-
     public void DeleteDriversLicense(int licenseId)
     {
-        // Note: database has RESTRICT on customers referencing licenses.
-        DB.ExecuteNonQuery($"CALL sp_drivers_licenses_delete({licenseId});");
+        // DB has RESTRICT on customers referencing licenses
+        DB.Execute(
+            "CALL sp_drivers_licenses_delete(@id);",
+            ("@id", licenseId)
+        );
     }
-    
+
+    // ----------------------------
+    // PHOTO MANAGEMENT
+    // ----------------------------
+
     public void SetDriversLicensePhoto(
         int licenseId,
         Stream photoStream,
@@ -147,7 +155,8 @@ public class DriversLicenseService
     {
         var extension = Path.GetExtension(originalFileName);
         if (string.IsNullOrWhiteSpace(extension))
-            throw new InvalidOperationException("Invalid license photo file.");
+            throw new InvalidOperationException(
+                "Invalid license photo file.");
 
         var directory = GetDriversLicensePhotoDirectory(licenseId);
         Directory.CreateDirectory(directory);
@@ -166,15 +175,13 @@ public class DriversLicenseService
         using var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
         photoStream.CopyTo(fs);
 
-        DB.ExecuteNonQuery($"""
-                                CALL sp_drivers_licenses_set_photo(
-                                    {licenseId},
-                                    '{Sql.Esc(relativePath)}'
-                                );
-                            """);
+        DB.Execute(
+            "CALL sp_drivers_licenses_set_photo(@id, @path);",
+            ("@id", licenseId),
+            ("@path", relativePath)
+        );
     }
 
-    
     public void DeleteDriversLicensePhoto(int licenseId)
     {
         var directory = GetDriversLicensePhotoDirectory(licenseId);
@@ -182,13 +189,16 @@ public class DriversLicenseService
         if (Directory.Exists(directory))
             Directory.Delete(directory, true);
 
-        DB.ExecuteNonQuery($"""
-                                CALL sp_drivers_licenses_reset_photo({licenseId});
-                            """);
+        DB.Execute(
+            "CALL sp_drivers_licenses_reset_photo(@id);",
+            ("@id", licenseId)
+        );
     }
-    
-    
-    
+
+    // ----------------------------
+    // HELPERS
+    // ----------------------------
+
     private static string GetDriversLicensePhotoDirectory(int licenseId)
     {
         return Path.Combine(
@@ -197,7 +207,7 @@ public class DriversLicenseService
             licenseId.ToString()
         );
     }
-    
+
     private static DriversLicense MapDriversLicense(DataRow row)
     {
         var photoPath = row["photo_path"] == DBNull.Value
