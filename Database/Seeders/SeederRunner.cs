@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using VRMS.Services.Account;
+using VRMS.Services.Vehicle;
 
 namespace VRMS.Database.Seeders;
 
@@ -13,6 +14,9 @@ public static class SeederRunner
             //Seeder List
             new Users.UserSeeder(
                 services.GetRequiredService<UserService>()
+            ),
+            new Vehicle.VehicleSeeder(
+                services.GetRequiredService<VehicleService>()
             )
 
         };
