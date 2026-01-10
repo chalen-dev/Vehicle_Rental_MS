@@ -38,7 +38,7 @@
             panel1 = new Panel();
             txtSearch = new TextBox();
             panel2 = new Panel();
-            btnManageEmergencyContacts = new Button();
+            btnEmergencyContacts = new Button();
             btnSave = new Button();
             btnManageAccount = new Button();
             btnDelete = new Button();
@@ -192,7 +192,7 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(248, 249, 250);
-            panel2.Controls.Add(btnManageEmergencyContacts);
+            panel2.Controls.Add(btnEmergencyContacts);
             panel2.Controls.Add(btnSave);
             panel2.Controls.Add(btnManageAccount);
             panel2.Controls.Add(btnDelete);
@@ -205,21 +205,22 @@
             panel2.Size = new Size(928, 171);
             panel2.TabIndex = 1;
             // 
-            // btnManageEmergencyContacts
+            // btnEmergencyContacts
             // 
-            btnManageEmergencyContacts.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnManageEmergencyContacts.BackColor = Color.FromArgb(155, 89, 182);
-            btnManageEmergencyContacts.FlatAppearance.BorderSize = 0;
-            btnManageEmergencyContacts.FlatStyle = FlatStyle.Flat;
-            btnManageEmergencyContacts.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnManageEmergencyContacts.ForeColor = Color.White;
-            btnManageEmergencyContacts.Location = new Point(628, 38);
-            btnManageEmergencyContacts.Margin = new Padding(3, 4, 3, 4);
-            btnManageEmergencyContacts.Name = "btnManageEmergencyContacts";
-            btnManageEmergencyContacts.Size = new Size(220, 60);
-            btnManageEmergencyContacts.TabIndex = 4;
-            btnManageEmergencyContacts.Text = "📱 Emergency Contacts";
-            btnManageEmergencyContacts.UseVisualStyleBackColor = false;
+            btnEmergencyContacts.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnEmergencyContacts.BackColor = Color.FromArgb(155, 89, 182);
+            btnEmergencyContacts.FlatAppearance.BorderSize = 0;
+            btnEmergencyContacts.FlatStyle = FlatStyle.Flat;
+            btnEmergencyContacts.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnEmergencyContacts.ForeColor = Color.White;
+            btnEmergencyContacts.Location = new Point(628, 38);
+            btnEmergencyContacts.Margin = new Padding(3, 4, 3, 4);
+            btnEmergencyContacts.Name = "btnEmergencyContacts";
+            btnEmergencyContacts.Size = new Size(220, 60);
+            btnEmergencyContacts.TabIndex = 4;
+            btnEmergencyContacts.Text = "📱 Emergency Contacts";
+            btnEmergencyContacts.UseVisualStyleBackColor = false;
+            btnEmergencyContacts.Click += BtnEmergencyContacts_Click;
             // 
             // btnSave
             // 
@@ -250,6 +251,7 @@
             btnManageAccount.TabIndex = 3;
             btnManageAccount.Text = "🔐 Account";
             btnManageAccount.UseVisualStyleBackColor = false;
+            btnManageAccount.Click += BtnManageAccount_Click;
             // 
             // btnDelete
             // 
@@ -292,7 +294,7 @@
             tabControl1.Margin = new Padding(4, 5, 4, 5);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(928, 894);
+            tabControl1.Size = new Size(925, 894);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -318,11 +320,11 @@
             tabPage1.Controls.Add(label1);
             tabPage1.Controls.Add(picCustomerPhoto);
             tabPage1.Font = new Font("Segoe UI", 9F);
-            tabPage1.Location = new Point(4, 30);
+            tabPage1.Location = new Point(4, 32);
             tabPage1.Margin = new Padding(3, 4, 3, 4);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(20, 20, 20, 20);
-            tabPage1.Size = new Size(920, 860);
+            tabPage1.Padding = new Padding(20);
+            tabPage1.Size = new Size(917, 858);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Personal Information";
             // 
@@ -333,7 +335,7 @@
             label14.ForeColor = Color.FromArgb(30, 60, 90);
             label14.Location = new Point(20, 20);
             label14.Name = "label14";
-            label14.Size = new Size(184, 23);
+            label14.Size = new Size(151, 23);
             label14.TabIndex = 18;
             label14.Text = "Basic Information";
             // 
@@ -381,6 +383,7 @@
             btnCamera.TabIndex = 14;
             btnCamera.Text = "📷 Camera";
             btnCamera.UseVisualStyleBackColor = false;
+            btnCamera.Click += BtnProfileCamera_Click;
             // 
             // btnUploadPhoto
             // 
@@ -423,7 +426,7 @@
             txtPhone.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtPhone.BorderStyle = BorderStyle.FixedSingle;
             txtPhone.Font = new Font("Segoe UI", 10F);
-            txtPhone.Location = new Point(25, 609);
+            txtPhone.Location = new Point(25, 614);
             txtPhone.Margin = new Padding(3, 4, 3, 4);
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(851, 30);
@@ -433,9 +436,9 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label5.Location = new Point(24, 585);
+            label5.Location = new Point(24, 590);
             label5.Name = "label5";
-            label5.Size = new Size(130, 23);
+            label5.Size = new Size(132, 23);
             label5.TabIndex = 8;
             label5.Text = "Phone Number:";
             // 
@@ -444,7 +447,7 @@
             txtEmail.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtEmail.BorderStyle = BorderStyle.FixedSingle;
             txtEmail.Font = new Font("Segoe UI", 10F);
-            txtEmail.Location = new Point(25, 549);
+            txtEmail.Location = new Point(25, 554);
             txtEmail.Margin = new Padding(3, 4, 3, 4);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(851, 30);
@@ -454,7 +457,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label4.Location = new Point(24, 525);
+            label4.Location = new Point(24, 530);
             label4.Name = "label4";
             label4.Size = new Size(55, 23);
             label4.TabIndex = 6;
@@ -465,7 +468,7 @@
             txtAddress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtAddress.BorderStyle = BorderStyle.FixedSingle;
             txtAddress.Font = new Font("Segoe UI", 10F);
-            txtAddress.Location = new Point(28, 447);
+            txtAddress.Location = new Point(28, 452);
             txtAddress.Margin = new Padding(3, 4, 3, 4);
             txtAddress.Multiline = true;
             txtAddress.Name = "txtAddress";
@@ -476,9 +479,9 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label3.Location = new Point(24, 423);
+            label3.Location = new Point(24, 428);
             label3.Name = "label3";
-            label3.Size = new Size(75, 23);
+            label3.Size = new Size(74, 23);
             label3.TabIndex = 4;
             label3.Text = "Address:";
             // 
@@ -498,7 +501,7 @@
             label2.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             label2.Location = new Point(28, 280);
             label2.Name = "label2";
-            label2.Size = new Size(98, 23);
+            label2.Size = new Size(97, 23);
             label2.TabIndex = 2;
             label2.Text = "First Name:";
             // 
@@ -531,11 +534,11 @@
             tabPage2.BackColor = Color.White;
             tabPage2.Controls.Add(groupBox3);
             tabPage2.Controls.Add(groupBox2);
-            tabPage2.Location = new Point(4, 30);
+            tabPage2.Location = new Point(4, 32);
             tabPage2.Margin = new Padding(3, 4, 3, 4);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(20, 20, 20, 20);
-            tabPage2.Size = new Size(920, 860);
+            tabPage2.Padding = new Padding(20);
+            tabPage2.Size = new Size(917, 858);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Driver's License";
             // 
@@ -549,7 +552,7 @@
             groupBox3.Location = new Point(27, 361);
             groupBox3.Margin = new Padding(3, 4, 3, 4);
             groupBox3.Name = "groupBox3";
-            groupBox3.Padding = new Padding(20, 20, 20, 20);
+            groupBox3.Padding = new Padding(20);
             groupBox3.Size = new Size(860, 260);
             groupBox3.TabIndex = 1;
             groupBox3.TabStop = false;
@@ -562,7 +565,7 @@
             checkBox1.Location = new Point(44, 180);
             checkBox1.Margin = new Padding(3, 4, 3, 4);
             checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(202, 27);
+            checkBox1.Size = new Size(198, 27);
             checkBox1.TabIndex = 2;
             checkBox1.Text = "International License?";
             checkBox1.UseVisualStyleBackColor = true;
@@ -612,7 +615,7 @@
             groupBox2.Location = new Point(27, 31);
             groupBox2.Margin = new Padding(3, 4, 3, 4);
             groupBox2.Name = "groupBox2";
-            groupBox2.Padding = new Padding(20, 20, 20, 20);
+            groupBox2.Padding = new Padding(20);
             groupBox2.Size = new Size(860, 310);
             groupBox2.TabIndex = 0;
             groupBox2.TabStop = false;
@@ -624,7 +627,7 @@
             label11.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             label11.Location = new Point(31, 49);
             label11.Name = "label11";
-            label11.Size = new Size(142, 23);
+            label11.Size = new Size(138, 23);
             label11.TabIndex = 7;
             label11.Text = "License Number:";
             // 
@@ -644,7 +647,7 @@
             label10.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             label10.Location = new Point(31, 195);
             label10.Name = "label10";
-            label10.Size = new Size(127, 23);
+            label10.Size = new Size(123, 23);
             label10.TabIndex = 5;
             label10.Text = "State/Country:";
             // 
@@ -664,7 +667,7 @@
             label9.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             label9.Location = new Point(332, 122);
             label9.Name = "label9";
-            label9.Size = new Size(109, 23);
+            label9.Size = new Size(103, 23);
             label9.TabIndex = 3;
             label9.Text = "Expiry Date:";
             // 
@@ -674,7 +677,7 @@
             label8.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             label8.Location = new Point(27, 122);
             label8.Name = "label8";
-            label8.Size = new Size(96, 23);
+            label8.Size = new Size(93, 23);
             label8.TabIndex = 2;
             label8.Text = "Issue Date:";
             // 
@@ -703,11 +706,11 @@
             tabPage3.Controls.Add(dgvHistory);
             tabPage3.Controls.Add(groupBox5);
             tabPage3.Controls.Add(groupBox4);
-            tabPage3.Location = new Point(4, 30);
+            tabPage3.Location = new Point(4, 32);
             tabPage3.Margin = new Padding(3, 4, 3, 4);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(20, 20, 20, 20);
-            tabPage3.Size = new Size(920, 860);
+            tabPage3.Padding = new Padding(20);
+            tabPage3.Size = new Size(917, 858);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "History & Status";
             // 
@@ -758,7 +761,7 @@
             groupBox5.Location = new Point(27, 251);
             groupBox5.Margin = new Padding(3, 4, 3, 4);
             groupBox5.Name = "groupBox5";
-            groupBox5.Padding = new Padding(20, 20, 20, 20);
+            groupBox5.Padding = new Padding(20);
             groupBox5.Size = new Size(860, 180);
             groupBox5.TabIndex = 1;
             groupBox5.TabStop = false;
@@ -771,7 +774,7 @@
             lblDamageHistory.ForeColor = Color.FromArgb(231, 76, 60);
             lblDamageHistory.Location = new Point(32, 132);
             lblDamageHistory.Name = "lblDamageHistory";
-            lblDamageHistory.Size = new Size(198, 23);
+            lblDamageHistory.Size = new Size(174, 23);
             lblDamageHistory.TabIndex = 2;
             lblDamageHistory.Text = "Damage Incidents: 0";
             // 
@@ -781,7 +784,7 @@
             lblTotalSpent.Font = new Font("Segoe UI", 10F);
             lblTotalSpent.Location = new Point(32, 86);
             lblTotalSpent.Name = "lblTotalSpent";
-            lblTotalSpent.Size = new Size(172, 23);
+            lblTotalSpent.Size = new Size(150, 23);
             lblTotalSpent.TabIndex = 1;
             lblTotalSpent.Text = "Total Spent:  ₱0.00";
             // 
@@ -791,7 +794,7 @@
             lblTotalRentals.Font = new Font("Segoe UI", 10F);
             lblTotalRentals.Location = new Point(32, 39);
             lblTotalRentals.Name = "lblTotalRentals";
-            lblTotalRentals.Size = new Size(120, 23);
+            lblTotalRentals.Size = new Size(104, 23);
             lblTotalRentals.TabIndex = 0;
             lblTotalRentals.Text = "Total Trips: 0";
             // 
@@ -805,7 +808,7 @@
             groupBox4.Location = new Point(27, 31);
             groupBox4.Margin = new Padding(3, 4, 3, 4);
             groupBox4.Name = "groupBox4";
-            groupBox4.Padding = new Padding(20, 20, 20, 20);
+            groupBox4.Padding = new Padding(20);
             groupBox4.Size = new Size(860, 211);
             groupBox4.TabIndex = 0;
             groupBox4.TabStop = false;
@@ -819,7 +822,7 @@
             chkBlacklist.Location = new Point(32, 161);
             chkBlacklist.Margin = new Padding(3, 4, 3, 4);
             chkBlacklist.Name = "chkBlacklist";
-            chkBlacklist.Size = new Size(148, 27);
+            chkBlacklist.Size = new Size(141, 27);
             chkBlacklist.TabIndex = 2;
             chkBlacklist.Text = "⚠️ Blacklisted";
             chkBlacklist.UseVisualStyleBackColor = true;
@@ -831,7 +834,7 @@
             chkLoyalty.Location = new Point(32, 106);
             chkLoyalty.Margin = new Padding(3, 4, 3, 4);
             chkLoyalty.Name = "chkLoyalty";
-            chkLoyalty.Size = new Size(235, 27);
+            chkLoyalty.Size = new Size(226, 27);
             chkLoyalty.TabIndex = 1;
             chkLoyalty.Text = "Frequent Renter Program";
             chkLoyalty.UseVisualStyleBackColor = true;
@@ -944,6 +947,6 @@
         private System.Windows.Forms.DateTimePicker dtpDOB;
         private System.Windows.Forms.DataGridView dgvHistory;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Button btnManageEmergencyContacts;
+        private System.Windows.Forms.Button btnEmergencyContacts;
     }
 }

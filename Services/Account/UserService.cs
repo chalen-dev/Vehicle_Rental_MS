@@ -174,8 +174,7 @@ public class UserService
 
     private static bool VerifyPassword(string plain, string hash)
     {
-        // NOTE: This assumes Password.Hash() is deterministic.
-        // Strongly recommended: switch to Password.Verify() with salt.
-        return Password.Hash(plain) == hash;
+        return Password.Verify(plain, hash);
     }
+
 }

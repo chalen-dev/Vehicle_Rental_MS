@@ -6,6 +6,7 @@ using VRMS.Enums;
 using VRMS.Models.Customers;
 using VRMS.Services.Customer;
 using VRMS.UI.Forms.Customer;
+using VRMS.Forms; // ✅ CameraForm
 
 namespace VRMS.Controls
 {
@@ -29,6 +30,8 @@ namespace VRMS.Controls
             InitializeCustomerTypeCombo();
             HookEvents();
             LoadCustomers();
+
+            btnEmergencyContacts.Enabled = false;
         }
 
         // =====================================================
@@ -53,14 +56,15 @@ namespace VRMS.Controls
             btnClear.Click += BtnClear_Click;
             btnManageAccount.Click += BtnManageAccount_Click;
 
+            btnEmergencyContacts.Click += BtnEmergencyContacts_Click;
+
             dgvCustomers.SelectionChanged += DgvCustomers_SelectionChanged;
             dtpDOB.ValueChanged += (_, _) => UpdateAgeLabel();
 
-            // License & verification
             btnCaptureLicense.Click += BtnCaptureLicense_Click;
             btnCheckDrivingRecord.Click += BtnCheckDrivingRecord_Click;
 
-            // Profile photo (UI only)
+            // Camera buttons
             btnCamera.Click += BtnProfileCamera_Click;
             btnUploadPhoto.Click += BtnBrowseProfilePhoto_Click;
         }
@@ -95,13 +99,19 @@ namespace VRMS.Controls
         private void DgvCustomers_SelectionChanged(object? sender, EventArgs e)
         {
             if (dgvCustomers.SelectedRows.Count == 0)
+            {
+                btnEmergencyContacts.Enabled = false;
                 return;
+            }
 
             _selectedCustomer =
                 dgvCustomers.SelectedRows[0].DataBoundItem as Customer;
 
             if (_selectedCustomer != null)
+            {
                 PopulateForm(_selectedCustomer);
+                btnEmergencyContacts.Enabled = true;
+            }
         }
 
         // =====================================================
@@ -125,12 +135,8 @@ namespace VRMS.Controls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                MessageBox.Show(ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -189,23 +195,84 @@ namespace VRMS.Controls
         }
 
         // =====================================================
-        // UI ACTIONS
+        // EMERGENCY CONTACT NAVIGATION
         // =====================================================
 
+        private void BtnEmergencyContacts_Click(object? sender, EventArgs e)
+        {
+            if (_selectedCustomer == null)
+            {
+                MessageBox.Show(
+                    "Please select a customer first.",
+                    "No Customer Selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            string fullName =
+                $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}";
+
+            using var form = new EmergencyContactsForm(
+                _selectedCustomer.Id,
+                fullName
+            );
+
+            form.ShowDialog();
+        }
+
+        // =====================================================
+        // CAMERA ACTIONS
+        // =====================================================
+
+        // ✅ DRIVER'S LICENSE CAMERA
         private void BtnCaptureLicense_Click(object? sender, EventArgs e)
         {
             using var form = new DriverLicenseCaptureForm();
 
             if (form.ShowDialog() == DialogResult.OK)
             {
+                btnCaptureLicense.BackColor = Color.FromArgb(46, 204, 113);
+            }
+        }
+
+        // ✅ PROFILE PHOTO CAMERA (USES CameraForm)
+        private void BtnProfileCamera_Click(object? sender, EventArgs e)
+        {
+            using var cameraForm = new CameraForm("Capture Profile Photo");
+
+            if (cameraForm.ShowDialog() == DialogResult.OK &&
+                cameraForm.HasCapturedImage)
+            {
+                _profilePreviewImage?.Dispose();
+
+                _profilePreviewImage =
+                    (Image)cameraForm.CapturedImage.Clone();
+
+                picCustomerPhoto.Image = _profilePreviewImage;
+
                 MessageBox.Show(
-                    "Driver's license image captured successfully.",
-                    "Capture Complete",
+                    "Profile photo captured successfully (preview only).",
+                    "Camera",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
+            }
+        }
 
-                btnCaptureLicense.BackColor = Color.FromArgb(46, 204, 113);
+        private void BtnBrowseProfilePhoto_Click(object? sender, EventArgs e)
+        {
+            using var dialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp"
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _profilePreviewImage?.Dispose();
+                _profilePreviewImage = Image.FromFile(dialog.FileName);
+                picCustomerPhoto.Image = _profilePreviewImage;
             }
         }
 
@@ -225,70 +292,25 @@ namespace VRMS.Controls
         }
 
         // =====================================================
-        // PROFILE PHOTO (UI ONLY)
-        // =====================================================
-
-        private void BtnProfileCamera_Click(object? sender, EventArgs e)
-        {
-            using var form = new DriverLicenseCaptureForm();
-
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                MessageBox.Show(
-                    "Profile photo captured (preview only).",
-                    "Camera",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-            }
-        }
-
-        private void BtnBrowseProfilePhoto_Click(object? sender, EventArgs e)
-        {
-            using var dialog = new OpenFileDialog
-            {
-                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp",
-                Title = "Select Profile Photo"
-            };
-
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                _profilePreviewImage = Image.FromFile(dialog.FileName);
-                picCustomerPhoto.Image = _profilePreviewImage;
-            }
-        }
-
-        // =====================================================
         // CLEAR / NEW
         // =====================================================
 
         private void BtnClear_Click(object? sender, EventArgs e)
         {
             ClearForm();
-
-            MessageBox.Show(
-                "Ready to add a new customer.",
-                "New Customer",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
         }
 
         private void ClearForm()
         {
             _selectedCustomer = null;
+            btnEmergencyContacts.Enabled = false;
 
             ClearTextBoxes(this);
 
             cbCustomerType.SelectedIndex = 0;
-
             dtpDOB.Value = DateTime.Today.AddYears(-21);
             dtpIssueDate.Value = DateTime.Today;
             dtpExpiryDate.Value = DateTime.Today.AddYears(5);
-
-            chkLoyalty.Checked = false;
-            chkBlacklist.Checked = false;
-            checkBox1.Checked = false;
 
             picCustomerPhoto.Image = null;
             _profilePreviewImage = null;
@@ -370,7 +392,7 @@ namespace VRMS.Controls
         private void BtnManageAccount_Click(object? sender, EventArgs e)
         {
             MessageBox.Show(
-                "Account management comes later (UserService).",
+                "Account management comes later.",
                 "Info",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
