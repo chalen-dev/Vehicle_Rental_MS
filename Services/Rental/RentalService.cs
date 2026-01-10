@@ -108,11 +108,15 @@ public class RentalService
 
         var reservation = _reservationService.GetReservationById(rental.ReservationId);
 
+        var vehicle = _vehicleService.GetVehicleById(reservation.VehicleId);
+
         _vehicleService.UpdateVehicle(
-            reservation.VehicleId,
-            color: _vehicleService.GetVehicleById(reservation.VehicleId).Color,
+            vehicleId: reservation.VehicleId,
+            color: vehicle.Color,
             newOdometer: endOdometer,
-            categoryId: _vehicleService.GetVehicleById(reservation.VehicleId).VehicleCategoryId
+            fuelEfficiency: vehicle.FuelEfficiency,
+            cargoCapacity: vehicle.CargoCapacity,
+            categoryId: vehicle.VehicleCategoryId
         );
 
         _vehicleService.UpdateVehicleStatus(

@@ -20,6 +20,9 @@ public static class M_0004_CreateVehiclesTable
                                          status {Tbl.ToEnum<VehicleStatus>()} NOT NULL,
                                          seating_capacity INT NOT NULL,
                                          odometer INT NOT NULL,
+                                         fuel_efficiency DECIMAL(5,2) NOT NULL, -- km per liter
+                                         cargo_capacity INT NOT NULL,            -- in kilograms
+
                                          vehicle_category_id INT NOT NULL,
 
                                          CONSTRAINT fk_vehicles_category
@@ -28,7 +31,7 @@ public static class M_0004_CreateVehiclesTable
                                              ON DELETE RESTRICT
                                      ) ENGINE=InnoDB;
                                      """;
-    
+
     public static string Drop() => """
                                    DROP TABLE IF EXISTS vehicles;
                                    """;

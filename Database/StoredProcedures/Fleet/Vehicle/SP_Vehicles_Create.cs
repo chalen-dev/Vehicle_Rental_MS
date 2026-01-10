@@ -18,6 +18,8 @@ public static class SP_Vehicles_Create
                                       IN p_status VARCHAR(50),
                                       IN p_seating_capacity INT,
                                       IN p_odometer INT,
+                                      IN p_fuel_efficiency DECIMAL(5,2),
+                                      IN p_cargo_capacity INT,
                                       IN p_vehicle_category_id INT
                                   )
                                   BEGIN
@@ -34,6 +36,8 @@ public static class SP_Vehicles_Create
                                           status,
                                           seating_capacity,
                                           odometer,
+                                          fuel_efficiency,
+                                          cargo_capacity,
                                           vehicle_category_id
                                       )
                                       VALUES (
@@ -49,6 +53,8 @@ public static class SP_Vehicles_Create
                                           p_status,
                                           p_seating_capacity,
                                           p_odometer,
+                                          p_fuel_efficiency,
+                                          p_cargo_capacity,
                                           p_vehicle_category_id
                                       );
 

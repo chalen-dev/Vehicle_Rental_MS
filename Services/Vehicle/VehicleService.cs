@@ -18,22 +18,24 @@ public class VehicleService
     public int CreateVehicle(Models.Fleet.Vehicle vehicle)
     {
         var table = DB.ExecuteQuery($"""
-            CALL sp_vehicles_create(
-                '{Sql.Esc(vehicle.VehicleCode)}',
-                '{Sql.Esc(vehicle.Make)}',
-                '{Sql.Esc(vehicle.Model)}',
-                {vehicle.Year},
-                '{Sql.Esc(vehicle.Color)}',
-                '{Sql.Esc(vehicle.LicensePlate)}',
-                '{Sql.Esc(vehicle.VIN)}',
-                '{vehicle.Transmission}',
-                '{vehicle.FuelType}',
-                '{VehicleStatus.Available}',
-                {vehicle.SeatingCapacity},
-                {vehicle.Odometer},
-                {vehicle.VehicleCategoryId}
-            );
-        """);
+                                         CALL sp_vehicles_create(
+                                             '{Sql.Esc(vehicle.VehicleCode)}',
+                                             '{Sql.Esc(vehicle.Make)}',
+                                             '{Sql.Esc(vehicle.Model)}',
+                                             {vehicle.Year},
+                                             '{Sql.Esc(vehicle.Color)}',
+                                             '{Sql.Esc(vehicle.LicensePlate)}',
+                                             '{Sql.Esc(vehicle.VIN)}',
+                                             '{vehicle.Transmission}',
+                                             '{vehicle.FuelType}',
+                                             '{VehicleStatus.Available}',
+                                             {vehicle.SeatingCapacity},
+                                             {vehicle.Odometer},
+                                             {vehicle.FuelEfficiency},
+                                             {vehicle.CargoCapacity},
+                                             {vehicle.VehicleCategoryId}
+                                         );
+                                     """);
 
         return Convert.ToInt32(table.Rows[0]["vehicle_id"]);
     }
@@ -64,7 +66,13 @@ public class VehicleService
         return MapVehicle(table.Rows[0]);
     }
 
-    public void UpdateVehicle(int vehicleId, string color, int newOdometer, int categoryId)
+    public void UpdateVehicle(
+        int vehicleId,
+        string color,
+        int newOdometer,
+        decimal fuelEfficiency,
+        int cargoCapacity,
+        int categoryId)
     {
         var vehicle = GetVehicleById(vehicleId);
 
@@ -74,14 +82,17 @@ public class VehicleService
             throw new InvalidOperationException("Odometer cannot decrease.");
 
         DB.ExecuteNonQuery($"""
-            CALL sp_vehicles_update(
-                {vehicleId},
-                '{Sql.Esc(color)}',
-                {newOdometer},
-                {categoryId}
-            );
-        """);
+                                CALL sp_vehicles_update(
+                                    {vehicleId},
+                                    '{Sql.Esc(color)}',
+                                    {newOdometer},
+                                    {fuelEfficiency},
+                                    {cargoCapacity},
+                                    {categoryId}
+                                );
+                            """);
     }
+
 
     public void UpdateVehicleStatus(int vehicleId, VehicleStatus newStatus)
     {
@@ -107,6 +118,23 @@ public class VehicleService
         DB.ExecuteNonQuery($"CALL sp_vehicles_retire({vehicleId});");
     }
 
+    public void UpdateVehicleOdometer(int vehicleId, int newOdometer)
+    {
+        var vehicle = GetVehicleById(vehicleId);
+
+        EnsureNotRetired(vehicle);
+
+        if (newOdometer < vehicle.Odometer)
+            throw new InvalidOperationException("Odometer cannot decrease.");
+
+        DB.ExecuteNonQuery($"""
+                                CALL sp_vehicles_update_odometer(
+                                    {vehicleId},
+                                    {newOdometer}
+                                );
+                            """);
+    }
+    
     // -------------------------------------------------
     // MAINTENANCE
     // -------------------------------------------------
@@ -486,9 +514,12 @@ public class VehicleService
             Status = Enum.Parse<VehicleStatus>(row["status"].ToString()!),
             SeatingCapacity = Convert.ToInt32(row["seating_capacity"]),
             Odometer = Convert.ToInt32(row["odometer"]),
+            FuelEfficiency = Convert.ToDecimal(row["fuel_efficiency"]),
+            CargoCapacity = Convert.ToInt32(row["cargo_capacity"]),
             VehicleCategoryId = Convert.ToInt32(row["vehicle_category_id"])
         };
     }
+
 
     private static List<Models.Fleet.Vehicle> MapVehicles(DataTable table)
     {

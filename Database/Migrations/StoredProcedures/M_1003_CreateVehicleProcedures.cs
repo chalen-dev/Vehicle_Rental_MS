@@ -12,6 +12,7 @@ public static class M_1003_CreateVehicleProcedures
                                       {SP_Vehicles_Update.Sql()}
                                       {SP_Vehicles_UpdateStatus.Sql()}
                                       {SP_Vehicles_Retire.Sql()}
+                                      {SP_Vehicles_UpdateOdometer.Sql()}
                                       """;
 
     public static string Drop() => """
@@ -22,5 +23,6 @@ public static class M_1003_CreateVehicleProcedures
                                    DROP PROCEDURE IF EXISTS sp_vehicles_update;
                                    DROP PROCEDURE IF EXISTS sp_vehicles_update_status;
                                    DROP PROCEDURE IF EXISTS sp_vehicles_retire;
+                                   DROP PROCEDURE IF EXISTS sp_vehicles_update_odometer;
                                    """;
 }
