@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Models.Customers;
 using VRMS.Services.Customer;
 using VRMS.UI.Forms.Customer;
-using VRMS.Forms; // CameraForm
+using VRMS.Forms;
 
 namespace VRMS.Controls
 {
@@ -17,7 +18,7 @@ namespace VRMS.Controls
 
         private Customer? _selectedCustomer;
 
-        // UI-only profile image preview
+        // UI-only image preview
         private Image? _profilePreviewImage;
 
         public CustomersView()
@@ -32,6 +33,7 @@ namespace VRMS.Controls
             LoadCustomers();
 
             btnEmergencyContacts.Enabled = false;
+            UpdateSaveButtonState();
         }
 
         // =====================================================
@@ -53,9 +55,9 @@ namespace VRMS.Controls
         {
             btnSave.Click += BtnSave_Click;
             btnDelete.Click += BtnDelete_Click;
-            btnClear.Click += BtnClear_Click;
-            btnManageAccount.Click += BtnManageAccount_Click;
+            btnClear.Click += (_, _) => ClearForm();
 
+            btnManageAccount.Click += BtnManageAccount_Click;
             btnEmergencyContacts.Click += BtnEmergencyContacts_Click;
 
             dgvCustomers.SelectionChanged += DgvCustomers_SelectionChanged;
@@ -66,6 +68,9 @@ namespace VRMS.Controls
 
             btnCamera.Click += BtnProfileCamera_Click;
             btnUploadPhoto.Click += BtnBrowseProfilePhoto_Click;
+
+            txtFirstName.TextChanged += (_, _) => UpdateSaveButtonState();
+            txtLastName.TextChanged += (_, _) => UpdateSaveButtonState();
         }
 
         // =====================================================
@@ -82,7 +87,7 @@ namespace VRMS.Controls
                 dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     HeaderText = "Name",
-                    DataPropertyName = "LastName", // ORIGINAL BEHAVIOR
+                    DataPropertyName = "LastName",
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 });
 
@@ -174,7 +179,7 @@ namespace VRMS.Controls
                 txtLicenseState.Text
             );
 
-            _customerService.CreateCustomer(
+            int customerId = _customerService.CreateCustomer(
                 txtFirstName.Text,
                 txtLastName.Text,
                 txtEmail.Text,
@@ -183,65 +188,29 @@ namespace VRMS.Controls
                 (CustomerType)cbCustomerType.SelectedItem!,
                 licenseId
             );
+
+            SaveProfilePhoto(customerId);
         }
 
         private void UpdateCustomer()
         {
-          _customerService.UpdateCustomer(
-            _selectedCustomer!.Id,
-            txtFirstName.Text,
-            txtLastName.Text,
-            txtEmail.Text,
-            txtPhone.Text,
-            dtpDOB.Value.Date,   
-            (CustomerType)cbCustomerType.SelectedItem!
-);
-        }
-
-        // =====================================================
-        // EMERGENCY CONTACT NAVIGATION
-        // =====================================================
-
-        private void BtnEmergencyContacts_Click(object? sender, EventArgs e)
-        {
-            if (_selectedCustomer == null)
-            {
-                MessageBox.Show(
-                    "Please select a customer first.",
-                    "No Customer Selected",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                return;
-            }
-
-            string fullName =
-                $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}";
-
-            using var form = new EmergencyContactsForm(
-                _selectedCustomer.Id,
-                fullName
+            _customerService.UpdateCustomer(
+                _selectedCustomer!.Id,
+                txtFirstName.Text,
+                txtLastName.Text,
+                txtEmail.Text,
+                txtPhone.Text,
+                dtpDOB.Value.Date,
+                (CustomerType)cbCustomerType.SelectedItem!
             );
 
-            form.ShowDialog();
+            SaveProfilePhoto(_selectedCustomer.Id);
         }
 
         // =====================================================
-        // CAMERA ACTIONS
+        // PROFILE PHOTO
         // =====================================================
 
-        // Driver's License Camera (UNCHANGED)
-        private void BtnCaptureLicense_Click(object? sender, EventArgs e)
-        {
-            using var form = new DriverLicenseCaptureForm();
-
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                btnCaptureLicense.BackColor = Color.FromArgb(46, 204, 113);
-            }
-        }
-
-        // Profile Camera (FIXED to CameraForm)
         private void BtnProfileCamera_Click(object? sender, EventArgs e)
         {
             using var cameraForm = new CameraForm("Capture Profile Photo");
@@ -272,29 +241,50 @@ namespace VRMS.Controls
             }
         }
 
-        private void BtnCheckDrivingRecord_Click(object? sender, EventArgs e)
+        private void SaveProfilePhoto(int customerId)
         {
-            var result = MessageBox.Show(
-                "No external driving record system connected.\n\nIs the customer cleared to rent?",
-                "Driving Record Verification",
-                MessageBoxButtons.YesNoCancel,
-                MessageBoxIcon.Question
+            if (_profilePreviewImage == null)
+                return;
+
+            using var ms = new MemoryStream();
+            _profilePreviewImage.Save(
+                ms,
+                System.Drawing.Imaging.ImageFormat.Jpeg
             );
+            ms.Position = 0;
 
-            if (result == DialogResult.Yes)
-                MessageBox.Show("✔ Driving Record: Cleared");
-            else if (result == DialogResult.No)
-                MessageBox.Show("❌ Driving Record: Not Cleared");
+            _customerService.SetCustomerPhoto(
+                customerId,
+                ms,
+                "profile.jpg"
+            );
         }
 
-        // =====================================================
-        // CLEAR / NEW
-        // =====================================================
-
-        private void BtnClear_Click(object? sender, EventArgs e)
+        private void LoadProfilePhoto(string relativePath)
         {
-            ClearForm();
+            picCustomerPhoto.Image?.Dispose();
+
+            var fullPath = Path.Combine("Storage", relativePath);
+
+            if (File.Exists(fullPath))
+            {
+                using var fs = new FileStream(
+                    fullPath,
+                    FileMode.Open,
+                    FileAccess.Read
+                );
+
+                picCustomerPhoto.Image = Image.FromStream(fs);
+            }
+            else
+            {
+                picCustomerPhoto.Image = null;
+            }
         }
+
+        // =====================================================
+        // CLEAR
+        // =====================================================
 
         private void ClearForm()
         {
@@ -311,22 +301,21 @@ namespace VRMS.Controls
             picCustomerPhoto.Image = null;
             _profilePreviewImage = null;
 
-            btnCaptureLicense.BackColor = SystemColors.Control;
-
             lblAgeCheck.Text = "Age:";
             lblAgeCheck.ForeColor = Color.DimGray;
 
             dgvCustomers.ClearSelection();
+            UpdateSaveButtonState();
         }
 
         private void ClearTextBoxes(Control parent)
         {
-            foreach (Control control in parent.Controls)
+            foreach (Control c in parent.Controls)
             {
-                if (control is TextBox tb)
+                if (c is TextBox tb)
                     tb.Clear();
                 else
-                    ClearTextBoxes(control);
+                    ClearTextBoxes(c);
             }
         }
 
@@ -344,6 +333,7 @@ namespace VRMS.Controls
             cbCustomerType.SelectedItem = c.CustomerType;
 
             UpdateAgeLabel();
+            LoadProfilePhoto(c.PhotoPath);
         }
 
         private bool ValidateForm()
@@ -367,6 +357,13 @@ namespace VRMS.Controls
         {
             MessageBox.Show(msg, "Validation Error");
             return false;
+        }
+
+        private void UpdateSaveButtonState()
+        {
+            btnSave.Enabled =
+                !string.IsNullOrWhiteSpace(txtFirstName.Text) &&
+                !string.IsNullOrWhiteSpace(txtLastName.Text);
         }
 
         private void UpdateAgeLabel()
@@ -394,6 +391,34 @@ namespace VRMS.Controls
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information
             );
+        }
+
+        private void BtnCaptureLicense_Click(object? sender, EventArgs e)
+        {
+            using var form = new DriverLicenseCaptureForm();
+            if (form.ShowDialog() == DialogResult.OK)
+                btnCaptureLicense.BackColor = Color.FromArgb(46, 204, 113);
+        }
+
+        private void BtnCheckDrivingRecord_Click(object? sender, EventArgs e)
+        {
+            MessageBox.Show(
+                "No external driving record system connected.",
+                "Info"
+            );
+        }
+
+        private void BtnEmergencyContacts_Click(object? sender, EventArgs e)
+        {
+            if (_selectedCustomer == null)
+                return;
+
+            using var form = new EmergencyContactsForm(
+                _selectedCustomer.Id,
+                $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}"
+            );
+
+            form.ShowDialog();
         }
     }
 }
