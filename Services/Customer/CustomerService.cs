@@ -10,7 +10,8 @@ namespace VRMS.Services.Customer
 {
     public class CustomerService
     {
-        private const string StorageRoot = "Storage";
+        private static readonly string StorageRoot =
+    Path.Combine(AppContext.BaseDirectory, "Storage");
         private const string DefaultCustomerPhotoPath = "Assets/profile_img.png";
         private const string CustomerPhotoFolder = "Customers";
         private const string CustomerPhotoFileName = "profile";

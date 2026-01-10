@@ -15,12 +15,12 @@ public class DropCommand : ICommand
         {
             Drop.Run(DB.ExecuteRaw);
 
-            // Clean Storage directory (preserve .gitignore)
-            Dir.Empty("Storage", ".gitignore");
+            // ✅ Clean runtime Storage directory (bin/.../Storage)
+            Dir.EmptyRuntimeStorage(".gitignore");
 
             return new CommandResult(
                 true,
-                "Database tables dropped and storage cleaned successfully."
+                "Database tables dropped and runtime storage cleaned successfully."
             );
         }
         catch (SchemaExecutionException ex)

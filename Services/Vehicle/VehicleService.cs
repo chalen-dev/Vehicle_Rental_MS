@@ -6,7 +6,8 @@ namespace VRMS.Services.Fleet;
 
 public class VehicleService
 {
-    private const string StorageRoot = "Storage";
+    private static readonly string StorageRoot =
+    Path.Combine(AppContext.BaseDirectory, "Storage");
     private const string VehicleImageFolder = "Vehicles";
 
     private readonly VehicleRepository _vehicleRepo;

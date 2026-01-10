@@ -7,7 +7,8 @@ namespace VRMS.Services.Customer;
 
 public class DriversLicenseService
 {
-    private const string StorageRoot = "Storage";
+    private static readonly string StorageRoot =
+    Path.Combine(AppContext.BaseDirectory, "Storage");
     private const string DriversLicensePhotoFolder = "DriversLicenses";
     private const string FrontPhotoFileName = "front";
     private const string BackPhotoFileName  = "back";

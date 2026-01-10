@@ -257,7 +257,8 @@ public class VehicleSeeder : ISeeder
         return Path.Combine(
             AppContext.BaseDirectory,
             "Assets",
-            "VehicleSamples"
+            "Seed",
+            "Vehicles"
         );
     }
 
