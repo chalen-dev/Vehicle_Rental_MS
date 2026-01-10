@@ -6,8 +6,11 @@ public static class M_0014_CreateInvoicesTable
                                      CREATE TABLE IF NOT EXISTS invoices (
                                          id INT AUTO_INCREMENT PRIMARY KEY,
                                          rental_id INT NOT NULL,
-                                         total_amount DECIMAL(10,2) NOT NULL,
+                                         total_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
                                          generated_date DATETIME NOT NULL,
+
+                                         CONSTRAINT uq_invoices_rental
+                                             UNIQUE (rental_id),
 
                                          CONSTRAINT fk_invoices_rental
                                              FOREIGN KEY (rental_id)
@@ -15,7 +18,7 @@ public static class M_0014_CreateInvoicesTable
                                              ON DELETE RESTRICT
                                      ) ENGINE=InnoDB;
                                      """;
-    
+
     public static string Drop() => """
                                    DROP TABLE IF EXISTS invoices;
                                    """;

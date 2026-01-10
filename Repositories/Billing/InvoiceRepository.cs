@@ -48,6 +48,15 @@ public class InvoiceRepository
 
         return Map(table.Rows[0]);
     }
+    public void FinalizeTotal(int invoiceId, decimal totalAmount)
+    {
+        DB.Execute(
+            "CALL sp_invoices_finalize(@id,@total);",
+            ("@id", invoiceId),
+            ("@total", totalAmount)
+        );
+    }
+    
 
     // ---------------- MAPPING ----------------
 

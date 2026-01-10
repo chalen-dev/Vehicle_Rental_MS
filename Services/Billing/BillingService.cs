@@ -23,27 +23,50 @@ public class BillingService
 
     // ---------------- INVOICES ----------------
 
-    public int GenerateInvoiceForRental(
-        int rentalId,
-        decimal totalAmount)
+    public Invoice GetOrCreateInvoice(int rentalId)
     {
-        var rental =
-            _rentalService.GetRentalById(rentalId);
+        var rental = _rentalService.GetRentalById(rentalId);
 
-        if (rental.Status is not
-            (RentalStatus.Completed or RentalStatus.Late))
+        if (rental.Status != RentalStatus.Active)
             throw new InvalidOperationException(
-                "Invoice can only be generated for completed or late rentals.");
+                "Invoice can only be created for active rentals.");
 
-        if (_invoiceRepo.GetByRental(rentalId) != null)
-            throw new InvalidOperationException(
-                "Invoice already exists for this rental.");
+        var existing = _invoiceRepo.GetByRental(rentalId);
+        if (existing != null)
+            return existing;
 
-        return _invoiceRepo.Create(
+        var id = _invoiceRepo.Create(
             rentalId,
-            totalAmount,
+            0m,
             DateTime.UtcNow);
+
+        return _invoiceRepo.GetById(id);
     }
+    
+    public void FinalizeInvoice(int rentalId, decimal finalTotal)
+    {
+        if (finalTotal < 0)
+            throw new InvalidOperationException(
+                "Invoice total cannot be negative.");
+
+        var rental = _rentalService.GetRentalById(rentalId);
+
+        if (rental.Status is not (RentalStatus.Completed or RentalStatus.Late))
+            throw new InvalidOperationException(
+                "Invoice can only be finalized for completed rentals.");
+
+        var invoice = _invoiceRepo.GetByRental(rentalId)
+                      ?? throw new InvalidOperationException(
+                          "Invoice does not exist.");
+
+        if (invoice.TotalAmount != 0)
+            throw new InvalidOperationException(
+                "Invoice has already been finalized.");
+
+        _invoiceRepo.FinalizeTotal(invoice.Id, finalTotal);
+    }
+
+
 
     public Invoice GetInvoiceById(int invoiceId)
         => _invoiceRepo.GetById(invoiceId);
