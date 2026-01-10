@@ -73,19 +73,21 @@ namespace VRMS.Services.Customer
             string email,
             string phone,
             string address,
+            DateTime dateOfBirth,
             CustomerCategory category,
             bool isFrequent,
             bool isBlacklisted
         )
         {
             DB.Execute(
-                "CALL sp_customers_update(@id,@first,@last,@email,@phone,@address,@category,@isFrequent,@isBlacklisted,@photo);",
+                "CALL sp_customers_update(@id,@first,@last,@email,@phone,@address,@dob,@category,@isFrequent,@isBlacklisted,@photo);",
                 ("@id", customerId),
                 ("@first", firstName),
                 ("@last", lastName),
                 ("@email", email),
                 ("@phone", phone),
                 ("@address", address),
+                ("@dob", dateOfBirth),
                 ("@category", category.ToString()),
                 ("@isFrequent", isFrequent),
                 ("@isBlacklisted", isBlacklisted),

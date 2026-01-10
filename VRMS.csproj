@@ -25,4 +25,10 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="Assets\VehicleSamples\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
 </Project>

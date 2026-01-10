@@ -1,9 +1,7 @@
-﻿using VRMS.Database.Seeders;
-using VRMS.Enums;
-using VRMS.Models.Fleet;
+﻿using VRMS.Enums;
 using VRMS.Services.Vehicle;
 
-namespace VRMS.Database.Seeders.Fleet;
+namespace VRMS.Database.Seeders.Vehicle;
 
 public class VehicleSeeder : ISeeder
 {
@@ -30,7 +28,7 @@ public class VehicleSeeder : ISeeder
         var gps  = EnsureFeature("GPS");
         var cam  = EnsureFeature("Reverse Camera");
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-001",
             Make = "Toyota",
@@ -48,13 +46,13 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = sedan
         }, ac, gps);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-002",
             Make = "Toyota",
             Model = "Innova",
             Year = 2021,
-            Color = "Silver",
+            Color = "Black",
             LicensePlate = "ABC-1002",
             VIN = "VIN-PH-002",
             Transmission = TransmissionType.Automatic,
@@ -66,13 +64,13 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = mpv
         }, ac, gps);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-003",
             Make = "Mitsubishi",
             Model = "Mirage",
             Year = 2022,
-            Color = "Blue",
+            Color = "Red",
             LicensePlate = "ABC-1003",
             VIN = "VIN-PH-003",
             Transmission = TransmissionType.Automatic,
@@ -84,7 +82,7 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = sedan
         }, ac);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-004",
             Make = "Toyota",
@@ -102,7 +100,7 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = van
         }, ac);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-005",
             Make = "Nissan",
@@ -120,7 +118,7 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = van
         }, ac);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-006",
             Make = "Toyota",
@@ -138,13 +136,13 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = suv
         }, ac, gps, cam);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-007",
             Make = "Mitsubishi",
             Model = "Montero Sport",
             Year = 2021,
-            Color = "Gray",
+            Color = "Silver",
             LicensePlate = "ABC-1007",
             VIN = "VIN-PH-007",
             Transmission = TransmissionType.Automatic,
@@ -156,7 +154,7 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = suv
         }, ac, gps, cam);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-008",
             Make = "Suzuki",
@@ -174,13 +172,13 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = mpv
         }, ac);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-009",
             Make = "Toyota",
             Model = "Avanza",
             Year = 2021,
-            Color = "Brown",
+            Color = "Blue",
             LicensePlate = "ABC-1009",
             VIN = "VIN-PH-009",
             Transmission = TransmissionType.Automatic,
@@ -192,7 +190,7 @@ public class VehicleSeeder : ISeeder
             VehicleCategoryId = mpv
         }, ac);
 
-        SeedVehicle(new Vehicle
+        SeedVehicle(new Models.Fleet.Vehicle
         {
             VehicleCode = "PH-010",
             Make = "Isuzu",
@@ -235,7 +233,7 @@ public class VehicleSeeder : ISeeder
                ?? _vehicleService.CreateFeature(name);
     }
 
-    private void SeedVehicle(Vehicle vehicle, params int[] features)
+    private void SeedVehicle(Models.Fleet.Vehicle vehicle, params int[] features)
     {
         var existing = _vehicleService
             .GetAllVehicles()
