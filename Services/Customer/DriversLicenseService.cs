@@ -22,6 +22,7 @@ public class DriversLicenseService
         DateTime issueDate,
         DateTime expiryDate,
         string issuingCountry
+            
     )
     {
         if (expiryDate <= issueDate)
@@ -69,8 +70,7 @@ public class DriversLicenseService
         int licenseId,
         DateTime issueDate,
         DateTime expiryDate,
-        string issuingCountry,
-        string? photoPath
+        string issuingCountry
     )
     {
         if (expiryDate <= issueDate)
@@ -81,11 +81,57 @@ public class DriversLicenseService
                                     {licenseId},
                                     '{issueDate:yyyy-MM-dd}',
                                     '{expiryDate:yyyy-MM-dd}',
-                                    '{Sql.Esc(issuingCountry)}',
-                                    {(photoPath is null ? "NULL" : $"'{Sql.Esc(photoPath)}'")}
+                                    '{Sql.Esc(issuingCountry)}'
                                 );
                             """);
     }
+
+    
+    public int SaveDriversLicense(
+        int? licenseId,
+        string licenseNumber,
+        DateTime issueDate,
+        DateTime expiryDate,
+        string issuingCountry,
+        Stream? photoStream,
+        string? originalFileName
+    )
+    {
+        int resolvedLicenseId;
+
+        if (licenseId == null)
+        {
+            resolvedLicenseId = CreateDriversLicense(
+                licenseNumber,
+                issueDate,
+                expiryDate,
+                issuingCountry
+            );
+        }
+        else
+        {
+            UpdateDriversLicense(
+                licenseId.Value,
+                issueDate,
+                expiryDate,
+                issuingCountry
+            );
+
+            resolvedLicenseId = licenseId.Value;
+        }
+
+        if (photoStream != null && !string.IsNullOrWhiteSpace(originalFileName))
+        {
+            SetDriversLicensePhoto(
+                resolvedLicenseId,
+                photoStream,
+                originalFileName
+            );
+        }
+
+        return resolvedLicenseId;
+    }
+
 
     public void DeleteDriversLicense(int licenseId)
     {
@@ -99,8 +145,6 @@ public class DriversLicenseService
         string originalFileName
     )
     {
-        var license = GetDriversLicenseById(licenseId);
-
         var extension = Path.GetExtension(originalFileName);
         if (string.IsNullOrWhiteSpace(extension))
             throw new InvalidOperationException("Invalid license photo file.");
@@ -123,32 +167,23 @@ public class DriversLicenseService
         photoStream.CopyTo(fs);
 
         DB.ExecuteNonQuery($"""
-                                CALL sp_drivers_licenses_update(
+                                CALL sp_drivers_licenses_set_photo(
                                     {licenseId},
-                                    '{license.IssueDate:yyyy-MM-dd}',
-                                    '{license.ExpiryDate:yyyy-MM-dd}',
-                                    '{Sql.Esc(license.IssuingCountry)}',
                                     '{Sql.Esc(relativePath)}'
                                 );
                             """);
     }
+
     
     public void DeleteDriversLicensePhoto(int licenseId)
     {
-        var license = GetDriversLicenseById(licenseId);
         var directory = GetDriversLicensePhotoDirectory(licenseId);
 
         if (Directory.Exists(directory))
             Directory.Delete(directory, true);
 
         DB.ExecuteNonQuery($"""
-                                CALL sp_drivers_licenses_update(
-                                    {licenseId},
-                                    '{license.IssueDate:yyyy-MM-dd}',
-                                    '{license.ExpiryDate:yyyy-MM-dd}',
-                                    '{Sql.Esc(license.IssuingCountry)}',
-                                    '{Sql.Esc(DefaultDriversLicensePhotoPath)}'
-                                );
+                                CALL sp_drivers_licenses_reset_photo({licenseId});
                             """);
     }
     
