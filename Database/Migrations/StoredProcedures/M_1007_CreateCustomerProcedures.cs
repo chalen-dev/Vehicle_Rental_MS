@@ -10,6 +10,8 @@ public static class M_1007_CreateCustomerProcedures
                                       {SP_Customers_GetAll.Sql()}
                                       {SP_Customers_Update.Sql()}
                                       {SP_Customers_Delete.Sql()}
+                                      {SP_Customers_SetPhoto.Sql()}
+                                      {SP_Customers_ResetPhoto.Sql()}
                                       """;
 
     public static string Drop() => """
@@ -18,5 +20,7 @@ public static class M_1007_CreateCustomerProcedures
                                    DROP PROCEDURE IF EXISTS sp_customers_get_all;
                                    DROP PROCEDURE IF EXISTS sp_customers_update;
                                    DROP PROCEDURE IF EXISTS sp_customers_delete;
+                                   DROP PROCEDURE IF EXISTS sp_customers_set_photo;
+                                   DROP PROCEDURE IF EXISTS sp_customers_reset_photo;
                                    """;
 }
