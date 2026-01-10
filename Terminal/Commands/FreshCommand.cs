@@ -15,17 +15,16 @@ public class FreshCommand : ICommand
     {
         try
         {
-            // 1. Drop & migrate
+            //Drop and Migrate
             Drop.Run(DB.ExecuteRaw);
             Create.Run(DB.QueryRaw, DB.ExecuteRaw);
 
-            // 2. Build DI (same as SeedCommand)
+            //Register services for seeder use
             var services = new ServiceCollection();
-            services.AddSingleton<UserService>();
+            SeederServiceRegistry.Register(services);
 
+            //Run seeders
             var provider = services.BuildServiceProvider();
-
-            // 3. Run seeders
             SeederRunner.RunAll(provider);
 
             return new CommandResult(

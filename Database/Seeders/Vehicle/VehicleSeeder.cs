@@ -1,4 +1,5 @@
-﻿using VRMS.Enums;
+﻿using System.IO;
+using VRMS.Enums;
 using VRMS.Services.Vehicle;
 
 namespace VRMS.Database.Seeders.Vehicle;
@@ -44,7 +45,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 17.0m,
             CargoCapacity = 400,
             VehicleCategoryId = sedan
-        }, ac, gps);
+        }, "vios_white.jpg",ac, gps);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -62,7 +63,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 12.5m,
             CargoCapacity = 550,
             VehicleCategoryId = mpv
-        }, ac, gps);
+        }, "innova_black.jpg",ac, gps);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -80,7 +81,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 22.0m,
             CargoCapacity = 300,
             VehicleCategoryId = sedan
-        }, ac);
+        }, "mirage_red.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -98,7 +99,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 9.5m,
             CargoCapacity = 900,
             VehicleCategoryId = van
-        }, ac);
+        }, "hiace_white.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -116,7 +117,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 9.0m,
             CargoCapacity = 900,
             VehicleCategoryId = van
-        }, ac);
+        }, "urvan_white.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -134,7 +135,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 11.0m,
             CargoCapacity = 600,
             VehicleCategoryId = suv
-        }, ac, gps, cam);
+        }, "fortuner_black.jpg",ac, gps, cam);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -152,7 +153,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 11.5m,
             CargoCapacity = 600,
             VehicleCategoryId = suv
-        }, ac, gps, cam);
+        }, "montero_sport_silver.jpg",ac, gps, cam);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -170,7 +171,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 14.0m,
             CargoCapacity = 500,
             VehicleCategoryId = mpv
-        }, ac);
+        }, "ertiga_red.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -188,7 +189,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 13.5m,
             CargoCapacity = 500,
             VehicleCategoryId = mpv
-        }, ac);
+        }, "avanza_blue.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -206,7 +207,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 12.0m,
             CargoCapacity = 1000,
             VehicleCategoryId = pickup
-        }, ac);
+        }, "d-max_white.jpg",ac);
     }
 
     // -------------------------------------------------
@@ -233,7 +234,10 @@ public class VehicleSeeder : ISeeder
                ?? _vehicleService.CreateFeature(name);
     }
 
-    private void SeedVehicle(Models.Fleet.Vehicle vehicle, params int[] features)
+    private void SeedVehicle(
+        Models.Fleet.Vehicle vehicle,
+        string imageFileName,
+        params int[] features)
     {
         var existing = _vehicleService
             .GetAllVehicles()
@@ -244,5 +248,42 @@ public class VehicleSeeder : ISeeder
 
         foreach (var featureId in features)
             _vehicleService.AddFeatureToVehicle(vehicleId, featureId);
+
+        AddImageIfExists(vehicleId, imageFileName);
+    }
+
+    private static string GetImageBasePath()
+    {
+        return Path.Combine(
+            AppContext.BaseDirectory,
+            "Assets",
+            "VehicleSamples"
+        );
+    }
+
+    private void AddImageIfExists(
+        int vehicleId,
+        string imageFileName)
+    {
+        var basePath = GetImageBasePath();
+        var fullPath = Path.Combine(basePath, imageFileName);
+
+        if (!File.Exists(fullPath))
+        {
+            Console.WriteLine(
+                $"      [WARN] Image not found: {imageFileName}");
+            return;
+        }
+
+        using var stream = File.OpenRead(fullPath);
+
+        _vehicleService.AddVehicleImage(
+            vehicleId,
+            stream,
+            imageFileName
+        );
+
+        Console.WriteLine(
+            $"      Seeded image: {imageFileName}");
     }
 }

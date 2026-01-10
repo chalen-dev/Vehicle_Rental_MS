@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using VRMS.Database.Seeders;
 using VRMS.Services.Account;
+using VRMS.Services.Vehicle;
 
 namespace VRMS.Terminal.Commands;
 
@@ -15,12 +16,9 @@ public class SeedCommand : ICommand
             Console.WriteLine("\n[INFO] Running seeders.\n");
             
             var services = new ServiceCollection();
-
-            // Register the services here first
-            services.AddSingleton<UserService>();
+            SeederServiceRegistry.Register(services);
 
             var provider = services.BuildServiceProvider();
-
             SeederRunner.RunAll(provider);
 
             return new CommandResult(

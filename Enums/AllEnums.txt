@@ -1,11 +1,9 @@
 ﻿namespace VRMS.Enums
 {
-    public enum CustomerType
+    public enum CustomerCategory
     {
         Individual,
-        Corporate,
-        Frequent,
-        Blacklisted
+        Corporate
     }
 
     public enum FuelType
