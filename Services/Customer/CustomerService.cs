@@ -77,10 +77,7 @@ namespace VRMS.Services.Customer
             bool isBlacklisted
         )
         {
-            // FETCH EXISTING CUSTOMER FIRST
-            var existingCustomer = _repo.GetById(customerId);
-
-            _repo.Update(
+            _repo.UpdateWithoutPhoto(
                 customerId,
                 firstName,
                 lastName,
@@ -90,8 +87,7 @@ namespace VRMS.Services.Customer
                 dateOfBirth,
                 category,
                 isFrequent,
-                isBlacklisted,
-                existingCustomer.PhotoPath // ✅ PRESERVE PHOTO
+                isBlacklisted
             );
         }
 

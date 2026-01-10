@@ -78,6 +78,38 @@ namespace VRMS.Repositories.Customers
                 ("@photo", photoPath)
             );
         }
+        
+        // =====================================================
+        // UPDATE (NO PHOTO)
+        // =====================================================
+        public void UpdateWithoutPhoto(
+            int customerId,
+            string firstName,
+            string lastName,
+            string email,
+            string phone,
+            string address,
+            DateTime dateOfBirth,
+            CustomerCategory category,
+            bool isFrequent,
+            bool isBlacklisted
+        )
+        {
+            DB.Execute(
+                "CALL sp_customers_update_no_photo(@id,@first,@last,@email,@phone,@address,@dob,@category,@isFrequent,@isBlacklisted);",
+                ("@id", customerId),
+                ("@first", firstName),
+                ("@last", lastName),
+                ("@email", email),
+                ("@phone", phone),
+                ("@address", address),
+                ("@dob", dateOfBirth),
+                ("@category", category.ToString()),
+                ("@isFrequent", isFrequent),
+                ("@isBlacklisted", isBlacklisted)
+            );
+        }
+
 
         // =====================================================
         // READ
