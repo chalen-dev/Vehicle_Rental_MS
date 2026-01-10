@@ -81,7 +81,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 22.0m,
             CargoCapacity = 300,
             VehicleCategoryId = sedan
-        }, "mirage_red.jpg",ac);
+        }, "red_mirage_sedan.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -99,7 +99,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 9.5m,
             CargoCapacity = 900,
             VehicleCategoryId = van
-        }, "hiace_white.jpg",ac);
+        }, "white_toyota_hiace.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -117,7 +117,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 9.0m,
             CargoCapacity = 900,
             VehicleCategoryId = van
-        }, "urvan_white.jpg",ac);
+        }, "white_nissan_urvan.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -135,7 +135,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 11.0m,
             CargoCapacity = 600,
             VehicleCategoryId = suv
-        }, "fortuner_black.jpg",ac, gps, cam);
+        }, "black_toyota_fortuner.jpg",ac, gps, cam);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -153,7 +153,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 11.5m,
             CargoCapacity = 600,
             VehicleCategoryId = suv
-        }, "montero_sport_silver.jpg",ac, gps, cam);
+        }, "silver_montero_sport.jpg",ac, gps, cam);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -171,7 +171,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 14.0m,
             CargoCapacity = 500,
             VehicleCategoryId = mpv
-        }, "ertiga_red.jpg",ac);
+        }, "red_suzuki_ertiga.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -189,7 +189,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 13.5m,
             CargoCapacity = 500,
             VehicleCategoryId = mpv
-        }, "avanza_blue.jpg",ac);
+        }, "blue_toyota_avanza.jpg",ac);
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
@@ -207,7 +207,7 @@ public class VehicleSeeder : ISeeder
             FuelEfficiency = 12.0m,
             CargoCapacity = 1000,
             VehicleCategoryId = pickup
-        }, "d-max_white.jpg",ac);
+        }, "white_isuzu_dmax.jpg",ac);
     }
 
     // -------------------------------------------------
