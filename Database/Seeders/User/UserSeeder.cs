@@ -13,7 +13,9 @@ public class UserSeeder : ISeeder
     {
         //Add more admins here
         ("Chael", "113121"),
-        ("superadmin", "super123")
+        ("admin", "super123"),
+        ("Leebag", "123456"),
+        ("Dustin", "123456")
     };
 
     private static readonly (string Username, string Password)[] RentalAgents =

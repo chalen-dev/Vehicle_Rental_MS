@@ -22,7 +22,7 @@ namespace VRMS.Services.Customer
         }
 
         // =====================================================
-        // CREATE
+        // CREATE  (MASTER)
         // =====================================================
 
         public int CreateCustomer(
@@ -61,9 +61,8 @@ namespace VRMS.Services.Customer
             return Convert.ToInt32(table.Rows[0]["customer_id"]);
         }
 
-
         // =====================================================
-        // UPDATE (CURRENT SIGNATURE)
+        // UPDATE  (MASTER)
         // =====================================================
 
         public void UpdateCustomer(
@@ -94,38 +93,6 @@ namespace VRMS.Services.Customer
                 ("@photo", DefaultCustomerPhotoPath)
             );
         }
-
-
-        // =====================================================
-        // 🔥 BACKWARD-COMPAT OVERLOAD (DO NOT REMOVE)
-        // =====================================================
-        // This exists ONLY to prevent build failures from
-        // previously-compiled callers that expect 7 params.
-        // Safe, intentional, and required for team stability.
-        // =====================================================
-        
-        /*
-        public void UpdateCustomer(
-            int customerId,
-            string firstName,
-            string lastName,
-            string email,
-            string phone,
-            CustomerType customerType,
-            string? unusedPhotoPath
-        )
-        {
-            // Forward to the actual implementation
-            UpdateCustomer(
-                customerId,
-                firstName,
-                lastName,
-                email,
-                phone,
-                customerType
-            );
-        }
-        */
 
         // =====================================================
         // READ
@@ -274,7 +241,6 @@ namespace VRMS.Services.Customer
                 DriversLicenseId = Convert.ToInt32(row["drivers_license_id"])
             };
         }
-
 
         private static string GetCustomerPhotoDirectory(int customerId)
         {
