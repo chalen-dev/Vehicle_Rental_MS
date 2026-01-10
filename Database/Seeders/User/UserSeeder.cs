@@ -5,7 +5,7 @@ namespace VRMS.Database.Seeders.Users;
 
 public class UserSeeder : ISeeder
 {
-    public string Name => "Users";
+    public string Name => "UserSeeder";
 
     private readonly UserService _userService;
 

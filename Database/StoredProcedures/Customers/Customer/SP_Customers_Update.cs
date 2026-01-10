@@ -11,6 +11,8 @@ public static class SP_Customers_Update
                                       IN p_last_name VARCHAR(50),
                                       IN p_email VARCHAR(100),
                                       IN p_phone VARCHAR(30),
+                                      IN p_address VARCHAR(255),
+                                      IN p_date_of_birth DATE,
                                       IN p_customer_category VARCHAR(50),
                                       IN p_is_frequent BOOLEAN,
                                       IN p_is_blacklisted BOOLEAN,

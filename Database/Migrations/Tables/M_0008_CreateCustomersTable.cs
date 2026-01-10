@@ -14,7 +14,7 @@ public static class M_0008_CreateCustomersTable
 
                                           email VARCHAR(100) NOT NULL,
                                           phone VARCHAR(30) NOT NULL,
-
+                                          address VARCHAR(255) NOT NULL,
                                           date_of_birth DATE NOT NULL,
 
                                           customer_category {Tbl.ToEnum<CustomerCategory>()} NOT NULL,

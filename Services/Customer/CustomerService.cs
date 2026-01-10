@@ -30,6 +30,7 @@ namespace VRMS.Services.Customer
             string lastName,
             string email,
             string phone,
+            string address,
             DateTime dateOfBirth,
             CustomerCategory category,
             bool isFrequent,
@@ -43,11 +44,12 @@ namespace VRMS.Services.Customer
                 throw new InvalidOperationException("Driver's license is expired.");
 
             var table = DB.Query(
-                "CALL sp_customers_create(@first,@last,@email,@phone,@dob,@category,@isFrequent,@isBlacklisted,@photo,@licenseId);",
+                "CALL sp_customers_create(@first,@last,@email,@phone, @address,@dob,@category,@isFrequent,@isBlacklisted,@photo,@licenseId);",
                 ("@first", firstName),
                 ("@last", lastName),
                 ("@email", email),
                 ("@phone", phone),
+                ("@address", address),
                 ("@dob", dateOfBirth),
                 ("@category", category.ToString()),
                 ("@isFrequent", isFrequent),
@@ -70,18 +72,20 @@ namespace VRMS.Services.Customer
             string lastName,
             string email,
             string phone,
+            string address,
             CustomerCategory category,
             bool isFrequent,
             bool isBlacklisted
         )
         {
             DB.Execute(
-                "CALL sp_customers_update(@id,@first,@last,@email,@phone,@category,@isFrequent,@isBlacklisted,@photo);",
+                "CALL sp_customers_update(@id,@first,@last,@email,@phone,@address,@category,@isFrequent,@isBlacklisted,@photo);",
                 ("@id", customerId),
                 ("@first", firstName),
                 ("@last", lastName),
                 ("@email", email),
                 ("@phone", phone),
+                ("@address", address),
                 ("@category", category.ToString()),
                 ("@isFrequent", isFrequent),
                 ("@isBlacklisted", isBlacklisted),
@@ -255,6 +259,7 @@ namespace VRMS.Services.Customer
                 LastName = row["last_name"].ToString()!,
                 Email = row["email"].ToString()!,
                 Phone = row["phone"].ToString()!,
+                Address = row["address"].ToString()!,
                 DateOfBirth = Convert.ToDateTime(row["date_of_birth"]),
 
                 Category = Enum.Parse<CustomerCategory>(
