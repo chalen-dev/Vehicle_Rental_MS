@@ -15,6 +15,8 @@ public static class SP_Rentals_GetAll
                                           actual_return_date,
                                           start_odometer,
                                           end_odometer,
+                                          start_fuel_level,
+                                          end_fuel_level,
                                           status
                                       FROM rentals
                                       ORDER BY pickup_date DESC;

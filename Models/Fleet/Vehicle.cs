@@ -25,4 +25,9 @@ public class Vehicle
 
     public VehicleStatus Status { get; set; } = VehicleStatus.Available;
     public int VehicleCategoryId { get; set; }
+    
+    
+    
+    public string DisplayName =>
+        $"{Make} {Model} {Year} ({LicensePlate})";
 }

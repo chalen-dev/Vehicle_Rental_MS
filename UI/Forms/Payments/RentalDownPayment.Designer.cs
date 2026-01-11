@@ -15,237 +15,274 @@
 
         #region Windows Form Designer generated code
 
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblHeader = new System.Windows.Forms.Label();
-            this.grpRentalSummary = new System.Windows.Forms.GroupBox();
-            this.lblReturnDate = new System.Windows.Forms.Label();
-            this.lblRentalID = new System.Windows.Forms.Label();
-            this.lblVehicleDetails = new System.Windows.Forms.Label();
-            this.lblCustomerName = new System.Windows.Forms.Label();
-            this.grpInitialCosts = new System.Windows.Forms.GroupBox();
-            this.lblTotalInitialPayment = new System.Windows.Forms.Label();
-            this.lblSecurityDeposit = new System.Windows.Forms.Label();
-            this.lblFirstInstallment = new System.Windows.Forms.Label();
-            this.grpPaymentProcessing = new System.Windows.Forms.GroupBox();
-            this.txtAmountPaid = new System.Windows.Forms.TextBox();
-            this.lblLabelAmount = new System.Windows.Forms.Label();
-            this.cbPaymentMethod = new System.Windows.Forms.ComboBox();
-            this.lblLabelMethod = new System.Windows.Forms.Label();
-            this.btnProcess = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.pnlHeader.SuspendLayout();
-            this.grpRentalSummary.SuspendLayout();
-            this.grpInitialCosts.SuspendLayout();
-            this.grpPaymentProcessing.SuspendLayout();
-            this.SuspendLayout();
+            pnlHeader = new System.Windows.Forms.Panel();
+            lblHeader = new System.Windows.Forms.Label();
+            grpRentalSummary = new System.Windows.Forms.GroupBox();
+            lblReturnDate = new System.Windows.Forms.Label();
+            lblRentalID = new System.Windows.Forms.Label();
+            lblVehicleDetails = new System.Windows.Forms.Label();
+            lblCustomerName = new System.Windows.Forms.Label();
+            grpInitialCosts = new System.Windows.Forms.GroupBox();
+            lblTotalInitialPayment = new System.Windows.Forms.Label();
+            lblSecurityDeposit = new System.Windows.Forms.Label();
+            lblFirstInstallment = new System.Windows.Forms.Label();
+            grpPaymentProcessing = new System.Windows.Forms.GroupBox();
+            txtAmountPaid = new System.Windows.Forms.TextBox();
+            lblLabelAmount = new System.Windows.Forms.Label();
+            cbPaymentMethod = new System.Windows.Forms.ComboBox();
+            lblLabelMethod = new System.Windows.Forms.Label();
+            btnProcess = new System.Windows.Forms.Button();
+            btnCancel = new System.Windows.Forms.Button();
+            pnlHeader.SuspendLayout();
+            grpRentalSummary.SuspendLayout();
+            grpInitialCosts.SuspendLayout();
+            grpPaymentProcessing.SuspendLayout();
+            SuspendLayout();
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.pnlHeader.Controls.Add(this.lblHeader);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(480, 60);
-            this.pnlHeader.TabIndex = 0;
+            pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)((byte)52)), ((int)((byte)73)), ((int)((byte)94)));
+            pnlHeader.Controls.Add(lblHeader);
+            pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            pnlHeader.Location = new System.Drawing.Point(0, 0);
+            pnlHeader.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new System.Drawing.Size(549, 80);
+            pnlHeader.TabIndex = 0;
             // 
             // lblHeader
             // 
-            this.lblHeader.AutoSize = true;
-            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblHeader.ForeColor = System.Drawing.Color.White;
-            this.lblHeader.Location = new System.Drawing.Point(15, 15);
-            this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(240, 30);
-            this.lblHeader.Text = "Rental Down Payment";
+            lblHeader.AutoSize = true;
+            lblHeader.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            lblHeader.ForeColor = System.Drawing.Color.White;
+            lblHeader.Location = new System.Drawing.Point(17, 20);
+            lblHeader.Name = "lblHeader";
+            lblHeader.Size = new System.Drawing.Size(228, 37);
+            lblHeader.TabIndex = 0;
+            lblHeader.Text = "Security Deposit";
             // 
             // grpRentalSummary
             // 
-            this.grpRentalSummary.Controls.Add(this.lblReturnDate);
-            this.grpRentalSummary.Controls.Add(this.lblRentalID);
-            this.grpRentalSummary.Controls.Add(this.lblVehicleDetails);
-            this.grpRentalSummary.Controls.Add(this.lblCustomerName);
-            this.grpRentalSummary.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpRentalSummary.Location = new System.Drawing.Point(20, 75);
-            this.grpRentalSummary.Name = "grpRentalSummary";
-            this.grpRentalSummary.Size = new System.Drawing.Size(440, 115);
-            this.grpRentalSummary.TabIndex = 1;
-            this.grpRentalSummary.TabStop = false;
-            this.grpRentalSummary.Text = "Rental Details";
+            grpRentalSummary.Controls.Add(lblReturnDate);
+            grpRentalSummary.Controls.Add(lblRentalID);
+            grpRentalSummary.Controls.Add(lblVehicleDetails);
+            grpRentalSummary.Controls.Add(lblCustomerName);
+            grpRentalSummary.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            grpRentalSummary.Location = new System.Drawing.Point(23, 100);
+            grpRentalSummary.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            grpRentalSummary.Name = "grpRentalSummary";
+            grpRentalSummary.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            grpRentalSummary.Size = new System.Drawing.Size(503, 153);
+            grpRentalSummary.TabIndex = 1;
+            grpRentalSummary.TabStop = false;
+            grpRentalSummary.Text = "Rental Details";
             // 
             // lblReturnDate
             // 
-            this.lblReturnDate.AutoSize = true;
-            this.lblReturnDate.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblReturnDate.ForeColor = System.Drawing.Color.DimGray;
-            this.lblReturnDate.Location = new System.Drawing.Point(15, 88);
-            this.lblReturnDate.Name = "lblReturnDate";
-            this.lblReturnDate.Text = "Return Date: --";
+            lblReturnDate.AutoSize = true;
+            lblReturnDate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            lblReturnDate.ForeColor = System.Drawing.Color.DimGray;
+            lblReturnDate.Location = new System.Drawing.Point(17, 117);
+            lblReturnDate.Name = "lblReturnDate";
+            lblReturnDate.Size = new System.Drawing.Size(107, 20);
+            lblReturnDate.TabIndex = 0;
+            lblReturnDate.Text = "Return Date: --";
             // 
             // lblRentalID
             // 
-            this.lblRentalID.AutoSize = true;
-            this.lblRentalID.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblRentalID.ForeColor = System.Drawing.Color.DimGray;
-            this.lblRentalID.Location = new System.Drawing.Point(250, 25);
-            this.lblRentalID.Name = "lblRentalID";
-            this.lblRentalID.Text = "Rental ID: --";
+            lblRentalID.AutoSize = true;
+            lblRentalID.Font = new System.Drawing.Font("Segoe UI", 9F);
+            lblRentalID.ForeColor = System.Drawing.Color.DimGray;
+            lblRentalID.Location = new System.Drawing.Point(286, 33);
+            lblRentalID.Name = "lblRentalID";
+            lblRentalID.Size = new System.Drawing.Size(89, 20);
+            lblRentalID.TabIndex = 1;
+            lblRentalID.Text = "Rental ID: --";
             // 
             // lblVehicleDetails
             // 
-            this.lblVehicleDetails.AutoSize = true;
-            this.lblVehicleDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblVehicleDetails.Location = new System.Drawing.Point(15, 60);
-            this.lblVehicleDetails.Name = "lblVehicleDetails";
-            this.lblVehicleDetails.Text = "Vehicle: --";
+            lblVehicleDetails.AutoSize = true;
+            lblVehicleDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
+            lblVehicleDetails.Location = new System.Drawing.Point(17, 80);
+            lblVehicleDetails.Name = "lblVehicleDetails";
+            lblVehicleDetails.Size = new System.Drawing.Size(75, 20);
+            lblVehicleDetails.TabIndex = 2;
+            lblVehicleDetails.Text = "Vehicle: --";
             // 
             // lblCustomerName
             // 
-            this.lblCustomerName.AutoSize = true;
-            this.lblCustomerName.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCustomerName.Location = new System.Drawing.Point(15, 25);
-            this.lblCustomerName.Name = "lblCustomerName";
-            this.lblCustomerName.Text = "Customer: --";
+            lblCustomerName.AutoSize = true;
+            lblCustomerName.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            lblCustomerName.Location = new System.Drawing.Point(17, 33);
+            lblCustomerName.Name = "lblCustomerName";
+            lblCustomerName.Size = new System.Drawing.Size(122, 25);
+            lblCustomerName.TabIndex = 3;
+            lblCustomerName.Text = "Customer: --";
             // 
             // grpInitialCosts
             // 
-            this.grpInitialCosts.Controls.Add(this.lblTotalInitialPayment);
-            this.grpInitialCosts.Controls.Add(this.lblSecurityDeposit);
-            this.grpInitialCosts.Controls.Add(this.lblFirstInstallment);
-            this.grpInitialCosts.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpInitialCosts.Location = new System.Drawing.Point(20, 200);
-            this.grpInitialCosts.Name = "grpInitialCosts";
-            this.grpInitialCosts.Size = new System.Drawing.Size(440, 140);
-            this.grpInitialCosts.TabIndex = 2;
-            this.grpInitialCosts.TabStop = false;
-            this.grpInitialCosts.Text = "Initial Payment Breakdown";
+            grpInitialCosts.Controls.Add(lblTotalInitialPayment);
+            grpInitialCosts.Controls.Add(lblSecurityDeposit);
+            grpInitialCosts.Controls.Add(lblFirstInstallment);
+            grpInitialCosts.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            grpInitialCosts.Location = new System.Drawing.Point(23, 267);
+            grpInitialCosts.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            grpInitialCosts.Name = "grpInitialCosts";
+            grpInitialCosts.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            grpInitialCosts.Size = new System.Drawing.Size(503, 187);
+            grpInitialCosts.TabIndex = 2;
+            grpInitialCosts.TabStop = false;
+            grpInitialCosts.Text = "Initial Payment Breakdown";
             // 
             // lblTotalInitialPayment
             // 
-            this.lblTotalInitialPayment.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTotalInitialPayment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.lblTotalInitialPayment.Location = new System.Drawing.Point(6, 90);
-            this.lblTotalInitialPayment.Name = "lblTotalInitialPayment";
-            this.lblTotalInitialPayment.Size = new System.Drawing.Size(428, 40);
-            this.lblTotalInitialPayment.Text = "TOTAL DUE: ₱0.00";
-            this.lblTotalInitialPayment.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblTotalInitialPayment.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            lblTotalInitialPayment.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)46)), ((int)((byte)204)), ((int)((byte)113)));
+            lblTotalInitialPayment.Location = new System.Drawing.Point(7, 120);
+            lblTotalInitialPayment.Name = "lblTotalInitialPayment";
+            lblTotalInitialPayment.Size = new System.Drawing.Size(489, 53);
+            lblTotalInitialPayment.TabIndex = 0;
+            lblTotalInitialPayment.Text = "TOTAL DUE: ₱0.00";
+            lblTotalInitialPayment.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblSecurityDeposit
             // 
-            this.lblSecurityDeposit.AutoSize = true;
-            this.lblSecurityDeposit.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblSecurityDeposit.Location = new System.Drawing.Point(15, 60);
-            this.lblSecurityDeposit.Name = "lblSecurityDeposit";
-            this.lblSecurityDeposit.Text = "Security Deposit: ₱0.00";
+            lblSecurityDeposit.AutoSize = true;
+            lblSecurityDeposit.Font = new System.Drawing.Font("Segoe UI", 10F);
+            lblSecurityDeposit.Location = new System.Drawing.Point(17, 80);
+            lblSecurityDeposit.Name = "lblSecurityDeposit";
+            lblSecurityDeposit.Size = new System.Drawing.Size(183, 23);
+            lblSecurityDeposit.TabIndex = 1;
+            lblSecurityDeposit.Text = "Security Deposit: ₱0.00";
             // 
             // lblFirstInstallment
             // 
-            this.lblFirstInstallment.AutoSize = true;
-            this.lblFirstInstallment.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblFirstInstallment.Location = new System.Drawing.Point(15, 30);
-            this.lblFirstInstallment.Name = "lblFirstInstallment";
-            this.lblFirstInstallment.Text = "Initial Rental Fee: ₱0.00";
+            lblFirstInstallment.AutoSize = true;
+            lblFirstInstallment.Font = new System.Drawing.Font("Segoe UI", 10F);
+            lblFirstInstallment.Location = new System.Drawing.Point(17, 40);
+            lblFirstInstallment.Name = "lblFirstInstallment";
+            lblFirstInstallment.Size = new System.Drawing.Size(186, 23);
+            lblFirstInstallment.TabIndex = 2;
+            lblFirstInstallment.Text = "Initial Rental Fee: ₱0.00";
             // 
             // grpPaymentProcessing
             // 
-            this.grpPaymentProcessing.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.grpPaymentProcessing.Controls.Add(this.txtAmountPaid);
-            this.grpPaymentProcessing.Controls.Add(this.lblLabelAmount);
-            this.grpPaymentProcessing.Controls.Add(this.cbPaymentMethod);
-            this.grpPaymentProcessing.Controls.Add(this.lblLabelMethod);
-            this.grpPaymentProcessing.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpPaymentProcessing.Location = new System.Drawing.Point(20, 355);
-            this.grpPaymentProcessing.Name = "grpPaymentProcessing";
-            this.grpPaymentProcessing.Size = new System.Drawing.Size(440, 115);
-            this.grpPaymentProcessing.TabIndex = 3;
-            this.grpPaymentProcessing.TabStop = false;
-            this.grpPaymentProcessing.Text = "Payment Processing";
+            grpPaymentProcessing.BackColor = System.Drawing.Color.WhiteSmoke;
+            grpPaymentProcessing.Controls.Add(txtAmountPaid);
+            grpPaymentProcessing.Controls.Add(lblLabelAmount);
+            grpPaymentProcessing.Controls.Add(cbPaymentMethod);
+            grpPaymentProcessing.Controls.Add(lblLabelMethod);
+            grpPaymentProcessing.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            grpPaymentProcessing.Location = new System.Drawing.Point(23, 473);
+            grpPaymentProcessing.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            grpPaymentProcessing.Name = "grpPaymentProcessing";
+            grpPaymentProcessing.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            grpPaymentProcessing.Size = new System.Drawing.Size(503, 153);
+            grpPaymentProcessing.TabIndex = 3;
+            grpPaymentProcessing.TabStop = false;
+            grpPaymentProcessing.Text = "Payment Processing";
             // 
             // txtAmountPaid
             // 
-            this.txtAmountPaid.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtAmountPaid.Location = new System.Drawing.Point(225, 60);
-            this.txtAmountPaid.Name = "txtAmountPaid";
-            this.txtAmountPaid.Size = new System.Drawing.Size(185, 27);
+            txtAmountPaid.Font = new System.Drawing.Font("Segoe UI", 11F);
+            txtAmountPaid.Location = new System.Drawing.Point(257, 80);
+            txtAmountPaid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            txtAmountPaid.Name = "txtAmountPaid";
+            txtAmountPaid.Size = new System.Drawing.Size(211, 32);
+            txtAmountPaid.TabIndex = 0;
             // 
             // lblLabelAmount
             // 
-            this.lblLabelAmount.AutoSize = true;
-            this.lblLabelAmount.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblLabelAmount.Location = new System.Drawing.Point(221, 40);
-            this.lblLabelAmount.Name = "lblLabelAmount";
-            this.lblLabelAmount.Text = "Amount Paid:";
+            lblLabelAmount.AutoSize = true;
+            lblLabelAmount.Font = new System.Drawing.Font("Segoe UI", 9F);
+            lblLabelAmount.Location = new System.Drawing.Point(253, 53);
+            lblLabelAmount.Name = "lblLabelAmount";
+            lblLabelAmount.Size = new System.Drawing.Size(97, 20);
+            lblLabelAmount.TabIndex = 1;
+            lblLabelAmount.Text = "Amount Paid:";
             // 
             // cbPaymentMethod
             // 
-            this.cbPaymentMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPaymentMethod.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbPaymentMethod.Items.AddRange(new object[] { "Cash", "Credit Card", "Bank Transfer", "E-Wallet" });
-            this.cbPaymentMethod.Location = new System.Drawing.Point(19, 60);
-            this.cbPaymentMethod.Name = "cbPaymentMethod";
-            this.cbPaymentMethod.Size = new System.Drawing.Size(185, 25);
+            cbPaymentMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbPaymentMethod.Font = new System.Drawing.Font("Segoe UI", 10F);
+            cbPaymentMethod.Items.AddRange(new object[] { "Cash", "Credit Card", "Bank Transfer", "E-Wallet" });
+            cbPaymentMethod.Location = new System.Drawing.Point(22, 80);
+            cbPaymentMethod.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            cbPaymentMethod.Name = "cbPaymentMethod";
+            cbPaymentMethod.Size = new System.Drawing.Size(211, 31);
+            cbPaymentMethod.TabIndex = 2;
             // 
             // lblLabelMethod
             // 
-            this.lblLabelMethod.AutoSize = true;
-            this.lblLabelMethod.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblLabelMethod.Location = new System.Drawing.Point(15, 40);
-            this.lblLabelMethod.Name = "lblLabelMethod";
-            this.lblLabelMethod.Text = "Payment Method:";
+            lblLabelMethod.AutoSize = true;
+            lblLabelMethod.Font = new System.Drawing.Font("Segoe UI", 9F);
+            lblLabelMethod.Location = new System.Drawing.Point(17, 53);
+            lblLabelMethod.Name = "lblLabelMethod";
+            lblLabelMethod.Size = new System.Drawing.Size(124, 20);
+            lblLabelMethod.TabIndex = 3;
+            lblLabelMethod.Text = "Payment Method:";
             // 
             // btnProcess
             // 
-            this.btnProcess.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnProcess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProcess.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnProcess.ForeColor = System.Drawing.Color.White;
-            this.btnProcess.Location = new System.Drawing.Point(240, 485);
-            this.btnProcess.Name = "btnProcess";
-            this.btnProcess.Size = new System.Drawing.Size(220, 50);
-            this.btnProcess.Text = "Confirm Payment";
-            this.btnProcess.UseVisualStyleBackColor = false;
+            btnProcess.BackColor = System.Drawing.Color.FromArgb(((int)((byte)46)), ((int)((byte)204)), ((int)((byte)113)));
+            btnProcess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnProcess.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            btnProcess.ForeColor = System.Drawing.Color.White;
+            btnProcess.Location = new System.Drawing.Point(274, 647);
+            btnProcess.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            btnProcess.Name = "btnProcess";
+            btnProcess.Size = new System.Drawing.Size(251, 67);
+            btnProcess.TabIndex = 1;
+            btnProcess.Text = "Confirm Payment";
+            btnProcess.UseVisualStyleBackColor = false;
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(195)))), ((int)(((byte)(199)))));
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.btnCancel.Location = new System.Drawing.Point(20, 485);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(200, 50);
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)((byte)189)), ((int)((byte)195)), ((int)((byte)199)));
+            btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)44)), ((int)((byte)62)), ((int)((byte)80)));
+            btnCancel.Location = new System.Drawing.Point(23, 647);
+            btnCancel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new System.Drawing.Size(229, 67);
+            btnCancel.TabIndex = 0;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = false;
             // 
             // RentalDownPayment
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(480, 555);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnProcess);
-            this.Controls.Add(this.grpPaymentProcessing);
-            this.Controls.Add(this.grpInitialCosts);
-            this.Controls.Add(this.grpRentalSummary);
-            this.Controls.Add(this.pnlHeader);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "RentalDownPayment";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Upfront Rental Payment";
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
-            this.grpRentalSummary.ResumeLayout(false);
-            this.grpRentalSummary.PerformLayout();
-            this.grpInitialCosts.ResumeLayout(false);
-            this.grpInitialCosts.PerformLayout();
-            this.grpPaymentProcessing.ResumeLayout(false);
-            this.grpPaymentProcessing.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            BackColor = System.Drawing.Color.White;
+            ClientSize = new System.Drawing.Size(549, 740);
+            Controls.Add(btnCancel);
+            Controls.Add(btnProcess);
+            Controls.Add(grpPaymentProcessing);
+            Controls.Add(grpInitialCosts);
+            Controls.Add(grpRentalSummary);
+            Controls.Add(pnlHeader);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "Upfront Rental Payment";
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            grpRentalSummary.ResumeLayout(false);
+            grpRentalSummary.PerformLayout();
+            grpInitialCosts.ResumeLayout(false);
+            grpInitialCosts.PerformLayout();
+            grpPaymentProcessing.ResumeLayout(false);
+            grpPaymentProcessing.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion

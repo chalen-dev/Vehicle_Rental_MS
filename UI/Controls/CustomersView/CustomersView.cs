@@ -29,6 +29,17 @@ namespace VRMS.Controls
         {
             InitializeComponent();
 
+            // Allow table to expand
+            splitContainer1.FixedPanel = FixedPanel.Panel2; 
+            splitContainer1.IsSplitterFixed = false;
+
+            // Safety limits
+            splitContainer1.Panel1MinSize = 300;
+            splitContainer1.Panel2MinSize = 450;
+
+            // Initial size
+            splitContainer1.SplitterDistance = 400;
+
             _driversLicenseService = new DriversLicenseService();
             _customerService = new CustomerService(_driversLicenseService);
 
@@ -73,34 +84,35 @@ namespace VRMS.Controls
         private void LoadCustomers()
         {
             dgvCustomers.AutoGenerateColumns = false;
+            dgvCustomers.Columns.Clear();
 
             _allCustomers = _customerService.GetAllCustomers();
             dgvCustomers.DataSource = new List<Customer>(_allCustomers);
 
-            if (dgvCustomers.Columns.Count == 0)
+            dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
             {
-                dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    HeaderText = "First Name",
-                    DataPropertyName = "FirstName",
-                    Width = 140
-                });
+                HeaderText = "First Name",
+                DataPropertyName = "FirstName",
+                FillWeight = 35
+            });
 
-                dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    HeaderText = "Last Name",
-                    DataPropertyName = "LastName",
-                    Width = 140
-                });
+            dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Last Name",
+                DataPropertyName = "LastName",
+                FillWeight = 35
+            });
 
-                dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    HeaderText = "Phone",
-                    DataPropertyName = "Phone",
-                    Width = 120
-                });
-            }
+            dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Phone",
+                DataPropertyName = "Phone",
+                FillWeight = 30
+            });
         }
+
 
         private void TxtSearch_TextChanged(object? sender, EventArgs e)
         {

@@ -14,5 +14,8 @@ public class Rental
     public int StartOdometer { get; set; }
     public int? EndOdometer { get; set; }
 
-    public RentalStatus Status { get; set; } = RentalStatus.Active;
+    public FuelLevel StartFuelLevel { get; set; }
+    public FuelLevel? EndFuelLevel { get; set; }
+
+    public RentalStatus Status { get; set; }
 }

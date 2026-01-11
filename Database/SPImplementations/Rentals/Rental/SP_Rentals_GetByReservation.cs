@@ -17,6 +17,8 @@ public static class SP_Rentals_GetByReservation
                                           actual_return_date,
                                           start_odometer,
                                           end_odometer,
+                                          start_fuel_level,
+                                          end_fuel_level,
                                           status
                                       FROM rentals
                                       WHERE reservation_id = p_reservation_id;

@@ -16,14 +16,16 @@ public class RentalRepository
         DateTime pickupDate,
         DateTime expectedReturnDate,
         int startOdometer,
+        FuelLevel startFuelLevel,
         RentalStatus status)
     {
         var table = DB.Query(
-            "CALL sp_rentals_create(@rid,@pickup,@expected,@startOdo,@status);",
+            "CALL sp_rentals_create(@rid,@pickup,@expected,@odo,@fuel,@status);",
             ("@rid", reservationId),
             ("@pickup", pickupDate),
             ("@expected", expectedReturnDate),
-            ("@startOdo", startOdometer),
+            ("@odo", startOdometer),
+            ("@fuel", startFuelLevel.ToString()),
             ("@status", status.ToString())
         );
 
@@ -45,13 +47,15 @@ public class RentalRepository
     public void Complete(
         int rentalId,
         DateTime actualReturnDate,
-        int endOdometer)
+        int endOdometer,
+        FuelLevel endFuelLevel)
     {
         DB.Execute(
-            "CALL sp_rentals_complete(@id,@returnDate,@endOdo);",
+            "CALL sp_rentals_complete(@id,@date,@odo,@fuel);",
             ("@id", rentalId),
-            ("@returnDate", actualReturnDate),
-            ("@endOdo", endOdometer)
+            ("@date", actualReturnDate),
+            ("@odo", endOdometer),
+            ("@fuel", endFuelLevel.ToString())
         );
     }
 
@@ -149,6 +153,15 @@ public class RentalRepository
                 row["end_odometer"] == DBNull.Value
                     ? null
                     : Convert.ToInt32(row["end_odometer"]),
+            StartFuelLevel =
+                Enum.Parse<FuelLevel>(
+                    row["start_fuel_level"].ToString()!, true),
+
+            EndFuelLevel =
+                row["end_fuel_level"] == DBNull.Value
+                    ? null
+                    : Enum.Parse<FuelLevel>(
+                        row["end_fuel_level"].ToString()!, true),
             Status =
                 Enum.Parse<RentalStatus>(
                     row["status"].ToString()!, true)

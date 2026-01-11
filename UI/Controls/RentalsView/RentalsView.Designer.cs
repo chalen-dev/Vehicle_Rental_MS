@@ -264,7 +264,7 @@
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(220, 25);
             txtSearch.TabIndex = 4;
-            txtSearch.Text = "Search rentals...";
+            txtSearch.PlaceholderText = "Search by customer name...";
             // 
             // cbStatusFilter
             // 

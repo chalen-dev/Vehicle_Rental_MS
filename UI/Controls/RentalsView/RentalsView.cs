@@ -36,6 +36,11 @@ namespace VRMS.Controls
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
 
+        private List<RentalGridRow> _allRows = new();
+        
+        private static readonly string PlaceholderImagePath =
+            Path.Combine("Assets", "img_placeholder.png");
+
         // =========================
         // CONSTRUCTOR
         // =========================
@@ -123,7 +128,9 @@ namespace VRMS.Controls
         private void RentalsView_Load(object sender, EventArgs e)
         {
             ConfigureGrid();
+            LoadStatusFilter();
             LoadRentals();
+            txtSearch.TextChanged += (_, __) => ApplyFilters();
         }
 
         private void ConfigureGrid()
@@ -137,8 +144,15 @@ namespace VRMS.Controls
             dgvRentals.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Rental ID",
-                DataPropertyName = "Id",
+                DataPropertyName = "RentalId",
                 Width = 80
+            });
+            
+            dgvRentals.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Customer",
+                DataPropertyName = "CustomerName",
+                Width = 180
             });
 
             dgvRentals.Columns.Add(new DataGridViewTextBoxColumn
@@ -170,11 +184,90 @@ namespace VRMS.Controls
 
         private void LoadRentals()
         {
-            dgvRentals.DataSource = null;
-            dgvRentals.DataSource = _rentalService.GetAllRentals();
+            var rentals = _rentalService.GetAllRentals();
 
-            UpdateActionButtons();
+            _allRows = rentals.Select(r =>
+            {
+                var reservation =
+                    _reservationService.GetReservationById(r.ReservationId);
+
+                var customer =
+                    _customerService.GetCustomerById(reservation.CustomerId);
+
+                return new RentalGridRow
+                {
+                    RentalId = r.Id,
+                    PickupDate = r.PickupDate,
+                    ExpectedReturnDate = r.ExpectedReturnDate,
+                    Status = r.Status,
+                    CustomerName = $"{customer.FirstName} {customer.LastName}"
+                };
+            }).ToList();
+
+            ApplyFilters();
         }
+        
+        private void LoadStatusFilter()
+        {
+            cbStatusFilter.Items.Clear();
+            cbStatusFilter.Items.Add("All");
+
+            foreach (var status in Enum.GetValues(typeof(RentalStatus)))
+                cbStatusFilter.Items.Add(status);
+
+            cbStatusFilter.SelectedIndex = 0;
+
+            cbStatusFilter.SelectedIndexChanged += (_, __) => ApplyFilters();
+        }
+        
+        private void LoadVehicleImage(int vehicleId)
+        {
+            // Dispose previous image (avoid memory + file locks)
+            if (pbVehicle.Image != null)
+            {
+                pbVehicle.Image.Dispose();
+                pbVehicle.Image = null;
+            }
+
+            string? imagePath = null;
+
+            var images = _vehicleService.GetVehicleImages(vehicleId);
+
+            if (images.Count > 0)
+            {
+                var candidate = Path.Combine(
+                    AppContext.BaseDirectory,
+                    "Storage",
+                    images[0].ImagePath);
+
+                if (File.Exists(candidate))
+                    imagePath = candidate;
+            }
+
+            // Fallback to placeholder
+            if (imagePath == null)
+            {
+                var placeholder = Path.Combine(
+                    AppContext.BaseDirectory,
+                    PlaceholderImagePath);
+
+                if (!File.Exists(placeholder))
+                    return; // silent fail (safe)
+
+                imagePath = placeholder;
+            }
+
+            // Load without locking the file
+            using var fs = new FileStream(
+                imagePath,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.ReadWrite);
+
+            pbVehicle.Image = Image.FromStream(fs);
+        }
+
+
 
         // =========================
         // SELECTION
@@ -194,8 +287,11 @@ namespace VRMS.Controls
                 return;
             }
 
-            if (dgvRentals.SelectedRows[0].DataBoundItem is not Rental rental)
+            if (dgvRentals.SelectedRows[0].DataBoundItem is not RentalGridRow row)
                 return;
+
+            var rental =
+                _rentalService.GetRentalById(row.RentalId);
 
             var reservation =
                 _reservationService.GetReservationById(
@@ -220,7 +316,7 @@ namespace VRMS.Controls
 
             lblDetailAmount.Text = "Total: ₱ --";
 
-            pbVehicle.Image = null;
+            LoadVehicleImage(vehicle.Id);
         }
 
         // =========================
@@ -236,8 +332,8 @@ namespace VRMS.Controls
 
             bool canReturn =
                 canView &&
-                dgvRentals.SelectedRows[0].DataBoundItem is Rental r &&
-                r.Status == RentalStatus.Active;
+                dgvRentals.SelectedRows[0].DataBoundItem is RentalGridRow row &&
+                row.Status == RentalStatus.Active;
 
             // View Details
             btnViewDetails.Enabled = canView;
@@ -289,17 +385,24 @@ namespace VRMS.Controls
             if (dgvRentals.SelectedRows.Count == 0)
                 return;
 
-            if (dgvRentals.SelectedRows[0].DataBoundItem is not Rental rental)
+            if (dgvRentals.SelectedRows[0].DataBoundItem is not RentalGridRow row)
                 return;
+
+            var rental = _rentalService.GetRentalById(row.RentalId);
 
             using var form = new ReturnVehicleForm(
                 rental.Id,
-                _rentalService
+                _rentalService,
+                _reservationService,
+                _vehicleService,
+                _customerService
             );
+
 
             if (form.ShowDialog(FindForm()) == DialogResult.OK)
                 LoadRentals();
-        }
+        }   
+
 
         private void BtnViewDetails_Click(object sender, EventArgs e)
         {
@@ -333,5 +436,29 @@ namespace VRMS.Controls
                 _ => e.CellStyle.ForeColor
             };
         }
+        
+        private void ApplyFilters()
+        {
+            IEnumerable<RentalGridRow> filtered = _allRows;
+
+            // Status filter
+            if (cbStatusFilter.SelectedItem is RentalStatus status)
+            {
+                filtered = filtered.Where(r => r.Status == status);
+            }
+
+            // Search by customer name
+            var search = txtSearch.Text.Trim();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                filtered = filtered.Where(r =>
+                    r.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase));
+            }
+
+            dgvRentals.DataSource = filtered.ToList();
+            UpdateActionButtons();
+        }
+
     }
 }

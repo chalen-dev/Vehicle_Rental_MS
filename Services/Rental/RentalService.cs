@@ -58,25 +58,25 @@ public class RentalService
 
     /// <summary>
     /// Starts a rental based on a confirmed reservation.
-    ///
+    /// 
     /// This marks the vehicle as rented and creates an active rental record.
     /// </summary>
     /// <param name="reservationId">Reservation ID</param>
     /// <param name="pickupDate">Actual pickup date and time</param>
+    /// <param name="startFuelLevel">Initial fuel level</param>
     /// <returns>Newly created rental ID</returns>
     /// <exception cref="InvalidOperationException">
     /// Thrown when reservation or vehicle state is invalid
     /// </exception>
     public int StartRental(
         int reservationId,
-        DateTime pickupDate)
+        DateTime pickupDate,
+        FuelLevel startFuelLevel)
     {
         var reservation =
-            _reservationService
-                .GetReservationById(reservationId);
+            _reservationService.GetReservationById(reservationId);
 
-        if (reservation.Status !=
-            ReservationStatus.Confirmed)
+        if (reservation.Status != ReservationStatus.Confirmed)
             throw new InvalidOperationException(
                 "Reservation must be confirmed before starting a rental.");
 
@@ -84,14 +84,12 @@ public class RentalService
             throw new InvalidOperationException(
                 "Pickup date cannot be before reservation start date.");
 
-        if (_rentalRepo.GetByReservation(reservationId)
-            != null)
+        if (_rentalRepo.GetByReservation(reservationId) != null)
             throw new InvalidOperationException(
                 "A rental already exists for this reservation.");
 
         var vehicle =
-            _vehicleService.GetVehicleById(
-                reservation.VehicleId);
+            _vehicleService.GetVehicleById(reservation.VehicleId);
 
         if (vehicle.Status != VehicleStatus.Reserved)
             throw new InvalidOperationException(
@@ -103,10 +101,10 @@ public class RentalService
                 pickupDate,
                 reservation.EndDate,
                 vehicle.Odometer,
+                startFuelLevel,
                 RentalStatus.Active);
 
-        _rentalRepo.MarkStarted(
-            rentalId);
+        _rentalRepo.MarkStarted(rentalId);
 
         _vehicleService.UpdateVehicleStatus(
             reservation.VehicleId,
@@ -114,6 +112,8 @@ public class RentalService
 
         return rentalId;
     }
+
+
 
     // -------------------------------------------------
     // COMPLETE RENTAL (RETURN)
@@ -137,7 +137,8 @@ public class RentalService
     public void CompleteRental(
         int rentalId,
         DateTime actualReturnDate,
-        int endOdometer)
+        int endOdometer,
+        FuelLevel endFuelLevel)
     {
         var rental =
             _rentalRepo.GetById(rentalId);
@@ -157,10 +158,10 @@ public class RentalService
         _rentalRepo.Complete(
             rentalId,
             actualReturnDate,
-            endOdometer);
+            endOdometer,
+            endFuelLevel);
 
-        if (actualReturnDate >
-            rental.ExpectedReturnDate)
+        if (actualReturnDate > rental.ExpectedReturnDate)
         {
             _rentalRepo.UpdateStatus(
                 rentalId,
@@ -168,14 +169,12 @@ public class RentalService
         }
 
         var reservation =
-            _reservationService
-                .GetReservationById(
-                    rental.ReservationId);
+            _reservationService.GetReservationById(
+                rental.ReservationId);
 
         var vehicle =
-            _vehicleService
-                .GetVehicleById(
-                    reservation.VehicleId);
+            _vehicleService.GetVehicleById(
+                reservation.VehicleId);
 
         _vehicleService.UpdateVehicle(
             vehicleId: reservation.VehicleId,
@@ -189,10 +188,9 @@ public class RentalService
             reservation.VehicleId,
             VehicleStatus.Available);
 
-        // ---------------- FINAL BILLING ----------------
-        _billingService.FinalizeInvoice(
-            rentalId);
+        _billingService.FinalizeInvoice(rentalId);
     }
+
 
     // -------------------------------------------------
     // READ

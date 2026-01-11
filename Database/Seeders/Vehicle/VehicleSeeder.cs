@@ -26,8 +26,11 @@ public class VehicleSeeder : ISeeder
 
         // Features
         var ac   = EnsureFeature("Air Conditioning");
-        var gps  = EnsureFeature("GPS");
+        var gps  = EnsureFeature("GPS Navigation");
         var cam  = EnsureFeature("Reverse Camera");
+        var bt = EnsureFeature("Bluetooth");
+        var child = EnsureFeature("Child Seat Availability");
+        var ins = EnsureFeature("Insurance Coverage Included");
 
         SeedVehicle(new Models.Fleet.Vehicle
         {
