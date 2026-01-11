@@ -37,6 +37,9 @@ namespace VRMS.Controls
         private readonly RentalService _rentalService;
 
         private List<RentalGridRow> _allRows = new();
+        
+        private static readonly string PlaceholderImagePath =
+            Path.Combine("Assets", "img_placeholder.png");
 
         // =========================
         // CONSTRUCTOR
@@ -216,6 +219,55 @@ namespace VRMS.Controls
 
             cbStatusFilter.SelectedIndexChanged += (_, __) => ApplyFilters();
         }
+        
+        private void LoadVehicleImage(int vehicleId)
+        {
+            // Dispose previous image (avoid memory + file locks)
+            if (pbVehicle.Image != null)
+            {
+                pbVehicle.Image.Dispose();
+                pbVehicle.Image = null;
+            }
+
+            string? imagePath = null;
+
+            var images = _vehicleService.GetVehicleImages(vehicleId);
+
+            if (images.Count > 0)
+            {
+                var candidate = Path.Combine(
+                    AppContext.BaseDirectory,
+                    "Storage",
+                    images[0].ImagePath);
+
+                if (File.Exists(candidate))
+                    imagePath = candidate;
+            }
+
+            // Fallback to placeholder
+            if (imagePath == null)
+            {
+                var placeholder = Path.Combine(
+                    AppContext.BaseDirectory,
+                    PlaceholderImagePath);
+
+                if (!File.Exists(placeholder))
+                    return; // silent fail (safe)
+
+                imagePath = placeholder;
+            }
+
+            // Load without locking the file
+            using var fs = new FileStream(
+                imagePath,
+                FileMode.Open,
+                FileAccess.Read,
+                FileShare.ReadWrite);
+
+            pbVehicle.Image = Image.FromStream(fs);
+        }
+
+
 
         // =========================
         // SELECTION
@@ -264,7 +316,7 @@ namespace VRMS.Controls
 
             lblDetailAmount.Text = "Total: ₱ --";
 
-            pbVehicle.Image = null;
+            LoadVehicleImage(vehicle.Id);
         }
 
         // =========================
@@ -333,17 +385,24 @@ namespace VRMS.Controls
             if (dgvRentals.SelectedRows.Count == 0)
                 return;
 
-            if (dgvRentals.SelectedRows[0].DataBoundItem is not Rental rental)
+            if (dgvRentals.SelectedRows[0].DataBoundItem is not RentalGridRow row)
                 return;
+
+            var rental = _rentalService.GetRentalById(row.RentalId);
 
             using var form = new ReturnVehicleForm(
                 rental.Id,
-                _rentalService
+                _rentalService,
+                _reservationService,
+                _vehicleService,
+                _customerService
             );
+
 
             if (form.ShowDialog(FindForm()) == DialogResult.OK)
                 LoadRentals();
-        }
+        }   
+
 
         private void BtnViewDetails_Click(object sender, EventArgs e)
         {
