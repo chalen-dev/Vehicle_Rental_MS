@@ -172,6 +172,8 @@ namespace VRMS.Controls
         {
             dgvRentals.DataSource = null;
             dgvRentals.DataSource = _rentalService.GetAllRentals();
+
+            UpdateActionButtons();
         }
 
         // =========================
@@ -180,18 +182,20 @@ namespace VRMS.Controls
 
         private void DgvRentals_SelectionChanged(object? sender, EventArgs e)
         {
+            UpdateActionButtons();
+
             if (dgvRentals.SelectedRows.Count == 0)
             {
-                btnReturn.Enabled = false;
-                btnViewDetails.Enabled = false;
+                lblDetailVehicle.Text = "Vehicle";
+                lblDetailCustomer.Text = "Customer";
+                lblDetailDates.Text = "Period";
+                lblDetailAmount.Text = "Total: ₱ --";
+                pbVehicle.Image = null;
                 return;
             }
 
             if (dgvRentals.SelectedRows[0].DataBoundItem is not Rental rental)
                 return;
-
-            btnViewDetails.Enabled = true;
-            btnReturn.Enabled = rental.Status == RentalStatus.Active;
 
             var reservation =
                 _reservationService.GetReservationById(
@@ -220,6 +224,47 @@ namespace VRMS.Controls
         }
 
         // =========================
+        // BUTTON STATE LOGIC
+        // =========================
+
+        private void UpdateActionButtons()
+        {
+            bool hasRows = dgvRentals.Rows.Count > 0;
+            bool hasSelection = dgvRentals.SelectedRows.Count > 0;
+
+            bool canView = hasRows && hasSelection;
+
+            bool canReturn =
+                canView &&
+                dgvRentals.SelectedRows[0].DataBoundItem is Rental r &&
+                r.Status == RentalStatus.Active;
+
+            // View Details
+            btnViewDetails.Enabled = canView;
+            btnViewDetails.BackColor = canView
+                ? Color.FromArgb(52, 152, 219)
+                : Color.LightGray;
+            btnViewDetails.ForeColor = canView
+                ? Color.White
+                : Color.DarkGray;
+            btnViewDetails.Cursor = canView
+                ? Cursors.Hand
+                : Cursors.Default;
+
+            // Return Vehicle
+            btnReturn.Enabled = canReturn;
+            btnReturn.BackColor = canReturn
+                ? Color.FromArgb(241, 196, 15)
+                : Color.LightGray;
+            btnReturn.ForeColor = canReturn
+                ? Color.White
+                : Color.DarkGray;
+            btnReturn.Cursor = canReturn
+                ? Cursors.Hand
+                : Cursors.Default;
+        }
+
+        // =========================
         // BUTTONS
         // =========================
 
@@ -238,6 +283,9 @@ namespace VRMS.Controls
 
         private void BtnReturn_Click(object sender, EventArgs e)
         {
+            if (!btnReturn.Enabled)
+                return;
+
             if (dgvRentals.SelectedRows.Count == 0)
                 return;
 
