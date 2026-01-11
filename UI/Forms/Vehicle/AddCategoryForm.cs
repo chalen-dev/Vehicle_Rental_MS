@@ -8,6 +8,8 @@ namespace VRMS.UI.Forms
     public partial class AddCategoryForm : Form
     {
         private readonly VehicleService _vehicleService;
+        private VehicleCategory _currentCategory; // Track the currently selected category
+        private bool _isLoading; // Flag to prevent events during loading
 
         // This property allows the parent form to retrieve the newly created ID
         public int CreatedCategoryId { get; private set; }
@@ -19,6 +21,7 @@ namespace VRMS.UI.Forms
 
             HookEvents();
             LoadCategories();
+            ClearFields();
         }
 
         private void HookEvents()
@@ -36,14 +39,17 @@ namespace VRMS.UI.Forms
         {
             try
             {
+                _isLoading = true;
                 var categories = _vehicleService.GetAllCategories();
                 lstCategories.DataSource = null;
                 lstCategories.DataSource = categories;
                 lstCategories.DisplayMember = "Name";
                 lstCategories.ValueMember = "Id";
+                _isLoading = false;
             }
             catch (Exception ex)
             {
+                _isLoading = false;
                 MessageBox.Show($"Error loading categories: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -55,7 +61,35 @@ namespace VRMS.UI.Forms
         // Fixed lowercase 'l' to match the CS1061 Designer error
         private void lstCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Selection logic (Optional: Populate fields for editing)
+            if (_isLoading || lstCategories.SelectedIndex == -1) return;
+
+            try
+            {
+                _currentCategory = lstCategories.SelectedItem as VehicleCategory;
+                if (_currentCategory != null)
+                {
+                    // Populate basic information
+                    txtCategoryName.Text = _currentCategory.Name;
+                    txtDescription.Text = _currentCategory.Description ?? string.Empty;
+
+                    // TODO: Load rates from database if available
+                    // For now, setting default values
+                    chkDailyEnabled.Checked = true;
+                    nudDailyRate.Value = 0;
+                    chkWeeklyEnabled.Checked = true;
+                    nudWeeklyRate.Value = 0;
+                    chkMonthlyEnabled.Checked = true;
+                    nudMonthlyRate.Value = 0;
+
+                    // Update UI to indicate edit mode
+                    lblTitle.Text = "Edit Vehicle Category";
+                    btnSave.Text = "Update Category";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading category details: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void chkDailyEnabled_CheckedChanged(object sender, EventArgs e)
@@ -87,22 +121,38 @@ namespace VRMS.UI.Forms
 
             try
             {
-                // Create Category
-                CreatedCategoryId = _vehicleService.CreateCategory(
-                    name,
-                    string.IsNullOrWhiteSpace(description) ? null : description
-                );
+                if (_currentCategory != null)
+                {
+                    // Update existing category
+                    _vehicleService.UpdateCategory(
+                        _currentCategory.Id,
+                        name,
+                        string.IsNullOrWhiteSpace(description) ? null : description
+                    );
+
+                    MessageBox.Show("Category updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    // Create new category
+                    CreatedCategoryId = _vehicleService.CreateCategory(
+                        name,
+                        string.IsNullOrWhiteSpace(description) ? null : description
+                    );
+
+                    MessageBox.Show("Category added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
                 // Placeholder for saving rates from tabRates
-                // Example: SaveRates(CreatedCategoryId);
+                // Example: SaveRates(_currentCategory?.Id ?? CreatedCategoryId);
 
-                MessageBox.Show("Category added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult = DialogResult.OK;
-                Close();
+                // Reset form and reload categories
+                ClearFields();
+                LoadCategories();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to add category: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Failed to save category: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -119,12 +169,48 @@ namespace VRMS.UI.Forms
                 {
                     _vehicleService.DeleteCategory(category.Id);
                     LoadCategories();
+                    ClearFields(); // Clear fields after deletion
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        // =====================================================
+        // HELPER METHODS
+        // =====================================================
+
+        private void ClearFields()
+        {
+            _currentCategory = null;
+
+            // Clear basic information
+            txtCategoryName.Clear();
+            txtDescription.Clear();
+
+            // Reset rates to defaults
+            chkDailyEnabled.Checked = true;
+            nudDailyRate.Value = 0;
+            chkWeeklyEnabled.Checked = true;
+            nudWeeklyRate.Value = 0;
+            chkMonthlyEnabled.Checked = true;
+            nudMonthlyRate.Value = 0;
+
+            // Reset UI to indicate add mode
+            lblTitle.Text = "Vehicle Category";
+            btnSave.Text = "Save Category";
+
+            // Deselect any selected item in list
+            lstCategories.ClearSelected();
+        }
+
+        // You might also want to add this method to clear fields when user wants to add new category
+        private void AddNewCategory()
+        {
+            ClearFields();
+            txtCategoryName.Focus();
         }
     }
 }
