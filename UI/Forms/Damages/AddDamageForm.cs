@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using VRMS.Enums;
 using VRMS.Services.Damage;
 
 namespace VRMS.Forms
@@ -14,8 +15,7 @@ namespace VRMS.Forms
         // =========================
 
         private readonly DamageService _damageService;
-
-        private readonly int _vehicleInspectionId; // passed by caller
+        private readonly int _vehicleInspectionId;
         private readonly List<string> _selectedPhotos = new();
 
         // =========================
@@ -27,7 +27,7 @@ namespace VRMS.Forms
             InitializeComponent();
 
             _vehicleInspectionId = vehicleInspectionId;
-            _damageService = new DamageService(); // TEMP (matches your current service)
+            _damageService = new DamageService(); // TEMP: direct instantiation
 
             // EVENTS
             Load += AddDamageForm_Load;
@@ -40,11 +40,11 @@ namespace VRMS.Forms
         // LOAD
         // =========================
 
-        private void AddDamageForm_Load(object sender, EventArgs e)
+        private void AddDamageForm_Load(object? sender, EventArgs e)
         {
-            // Default selections
-            if (cbDamageType.Items.Count > 0)
-                cbDamageType.SelectedIndex = 0;
+            // Populate damage types from enum
+            cbDamageType.DataSource =
+                Enum.GetValues(typeof(DamageType));
 
             rbSeverityMinor.Checked = true;
 
@@ -126,25 +126,32 @@ namespace VRMS.Forms
             {
                 ValidateForm();
 
-                // ---------------------------------
-                // TEMP DAMAGE CREATION (CATALOG)
-                // ---------------------------------
+                // -------------------------------
+                // DAMAGE CREATION (CATALOG)
+                // -------------------------------
+
+                var damageType =
+                    (DamageType)cbDamageType.SelectedItem!;
+
                 int damageId = _damageService.CreateDamage(
-                    description: $"{cbDamageType.Text} - {txtDescription.Text.Trim()}",
+                    damageType: damageType,
+                    description: txtDescription.Text.Trim(),
                     estimatedCost: numEstimatedCost.Value
                 );
 
-                // ---------------------------------
+                // -------------------------------
                 // DAMAGE REPORT CREATION
-                // ---------------------------------
+                // -------------------------------
+
                 int reportId = _damageService.CreateDamageReport(
                     _vehicleInspectionId,
                     damageId
                 );
 
-                // ---------------------------------
-                // SAVE PHOTOS (TEMP: FIRST PHOTO ONLY)
-                // ---------------------------------
+                // -------------------------------
+                // SAVE PHOTO (TEMP: FIRST ONLY)
+                // -------------------------------
+
                 if (_selectedPhotos.Count > 0)
                 {
                     using var stream =
