@@ -9,6 +9,10 @@ public static class M_1001_CreateUserProcedures
                                       {SP_Users_GetById.Sql()}
                                       {SP_Users_GetByUsername.Sql()}
                                       {SP_Users_Authenticate.Sql()}
+                                      {SP_Users_GetAll.Sql()}
+                                      {SP_Users_GetAllActive.Sql()}
+                                      {SP_Users_GetByRole.Sql()}
+                                      {SP_Users_GetPage.Sql()}
                                       {SP_Users_Deactivate.Sql()}
                                       {SP_Users_UpdatePassword.Sql()}
                                       {SP_Users_UpdateProfile.Sql()}
@@ -21,10 +25,15 @@ public static class M_1001_CreateUserProcedures
                                    DROP PROCEDURE IF EXISTS sp_users_get_by_id;
                                    DROP PROCEDURE IF EXISTS sp_users_get_by_username;
                                    DROP PROCEDURE IF EXISTS sp_users_authenticate;
+                                   DROP PROCEDURE IF EXISTS sp_users_get_all;
+                                   DROP PROCEDURE IF EXISTS sp_users_get_all_active;
+                                   DROP PROCEDURE IF EXISTS sp_users_get_by_role;
+                                   DROP PROCEDURE IF EXISTS sp_users_get_page;
                                    DROP PROCEDURE IF EXISTS sp_users_deactivate;
                                    DROP PROCEDURE IF EXISTS sp_users_update_password;
                                    DROP PROCEDURE IF EXISTS sp_users_update_profile;
                                    DROP PROCEDURE IF EXISTS sp_users_update_photo;
                                    DROP PROCEDURE IF EXISTS sp_users_update_self_profile;
                                    """;
+
 }

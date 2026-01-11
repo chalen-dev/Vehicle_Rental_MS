@@ -145,6 +145,61 @@ public class UserRepository
         );
     }
 
+    public IEnumerable<User> GetAll()
+    {
+        var table = DB.Query(
+            "CALL sp_users_get_all();"
+        );
+
+        var list = new List<User>();
+
+        foreach (DataRow row in table.Rows)
+        {
+            list.Add(Map(row));
+        }
+
+        return list;
+    }
+    
+    public IEnumerable<User> GetAllActive()
+    {
+        var table = DB.Query("CALL sp_users_get_all_active();");
+
+        var list = new List<User>();
+        foreach (DataRow row in table.Rows)
+            list.Add(Map(row));
+
+        return list;
+    }
+
+    public IEnumerable<User> GetByRole(UserRole role)
+    {
+        var table = DB.Query(
+            "CALL sp_users_get_by_role(@role);",
+            ("@role", role.ToString())
+        );
+
+        var list = new List<User>();
+        foreach (DataRow row in table.Rows)
+            list.Add(Map(row));
+
+        return list;
+    }
+
+    public IEnumerable<User> GetPage(int offset, int limit)
+    {
+        var table = DB.Query(
+            "CALL sp_users_get_page(@offset,@limit);",
+            ("@offset", offset),
+            ("@limit", limit)
+        );
+
+        var list = new List<User>();
+        foreach (DataRow row in table.Rows)
+            list.Add(Map(row));
+
+        return list;
+    }
 
 
     // ----------------------------

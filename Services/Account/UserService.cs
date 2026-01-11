@@ -124,6 +124,50 @@ public class UserService
 
         return user;
     }
+    
+    // ----------------------------
+    // LISTING (ADMIN / READ-ONLY)
+    // ----------------------------
+
+    public IEnumerable<User> ListUsers()
+        => _userRepo.GetAll();
+
+    public IEnumerable<User> ListActiveUsers()
+        => _userRepo.GetAllActive();
+
+    public IEnumerable<User> ListUsersByRole(UserRole role)
+        => _userRepo.GetByRole(role);
+
+    public IEnumerable<User> ListUsersPage(int offset, int limit)
+    {
+        if (offset < 0)
+            throw new InvalidOperationException("Offset cannot be negative.");
+
+        if (limit <= 0)
+            throw new InvalidOperationException("Limit must be greater than zero.");
+
+        return _userRepo.GetPage(offset, limit);
+    }
+
+    // ----------------------------
+    // ADMIN PASSWORD RESET
+    // ----------------------------
+
+    public void ResetPassword(
+        int userId,
+        string newPlainPassword)
+    {
+        if (string.IsNullOrWhiteSpace(newPlainPassword))
+            throw new InvalidOperationException(
+                "Password cannot be empty.");
+
+        var hash =
+            Password.Hash(newPlainPassword);
+
+        _userRepo.UpdatePassword(
+            userId,
+            hash);
+    }
 
     // ----------------------------
     // DEACTIVATE

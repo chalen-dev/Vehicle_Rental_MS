@@ -165,8 +165,11 @@ namespace VRMS.Forms
                     break;
 
                 case "btnAdmin":
-                    ShowPlaceholder("Admin Management");
-                    UpdateHeaderTitle("Admin", "System Management");
+                    ShowView(
+                        new AdminView(_userService),
+                        "Admin",
+                        "System Management"
+                    );
                     break;
             }
         }
