@@ -18,6 +18,9 @@
         private void InitializeComponent()
         {
             this.pnlLoginCard = new System.Windows.Forms.Panel();
+            this.rbCustomer = new System.Windows.Forms.RadioButton();
+            this.rbAgent = new System.Windows.Forms.RadioButton();
+            this.pnlUserType = new System.Windows.Forms.Panel();
             this.lblSubTitle = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -28,11 +31,13 @@
             this.btnLogin = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.pnlLoginCard.SuspendLayout();
+            this.pnlUserType.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlLoginCard
             // 
             this.pnlLoginCard.BackColor = System.Drawing.Color.White;
+            this.pnlLoginCard.Controls.Add(this.pnlUserType);
             this.pnlLoginCard.Controls.Add(this.lblSubTitle);
             this.pnlLoginCard.Controls.Add(this.label3);
             this.pnlLoginCard.Controls.Add(this.label1);
@@ -43,8 +48,42 @@
             this.pnlLoginCard.Controls.Add(this.btnLogin);
             this.pnlLoginCard.Location = new System.Drawing.Point(90, 60);
             this.pnlLoginCard.Name = "pnlLoginCard";
-            this.pnlLoginCard.Size = new System.Drawing.Size(360, 420);
+            this.pnlLoginCard.Size = new System.Drawing.Size(360, 460);
             this.pnlLoginCard.TabIndex = 0;
+            // 
+            // rbCustomer
+            // 
+            this.rbCustomer.AutoSize = true;
+            this.rbCustomer.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.rbCustomer.Location = new System.Drawing.Point(90, 3);
+            this.rbCustomer.Name = "rbCustomer";
+            this.rbCustomer.Size = new System.Drawing.Size(74, 19);
+            this.rbCustomer.TabIndex = 2;
+            this.rbCustomer.TabStop = true;
+            this.rbCustomer.Text = "Customer";
+            this.rbCustomer.UseVisualStyleBackColor = true;
+            // 
+            // rbAgent
+            // 
+            this.rbAgent.AutoSize = true;
+            this.rbAgent.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.rbAgent.Location = new System.Drawing.Point(3, 3);
+            this.rbAgent.Name = "rbAgent";
+            this.rbAgent.Size = new System.Drawing.Size(57, 19);
+            this.rbAgent.TabIndex = 1;
+            this.rbAgent.TabStop = true;
+            this.rbAgent.Text = "Agent";
+            this.rbAgent.UseVisualStyleBackColor = true;
+            this.rbAgent.Checked = true;
+            // 
+            // pnlUserType
+            // 
+            this.pnlUserType.Controls.Add(this.rbAgent);
+            this.pnlUserType.Controls.Add(this.rbCustomer);
+            this.pnlUserType.Location = new System.Drawing.Point(33, 225);
+            this.pnlUserType.Name = "pnlUserType";
+            this.pnlUserType.Size = new System.Drawing.Size(294, 30);
+            this.pnlUserType.TabIndex = 8;
             // 
             // label3
             // 
@@ -114,7 +153,7 @@
             this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(33, 250);
+            this.btnLogin.Location = new System.Drawing.Point(33, 270);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(294, 45);
             this.btnLogin.TabIndex = 6;
@@ -128,7 +167,7 @@
             this.btnGoToRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGoToRegister.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Underline);
             this.btnGoToRegister.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.btnGoToRegister.Location = new System.Drawing.Point(33, 310);
+            this.btnGoToRegister.Location = new System.Drawing.Point(33, 330);
             this.btnGoToRegister.Name = "btnGoToRegister";
             this.btnGoToRegister.Size = new System.Drawing.Size(294, 30);
             this.btnGoToRegister.TabIndex = 7;
@@ -143,7 +182,7 @@
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExit.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.btnExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(165)))), ((int)(((byte)(166)))));
-            this.btnExit.Location = new System.Drawing.Point(220, 500);
+            this.btnExit.Location = new System.Drawing.Point(220, 540);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(100, 30);
             this.btnExit.TabIndex = 1;
@@ -159,9 +198,11 @@
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.pnlLoginCard);
             this.Name = "LoginUserControl";
-            this.Size = new System.Drawing.Size(540, 560);
+            this.Size = new System.Drawing.Size(540, 600);
             this.pnlLoginCard.ResumeLayout(false);
             this.pnlLoginCard.PerformLayout();
+            this.pnlUserType.ResumeLayout(false);
+            this.pnlUserType.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -178,5 +219,8 @@
         private System.Windows.Forms.Button btnGoToRegister;
         private System.Windows.Forms.Panel pnlLoginCard;
         private System.Windows.Forms.Label lblSubTitle;
+        private System.Windows.Forms.Panel pnlUserType;
+        private System.Windows.Forms.RadioButton rbAgent;
+        private System.Windows.Forms.RadioButton rbCustomer;
     }
 }

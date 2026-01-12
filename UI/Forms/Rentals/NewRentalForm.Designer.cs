@@ -29,9 +29,7 @@
         private void InitializeComponent()
         {
             label1 = new Label();
-            cbCustomer = new ComboBox();
             label2 = new Label();
-            cbVehicle = new ComboBox();
             label3 = new Label();
             txtOdometer = new TextBox();
             label4 = new Label();
@@ -47,7 +45,17 @@
             dtReturn = new DateTimePicker();
             pnlHeader = new Panel();
             lblHeaderTitle = new Label();
+            btnSelectCustomer = new Button();
+            lblSelectedCustomer = new Label();
+            btnSelectVehicle = new Button();
+            lblSelectedVehicle = new Label();
+            btnClearCustomer = new Button();
+            btnClearVehicle = new Button();
+            panelCustomer = new Panel();
+            panelVehicle = new Panel();
             pnlHeader.SuspendLayout();
+            panelCustomer.SuspendLayout();
+            panelVehicle.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -62,17 +70,6 @@
             label1.TabIndex = 0;
             label1.Text = "Select Customer:";
             // 
-            // cbCustomer
-            // 
-            cbCustomer.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbCustomer.Font = new Font("Segoe UI", 10F);
-            cbCustomer.FormattingEnabled = true;
-            cbCustomer.Location = new Point(23, 110);
-            cbCustomer.Margin = new Padding(4, 3, 4, 3);
-            cbCustomer.Name = "cbCustomer";
-            cbCustomer.Size = new Size(513, 25);
-            cbCustomer.TabIndex = 1;
-            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -84,17 +81,6 @@
             label2.Size = new Size(83, 15);
             label2.TabIndex = 2;
             label2.Text = "Select Vehicle:";
-            // 
-            // cbVehicle
-            // 
-            cbVehicle.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbVehicle.Font = new Font("Segoe UI", 10F);
-            cbVehicle.FormattingEnabled = true;
-            cbVehicle.Location = new Point(23, 179);
-            cbVehicle.Margin = new Padding(4, 3, 4, 3);
-            cbVehicle.Name = "cbVehicle";
-            cbVehicle.Size = new Size(513, 25);
-            cbVehicle.TabIndex = 3;
             // 
             // label3
             // 
@@ -114,9 +100,9 @@
             txtOdometer.Location = new Point(23, 317);
             txtOdometer.Margin = new Padding(4, 3, 4, 3);
             txtOdometer.Name = "txtOdometer";
+            txtOdometer.ReadOnly = true;
             txtOdometer.Size = new Size(233, 25);
             txtOdometer.TabIndex = 5;
-            txtOdometer.ReadOnly = true; 
             txtOdometer.TabStop = false;
             // 
             // label4
@@ -180,6 +166,7 @@
             // btnSave
             // 
             btnSave.BackColor = Color.FromArgb(46, 204, 113);
+            btnSave.Enabled = false;
             btnSave.FlatAppearance.BorderSize = 0;
             btnSave.FlatStyle = FlatStyle.Flat;
             btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -276,12 +263,132 @@
             lblHeaderTitle.TabIndex = 0;
             lblHeaderTitle.Text = "New Rental Record";
             // 
+            // btnSelectCustomer
+            // 
+            btnSelectCustomer.BackColor = Color.FromArgb(52, 152, 219);
+            btnSelectCustomer.FlatAppearance.BorderSize = 0;
+            btnSelectCustomer.FlatStyle = FlatStyle.Flat;
+            btnSelectCustomer.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnSelectCustomer.ForeColor = Color.White;
+            btnSelectCustomer.Location = new Point(0, 0);
+            btnSelectCustomer.Margin = new Padding(4, 3, 4, 3);
+            btnSelectCustomer.Name = "btnSelectCustomer";
+            btnSelectCustomer.Size = new Size(140, 32);
+            btnSelectCustomer.TabIndex = 18;
+            btnSelectCustomer.Text = "Select Customer";
+            btnSelectCustomer.UseVisualStyleBackColor = false;
+            btnSelectCustomer.Click += btnSelectCustomer_Click;
+            // 
+            // lblSelectedCustomer
+            // 
+            lblSelectedCustomer.AutoSize = true;
+            lblSelectedCustomer.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSelectedCustomer.ForeColor = Color.FromArgb(44, 62, 80);
+            lblSelectedCustomer.Location = new Point(146, 6);
+            lblSelectedCustomer.Margin = new Padding(4, 0, 4, 0);
+            lblSelectedCustomer.Name = "lblSelectedCustomer";
+            lblSelectedCustomer.Size = new Size(98, 19);
+            lblSelectedCustomer.TabIndex = 19;
+            lblSelectedCustomer.Text = "Not selected...";
+            lblSelectedCustomer.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btnSelectVehicle
+            // 
+            btnSelectVehicle.BackColor = Color.FromArgb(52, 152, 219);
+            btnSelectVehicle.FlatAppearance.BorderSize = 0;
+            btnSelectVehicle.FlatStyle = FlatStyle.Flat;
+            btnSelectVehicle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            btnSelectVehicle.ForeColor = Color.White;
+            btnSelectVehicle.Location = new Point(0, 0);
+            btnSelectVehicle.Margin = new Padding(4, 3, 4, 3);
+            btnSelectVehicle.Name = "btnSelectVehicle";
+            btnSelectVehicle.Size = new Size(140, 32);
+            btnSelectVehicle.TabIndex = 20;
+            btnSelectVehicle.Text = "Select Vehicle";
+            btnSelectVehicle.UseVisualStyleBackColor = false;
+            btnSelectVehicle.Click += btnSelectVehicle_Click;
+            // 
+            // lblSelectedVehicle
+            // 
+            lblSelectedVehicle.AutoSize = true;
+            lblSelectedVehicle.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblSelectedVehicle.ForeColor = Color.FromArgb(44, 62, 80);
+            lblSelectedVehicle.Location = new Point(146, 6);
+            lblSelectedVehicle.Margin = new Padding(4, 0, 4, 0);
+            lblSelectedVehicle.Name = "lblSelectedVehicle";
+            lblSelectedVehicle.Size = new Size(98, 19);
+            lblSelectedVehicle.TabIndex = 21;
+            lblSelectedVehicle.Text = "Not selected...";
+            lblSelectedVehicle.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // btnClearCustomer
+            // 
+            btnClearCustomer.BackColor = Color.FromArgb(231, 76, 60);
+            btnClearCustomer.FlatAppearance.BorderSize = 0;
+            btnClearCustomer.FlatStyle = FlatStyle.Flat;
+            btnClearCustomer.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnClearCustomer.ForeColor = Color.White;
+            btnClearCustomer.Location = new Point(380, 0);
+            btnClearCustomer.Margin = new Padding(4, 3, 4, 3);
+            btnClearCustomer.Name = "btnClearCustomer";
+            btnClearCustomer.Size = new Size(133, 32);
+            btnClearCustomer.TabIndex = 22;
+            btnClearCustomer.Text = "Clear Selection";
+            btnClearCustomer.UseVisualStyleBackColor = false;
+            btnClearCustomer.Click += btnClearCustomer_Click;
+            btnClearCustomer.Visible = false;
+            // 
+            // btnClearVehicle
+            // 
+            btnClearVehicle.BackColor = Color.FromArgb(231, 76, 60);
+            btnClearVehicle.FlatAppearance.BorderSize = 0;
+            btnClearVehicle.FlatStyle = FlatStyle.Flat;
+            btnClearVehicle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnClearVehicle.ForeColor = Color.White;
+            btnClearVehicle.Location = new Point(380, 0);
+            btnClearVehicle.Margin = new Padding(4, 3, 4, 3);
+            btnClearVehicle.Name = "btnClearVehicle";
+            btnClearVehicle.Size = new Size(133, 32);
+            btnClearVehicle.TabIndex = 23;
+            btnClearVehicle.Text = "Clear Selection";
+            btnClearVehicle.UseVisualStyleBackColor = false;
+            btnClearVehicle.Click += btnClearVehicle_Click;
+            btnClearVehicle.Visible = false;
+            // 
+            // panelCustomer
+            // 
+            panelCustomer.BackColor = Color.White;
+            panelCustomer.BorderStyle = BorderStyle.FixedSingle;
+            panelCustomer.Controls.Add(btnSelectCustomer);
+            panelCustomer.Controls.Add(lblSelectedCustomer);
+            panelCustomer.Controls.Add(btnClearCustomer);
+            panelCustomer.Location = new Point(23, 108);
+            panelCustomer.Margin = new Padding(4, 3, 4, 3);
+            panelCustomer.Name = "panelCustomer";
+            panelCustomer.Size = new Size(513, 32);
+            panelCustomer.TabIndex = 24;
+            // 
+            // panelVehicle
+            // 
+            panelVehicle.BackColor = Color.White;
+            panelVehicle.BorderStyle = BorderStyle.FixedSingle;
+            panelVehicle.Controls.Add(btnSelectVehicle);
+            panelVehicle.Controls.Add(lblSelectedVehicle);
+            panelVehicle.Controls.Add(btnClearVehicle);
+            panelVehicle.Location = new Point(23, 177);
+            panelVehicle.Margin = new Padding(4, 3, 4, 3);
+            panelVehicle.Name = "panelVehicle";
+            panelVehicle.Size = new Size(513, 32);
+            panelVehicle.TabIndex = 25;
+            // 
             // NewRentalForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(565, 705);
+            Controls.Add(panelVehicle);
+            Controls.Add(panelCustomer);
             Controls.Add(pnlHeader);
             Controls.Add(dtReturn);
             Controls.Add(label7);
@@ -296,9 +403,7 @@
             Controls.Add(label4);
             Controls.Add(txtOdometer);
             Controls.Add(label3);
-            Controls.Add(cbVehicle);
             Controls.Add(label2);
-            Controls.Add(cbCustomer);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(4, 3, 4, 3);
@@ -309,6 +414,10 @@
             Text = "Rental Processing";
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
+            panelCustomer.ResumeLayout(false);
+            panelCustomer.PerformLayout();
+            panelVehicle.ResumeLayout(false);
+            panelVehicle.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
 
@@ -317,9 +426,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cbCustomer;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox cbVehicle;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtOdometer;
         private System.Windows.Forms.Label label4;
@@ -335,5 +442,13 @@
         private System.Windows.Forms.DateTimePicker dtReturn;
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblHeaderTitle;
+        private System.Windows.Forms.Button btnSelectCustomer;
+        private System.Windows.Forms.Label lblSelectedCustomer;
+        private System.Windows.Forms.Button btnSelectVehicle;
+        private System.Windows.Forms.Label lblSelectedVehicle;
+        private System.Windows.Forms.Button btnClearCustomer;
+        private System.Windows.Forms.Button btnClearVehicle;
+        private System.Windows.Forms.Panel panelCustomer;
+        private System.Windows.Forms.Panel panelVehicle;
     }
 }

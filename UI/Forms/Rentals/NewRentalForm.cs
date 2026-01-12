@@ -12,19 +12,21 @@ namespace VRMS.UI.Forms.Rentals
     {
         private bool _isLoaded = false;
         private decimal _lastCalculatedTotal = 0m;
-        
+        private Models.Customers.Customer _selectedCustomer = null;
+        private Vehicle _selectedVehicle = null;
+
         private readonly CustomerService _customerService;
         private readonly VehicleService _vehicleService;
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
         private readonly RateService _rateService;
-        
+
         public NewRentalForm(
             CustomerService customerService,
             VehicleService vehicleService,
             ReservationService reservationService,
             RentalService rentalService,
-            RateService rateService) 
+            RateService rateService)
         {
             InitializeComponent();
 
@@ -32,10 +34,10 @@ namespace VRMS.UI.Forms.Rentals
             _vehicleService = vehicleService;
             _reservationService = reservationService;
             _rentalService = rentalService;
-            _rateService = rateService; // ADD
-            
-            dtPickup.ValueChanged += (_, __) => RecalculateTotal();         // ADD
-            dtReturn.ValueChanged += (_, __) => RecalculateTotal();         // ADD
+            _rateService = rateService;
+
+            dtPickup.ValueChanged += (_, __) => RecalculateTotal();
+            dtReturn.ValueChanged += (_, __) => RecalculateTotal();
 
             Load += NewRentalForm_Load;
             btnCancel.Click += (_, __) => Close();
@@ -46,43 +48,11 @@ namespace VRMS.UI.Forms.Rentals
         // -------------------------------
         private void NewRentalForm_Load(object? sender, EventArgs e)
         {
-            LoadCustomers();
-            LoadVehicles();
             LoadFuelLevels();
-
-            _isLoaded = true;   
-
-            RecalculateTotal();
+            UpdateSaveButtonState();
+            _isLoaded = true;
         }
 
-        private void LoadCustomers()
-        {
-            cbCustomer.DataSource = null;
-            cbCustomer.DataSource = _customerService.GetAllCustomers();
-            cbCustomer.DisplayMember = "FullName"; // or build manually
-            cbCustomer.ValueMember = "Id";
-        }
-
-        private void LoadVehicles()
-        {
-            cbVehicle.DataSource = null;
-            cbVehicle.DataSource =
-                _vehicleService
-                    .GetAllVehicles()
-                    .FindAll(v => v.Status == VehicleStatus.Available);
-
-            cbVehicle.DisplayMember = "DisplayName";
-            cbVehicle.ValueMember = "Id";
-
-            // Make sure something is selected so SelectedIndexChanged fires / UI shows an odometer
-            if (cbVehicle.Items.Count > 0 && cbVehicle.SelectedIndex == -1)
-                cbVehicle.SelectedIndex = 0;
-
-            // Populate odometer for the currently selected vehicle
-            UpdateOdometerFromSelectedVehicle();
-        }
-
-        
         private void LoadFuelLevels()
         {
             cbFuel.DataSource =
@@ -101,21 +71,134 @@ namespace VRMS.UI.Forms.Rentals
             cbFuel.SelectedValue = FuelLevel.Full;
         }
 
+        // -------------------------------
+        // CUSTOMER SELECTION
+        // -------------------------------
+        private void btnSelectCustomer_Click(object sender, EventArgs e)
+        {
+            // TODO: Implement customer selection dialog
+            // For now, we'll use a mock example
+
+            // Example: Show a dialog to select customer
+            // using var customerSelectForm = new CustomerSelectionForm(_customerService);
+            // if (customerSelectForm.ShowDialog() == DialogResult.OK)
+            // {
+            //     _selectedCustomer = customerSelectForm.SelectedCustomer;
+            //     UpdateCustomerDisplay();
+            // }
+
+            // Mock implementation - replace with actual dialog
+            var customers = _customerService.GetAllCustomers();
+            if (customers.Count > 0)
+            {
+                _selectedCustomer = customers[0]; // Select first customer for demo
+                UpdateCustomerDisplay();
+            }
+        }
+
+        private void btnClearCustomer_Click(object sender, EventArgs e)
+        {
+            _selectedCustomer = null;
+            UpdateCustomerDisplay();
+            RecalculateTotal();
+        }
+
+        private void UpdateCustomerDisplay()
+        {
+            if (_selectedCustomer != null)
+            {
+                lblSelectedCustomer.Text = $"{_selectedCustomer.FullName}";
+                lblSelectedCustomer.ForeColor = Color.FromArgb(44, 62, 80);
+                btnClearCustomer.Visible = true;
+            }
+            else
+            {
+                lblSelectedCustomer.Text = "Not selected...";
+                lblSelectedCustomer.ForeColor = Color.Gray;
+                btnClearCustomer.Visible = false;
+            }
+
+            UpdateSaveButtonState();
+        }
+
+        // -------------------------------
+        // VEHICLE SELECTION
+        // -------------------------------
+        private void btnSelectVehicle_Click(object sender, EventArgs e)
+        {
+            // TODO: Implement vehicle selection dialog
+            // For now, we'll use a mock example
+
+            // Example: Show a dialog to select available vehicle
+            // var availableVehicles = _vehicleService.GetAllVehicles()
+            //     .FindAll(v => v.Status == VehicleStatus.Available);
+            // using var vehicleSelectForm = new VehicleSelectionForm(availableVehicles);
+            // if (vehicleSelectForm.ShowDialog() == DialogResult.OK)
+            // {
+            //     _selectedVehicle = vehicleSelectForm.SelectedVehicle;
+            //     UpdateVehicleDisplay();
+            // }
+
+            // Mock implementation - replace with actual dialog
+            var vehicles = _vehicleService.GetAllVehicles()
+                .FindAll(v => v.Status == VehicleStatus.Available);
+            if (vehicles.Count > 0)
+            {
+                _selectedVehicle = vehicles[0]; // Select first vehicle for demo
+                UpdateVehicleDisplay();
+            }
+        }
+
+        private void btnClearVehicle_Click(object sender, EventArgs e)
+        {
+            _selectedVehicle = null;
+            UpdateVehicleDisplay();
+            RecalculateTotal();
+        }
+
+        private void UpdateVehicleDisplay()
+        {
+            if (_selectedVehicle != null)
+            {
+                lblSelectedVehicle.Text = $"{_selectedVehicle.Make} {_selectedVehicle.Model} ({_selectedVehicle.LicensePlate})";
+                lblSelectedVehicle.ForeColor = Color.FromArgb(44, 62, 80);
+                btnClearVehicle.Visible = true;
+
+                // Update odometer
+                txtOdometer.Text = _selectedVehicle.Odometer.ToString();
+            }
+            else
+            {
+                lblSelectedVehicle.Text = "Not selected...";
+                lblSelectedVehicle.ForeColor = Color.Gray;
+                btnClearVehicle.Visible = false;
+
+                // Clear odometer
+                txtOdometer.Text = string.Empty;
+            }
+
+            UpdateSaveButtonState();
+            RecalculateTotal();
+        }
+
+        // -------------------------------
+        // TOTAL CALCULATION
+        // -------------------------------
         private void RecalculateTotal()
         {
             if (!_isLoaded)
                 return;
 
-            if (cbVehicle.SelectedItem is not Vehicle vehicle)
+            if (_selectedVehicle == null)
             {
-                lblTotal.Text = "Total Due Today: ₱0.00";
+                lblTotal.Text = "Total: ₱0.00";
                 _lastCalculatedTotal = 0m;
                 return;
             }
 
             if (dtReturn.Value <= dtPickup.Value)
             {
-                lblTotal.Text = "Total Due Today: ₱0.00";
+                lblTotal.Text = "Total: ₱0.00";
                 _lastCalculatedTotal = 0m;
                 return;
             }
@@ -124,45 +207,20 @@ namespace VRMS.UI.Forms.Rentals
                 _rateService.CalculateRentalCost(
                     dtPickup.Value,
                     dtReturn.Value,
-                    vehicle.VehicleCategoryId);
+                    _selectedVehicle.VehicleCategoryId);
 
             var category =
                 _vehicleService.GetCategoryById(
-                    vehicle.VehicleCategoryId);
+                    _selectedVehicle.VehicleCategoryId);
 
             decimal totalDueToday =
-                baseRental + category.SecurityDeposit;
+                baseRental + (category?.SecurityDeposit ?? 0m);
 
             _lastCalculatedTotal = totalDueToday;
 
             lblTotal.Text =
-                $"Total Due Today: ₱{totalDueToday:N2}";
+                $"Total: ₱{totalDueToday:N2}";
         }
-
-
-        
-        private void CbVehicle_SelectedIndexChanged(object? sender, EventArgs e)
-        {
-            UpdateOdometerFromSelectedVehicle();
-            RecalculateTotal(); 
-        }
-
-        private void UpdateOdometerFromSelectedVehicle()
-        {
-            // Ensure user can't type into the odometer field
-            txtOdometer.ReadOnly = true;
-            txtOdometer.TabStop = false;
-
-            if (cbVehicle.SelectedItem is Vehicle v)
-            {
-                txtOdometer.Text = v.Odometer.ToString();
-            }
-            else
-            {
-                txtOdometer.Text = string.Empty;
-            }
-        }
-
 
         // -------------------------------
         // SAVE / NEXT STEP
@@ -171,11 +229,11 @@ namespace VRMS.UI.Forms.Rentals
         {
             try
             {
-                if (cbCustomer.SelectedItem is not Models.Customers.Customer customer)
+                if (_selectedCustomer == null)
                     throw new InvalidOperationException(
                         "Please select a customer.");
 
-                if (cbVehicle.SelectedItem is not Vehicle vehicle)
+                if (_selectedVehicle == null)
                     throw new InvalidOperationException(
                         "Please select a vehicle.");
 
@@ -189,10 +247,10 @@ namespace VRMS.UI.Forms.Rentals
 
                 // UI-friendly strings
                 string customerName =
-                    $"{customer.FirstName} {customer.LastName}";
+                    $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}";
 
                 string vehicleName =
-                    $"{vehicle.Make} {vehicle.Model} ({vehicle.LicensePlate})";
+                    $"{_selectedVehicle.Make} {_selectedVehicle.Model} ({_selectedVehicle.LicensePlate})";
 
                 decimal estimatedTotal = _lastCalculatedTotal;
 
@@ -207,19 +265,19 @@ namespace VRMS.UI.Forms.Rentals
                     // Create reservation (Pending)
                     int reservationId =
                         _reservationService.CreateReservation(
-                            customer.Id,
-                            vehicle.Id,
+                            _selectedCustomer.Id,
+                            _selectedVehicle.Id,
                             dtPickup.Value.Date,
                             dtReturn.Value.Date
                         );
 
                     // Confirm reservation
                     _reservationService.ConfirmReservation(reservationId);
-                    
+
                     // Get selected fuel level
                     FuelLevel startFuelLevel =
                         (FuelLevel)cbFuel.SelectedValue;
-                    
+
                     // Start rental
                     int rentalId =
                         _rentalService.StartRental(
@@ -237,8 +295,6 @@ namespace VRMS.UI.Forms.Rentals
                     DialogResult = DialogResult.OK;
                     Close();
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -248,6 +304,14 @@ namespace VRMS.UI.Forms.Rentals
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        // -------------------------------
+        // HELPER METHODS
+        // -------------------------------
+        private void UpdateSaveButtonState()
+        {
+            btnSave.Enabled = (_selectedCustomer != null && _selectedVehicle != null);
         }
     }
 }

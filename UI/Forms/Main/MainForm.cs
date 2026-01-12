@@ -7,7 +7,8 @@ using VRMS.Forms;
 using VRMS.Controls.UserProfile;
 using VRMS.Repositories.Accounts;
 using VRMS.Services.Account;
-using VRMS.UI.Forms; // Add this for UserProfileView
+using VRMS.UI.Forms;
+using VRMS.UI.Controls.CustomerVehicleCatalog;
 
 namespace VRMS.Forms
 {
@@ -17,7 +18,7 @@ namespace VRMS.Forms
 
         private readonly UserService _userService;
 
-        // THEME COLORS (match NewRentalForm)
+        // THEME COLORS
         private readonly Color normalColor = Color.Transparent;
         private readonly Color hoverColor = Color.FromArgb(46, 204, 113);
         private readonly Color activeColor = Color.FromArgb(39, 174, 96);
@@ -31,45 +32,98 @@ namespace VRMS.Forms
             SetupForm();
         }
 
+        // =====================================================
+        // ROLE HELPERS
+        // =====================================================
+
+        private bool IsCustomer()
+        {
+            return Program.CurrentUserRole.Equals("Customer", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool IsAdmin()
+        {
+            return Program.CurrentUserRole.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+        }
+
+        // =====================================================
+        // INITIAL SETUP
+        // =====================================================
 
         private void SetupForm()
         {
-            // User info in sidebar
+            // Sidebar user info
             if (lbluserInfo != null)
             {
                 lbluserInfo.Text =
                     $"Welcome,\n{Program.CurrentUsername}\n({Program.CurrentUserRole})";
             }
 
-            // Set header user info
+            // Header user info
             if (mainHeader != null)
             {
                 mainHeader.SetUser(Program.CurrentUsername, Program.CurrentUserRole);
-
-                // Subscribe to user info click event
                 mainHeader.UserInfoClicked += MainHeader_UserInfoClicked;
             }
 
             Text = $"Vehicle Rental System - {Program.CurrentUsername}";
 
-            // Role-based access
-            if (Program.CurrentUserRole != "Admin" && btnAdmin != null)
+            ApplyRoleBasedVisibility();
+            SetupButtonEvents();
+            LoadDefaultView();
+        }
+
+        private void ApplyRoleBasedVisibility()
+        {
+            // CUSTOMER UI RULES
+            if (IsCustomer())
             {
+                btnCustomers.Visible = false;
+                btnReports.Visible = false;
                 btnAdmin.Visible = false;
             }
 
-            SetupButtonEvents();
-
-            // Default view
-            ActivateButton(btnDashboard);
-            ShowView(new DashboardView(), "Dashboard", "Overview and Key Metrics");
+            // NON-ADMIN RULES
+            if (!IsAdmin())
+            {
+                btnAdmin.Visible = false;
+            }
         }
+
+        private void LoadDefaultView()
+        {
+            if (IsCustomer())
+            {
+                ActivateButton(btnVehicles);
+                ShowView(
+                    new CustomerVehicleCatalog(),
+                    "Vehicle Catalog",
+                    "Browse & rent available vehicles"
+                );
+            }
+            else
+            {
+                ActivateButton(btnDashboard);
+                ShowView(
+                    new DashboardView(),
+                    "Dashboard",
+                    "Overview and Key Metrics"
+                );
+            }
+        }
+
+        // =====================================================
+        // HEADER EVENTS
+        // =====================================================
 
         private void MainHeader_UserInfoClicked(object sender, EventArgs e)
         {
-            // Navigate to User Profile when header user info is clicked
             NavigateToUserProfile();
         }
+
+        // =====================================================
+        // NAVIGATION BUTTONS
+        // =====================================================
 
         private void SetupButtonEvents()
         {
@@ -88,7 +142,6 @@ namespace VRMS.Forms
             {
                 if (button == null) continue;
 
-                // Ensure clean base state
                 button.BackColor = normalColor;
                 button.FlatAppearance.BorderSize = 0;
 
@@ -124,48 +177,84 @@ namespace VRMS.Forms
 
         private void ActivateButton(Button button)
         {
-            // Reset previous
             if (activeButton != null)
             {
                 activeButton.BackColor = normalColor;
-                activeButton.Font = new Font(activeButton.Font, FontStyle.Bold);
             }
 
-            // Activate new
             button.BackColor = activeColor;
             activeButton = button;
         }
+
+        // =====================================================
+        // ROLE-BASED NAVIGATION
+        // =====================================================
 
         private void HandleNavigation(Button button)
         {
             switch (button.Name)
             {
                 case "btnDashboard":
-                    ShowView(new DashboardView(), "Dashboard", "Overview and Key Metrics");
+                    ShowView(
+                        new DashboardView(),
+                        "Dashboard",
+                        "Overview and Key Metrics"
+                    );
                     break;
 
                 case "btnVehicles":
-                    ShowView(new VehiclesView(), "Vehicles", "Manage Fleet Inventory");
+                    if (IsCustomer())
+                    {
+                        ShowView(
+                            new CustomerVehicleCatalog(),
+                            "Vehicle Catalog",
+                            "Browse & rent available vehicles"
+                        );
+                    }
+                    else
+                    {
+                        ShowView(
+                            new VehiclesView(),
+                            "Vehicles",
+                            "Manage Fleet Inventory"
+                        );
+                    }
                     break;
 
                 case "btnCustomers":
-                    ShowView(new CustomersView(), "Customers", "Customer Database");
+                    ShowView(
+                        new CustomersView(),
+                        "Customers",
+                        "Customer Database"
+                    );
                     break;
 
                 case "btnReservation":
-                    ShowView(new ReservationsView(), "Reservations", "Bookings and Scheduling");
+                    ShowView(
+                        new ReservationsView(),
+                        "Reservations",
+                        "Bookings and Scheduling"
+                    );
                     break;
 
                 case "btnRentals":
-                    ShowView(new RentalsView(), "Rentals", "Active and Completed Rentals");
+                    ShowView(
+                        new RentalsView(),
+                        "Rentals",
+                        "Active and Completed Rentals"
+                    );
                     break;
 
                 case "btnReports":
-                    ShowView(new ReportsView(), "Reports", "Analytics and Insights");
+                    ShowView(
+                        new ReportsView(),
+                        "Reports",
+                        "Analytics and Insights"
+                    );
                     break;
 
                 case "btnAdmin":
-                    if (Program.CurrentUserRole != "Admin")
+                    if (!IsAdmin())
                     {
                         MessageBox.Show(
                             "You do not have permission to access this section.",
@@ -182,9 +271,12 @@ namespace VRMS.Forms
                         "User & System Management"
                     );
                     break;
-
             }
         }
+
+        // =====================================================
+        // USER PROFILE
+        // =====================================================
 
         private void NavigateToUserProfile()
         {
@@ -204,6 +296,10 @@ namespace VRMS.Forms
             }
         }
 
+        // =====================================================
+        // VIEW HANDLING
+        // =====================================================
+
         private void ShowView(UserControl view, string title = "", string subtitle = "")
         {
             if (view == null) return;
@@ -212,11 +308,10 @@ namespace VRMS.Forms
             view.Dock = DockStyle.Fill;
             contentPanel.Controls.Add(view);
 
-            // Update header with view information
             UpdateHeaderTitle(title, subtitle);
         }
 
-        private void UpdateHeaderTitle(string title, string subtitle = "")
+        private void UpdateHeaderTitle(string title, string subtitle)
         {
             if (mainHeader != null)
             {
@@ -224,38 +319,29 @@ namespace VRMS.Forms
             }
         }
 
-        private void ShowPlaceholder(string title)
-        {
-            contentPanel.Controls.Clear();
-
-            Label lbl = new Label
-            {
-                Text = title,
-                Font = new Font("Segoe UI", 16, FontStyle.Bold),
-                ForeColor = Color.FromArgb(44, 62, 80),
-                Location = new Point(50, 30),
-                AutoSize = true
-            };
-
-            contentPanel.Controls.Add(lbl);
-        }
+        // =====================================================
+        // LOGOUT
+        // =====================================================
 
         private void Logout()
         {
             if (MessageBox.Show(
-                    "Are you sure you want to logout?",
-                    "Confirm Logout",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) != DialogResult.Yes)
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) != DialogResult.Yes)
                 return;
 
             Hide();
             new Welcome().Show();
         }
 
+        // =====================================================
+        // CLEANUP
+        // =====================================================
+
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            // Clean up event handlers
             if (mainHeader != null)
             {
                 mainHeader.UserInfoClicked -= MainHeader_UserInfoClicked;
