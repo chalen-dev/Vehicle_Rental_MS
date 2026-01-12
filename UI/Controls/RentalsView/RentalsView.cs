@@ -1,26 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Models.Rentals;
-
+using VRMS.Repositories.Billing;
 // =========================
 // REPOSITORIES
 // =========================
 using VRMS.Repositories.Customers;
+using VRMS.Repositories.Damages;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Rentals;
-using VRMS.Repositories.Billing;
-using VRMS.Repositories.Damages;
-
+using VRMS.Services.Billing;
 // =========================
 // SERVICES
 // =========================
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
-using VRMS.Services.Billing;
 using VRMS.UI.Forms.Rentals;
 
 namespace VRMS.Controls
@@ -37,7 +38,7 @@ namespace VRMS.Controls
         private readonly RentalService _rentalService;
 
         private List<RentalGridRow> _allRows = new();
-        
+
         private static readonly string PlaceholderImagePath =
             Path.Combine("Assets", "img_placeholder.png");
 
@@ -75,8 +76,7 @@ namespace VRMS.Controls
             // SERVICES
             // =========================
 
-            var driversLicenseService = new DriversLicenseService();
-            _customerService = new CustomerService(driversLicenseService);
+            _customerService = new CustomerService(new DriversLicenseService());
 
             _vehicleService = new VehicleService(
                 vehicleRepo,
@@ -94,13 +94,11 @@ namespace VRMS.Controls
                 reservationRepo
             );
 
-            var rateService = new RateService(rateConfigRepo);
-
             var billingService = new BillingService(
                 rentalRepo,
                 _reservationService,
                 _vehicleService,
-                rateService,
+                new RateService(rateConfigRepo),
                 invoiceRepo,
                 invoiceLineItemRepo,
                 paymentRepo,
@@ -131,6 +129,7 @@ namespace VRMS.Controls
             ConfigureGrid();
             LoadStatusFilter();
             LoadRentals();
+
             txtSearch.TextChanged += (_, __) => ApplyFilters();
         }
 
@@ -148,7 +147,7 @@ namespace VRMS.Controls
                 DataPropertyName = "RentalId",
                 Width = 80
             });
-            
+
             dgvRentals.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Customer",
@@ -179,7 +178,6 @@ namespace VRMS.Controls
                 Width = 100
             });
 
-            dgvRentals.CellFormatting -= DgvRentals_CellFormatting;
             dgvRentals.CellFormatting += DgvRentals_CellFormatting;
         }
 
@@ -189,11 +187,8 @@ namespace VRMS.Controls
 
             _allRows = rentals.Select(r =>
             {
-                var reservation =
-                    _reservationService.GetReservationById(r.ReservationId);
-
-                var customer =
-                    _customerService.GetCustomerById(reservation.CustomerId);
+                var reservation = _reservationService.GetReservationById(r.ReservationId);
+                var customer = _customerService.GetCustomerById(reservation.CustomerId);
 
                 return new RentalGridRow
                 {
@@ -207,164 +202,44 @@ namespace VRMS.Controls
 
             ApplyFilters();
         }
-        
+
         private void LoadStatusFilter()
         {
-            cbStatusFilter.Items.Clear();
-            cbStatusFilter.Items.Add("All");
-
-            foreach (var status in Enum.GetValues(typeof(RentalStatus)))
-                cbStatusFilter.Items.Add(status);
-
-            cbStatusFilter.SelectedIndex = 0;
-
+            cbStatusFilter.DataSource = Enum.GetValues(typeof(RentalStatus));
+            cbStatusFilter.SelectedItem = RentalStatus.All;
             cbStatusFilter.SelectedIndexChanged += (_, __) => ApplyFilters();
         }
-        
-        private void LoadVehicleImage(int vehicleId)
+
+        // =========================
+        // FILTERING (FIXED, MINIMAL)
+        // =========================
+
+        private void ApplyFilters()
         {
-            // Dispose previous image (avoid memory + file locks)
-            if (pbVehicle.Image != null)
+            IEnumerable<RentalGridRow> filtered = _allRows;
+
+            var selectedStatus = (RentalStatus)cbStatusFilter.SelectedItem;
+
+            if (selectedStatus != RentalStatus.All)
             {
-                pbVehicle.Image.Dispose();
-                pbVehicle.Image = null;
+                filtered = filtered.Where(r => r.Status == selectedStatus);
             }
 
-            string? imagePath = null;
+            var search = txtSearch.Text.Trim();
 
-            var images = _vehicleService.GetVehicleImages(vehicleId);
-
-            if (images.Count > 0)
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                var candidate = Path.Combine(
-                    AppContext.BaseDirectory,
-                    "Storage",
-                    images[0].ImagePath);
-
-                if (File.Exists(candidate))
-                    imagePath = candidate;
+                filtered = filtered.Where(r =>
+                    r.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase));
             }
 
-            // Fallback to placeholder
-            if (imagePath == null)
-            {
-                var placeholder = Path.Combine(
-                    AppContext.BaseDirectory,
-                    PlaceholderImagePath);
-
-                if (!File.Exists(placeholder))
-                    return; // silent fail (safe)
-
-                imagePath = placeholder;
-            }
-
-            // Load without locking the file
-            using var fs = new FileStream(
-                imagePath,
-                FileMode.Open,
-                FileAccess.Read,
-                FileShare.ReadWrite);
-
-            pbVehicle.Image = Image.FromStream(fs);
+            dgvRentals.DataSource = filtered.ToList();
+            UpdateActionButtons();
         }
-
-
 
         // =========================
         // SELECTION
         // =========================
-
-        private void DgvRentals_SelectionChanged(object? sender, EventArgs e)
-        {
-            UpdateActionButtons();
-
-            if (dgvRentals.SelectedRows.Count == 0)
-            {
-                lblDetailVehicle.Text = "Vehicle";
-                lblDetailCustomer.Text = "Customer";
-                lblDetailDates.Text = "Period";
-                lblDetailAmount.Text = "Total: ₱ --";
-                pbVehicle.Image = null;
-                return;
-            }
-
-            if (dgvRentals.SelectedRows[0].DataBoundItem is not RentalGridRow row)
-                return;
-
-            var rental =
-                _rentalService.GetRentalById(row.RentalId);
-
-            var reservation =
-                _reservationService.GetReservationById(
-                    rental.ReservationId);
-
-            var vehicle =
-                _vehicleService.GetVehicleById(
-                    reservation.VehicleId);
-
-            var customer =
-                _customerService.GetCustomerById(
-                    reservation.CustomerId);
-
-            lblDetailVehicle.Text =
-                $"{vehicle.Year} {vehicle.Make} {vehicle.Model}";
-
-            lblDetailCustomer.Text =
-                $"{customer.FirstName} {customer.LastName}";
-
-            lblDetailDates.Text =
-                $"From {rental.PickupDate:d} to {rental.ExpectedReturnDate:d}";
-
-            lblDetailAmount.Text = "Total: ₱ --";
-
-            LoadVehicleImage(vehicle.Id);
-        }
-
-        // =========================
-        // BUTTON STATE LOGIC
-        // =========================
-
-        private void UpdateActionButtons()
-        {
-            bool hasRows = dgvRentals.Rows.Count > 0;
-            bool hasSelection = dgvRentals.SelectedRows.Count > 0;
-
-            bool canView = hasRows && hasSelection;
-
-            bool canReturn =
-                canView &&
-                dgvRentals.SelectedRows[0].DataBoundItem is RentalGridRow row &&
-                row.Status == RentalStatus.Active;
-
-            // View Details
-            btnViewDetails.Enabled = canView;
-            btnViewDetails.BackColor = canView
-                ? Color.FromArgb(52, 152, 219)
-                : Color.LightGray;
-            btnViewDetails.ForeColor = canView
-                ? Color.White
-                : Color.DarkGray;
-            btnViewDetails.Cursor = canView
-                ? Cursors.Hand
-                : Cursors.Default;
-
-            // Return Vehicle
-            btnReturn.Enabled = canReturn;
-            btnReturn.BackColor = canReturn
-                ? Color.FromArgb(241, 196, 15)
-                : Color.LightGray;
-            btnReturn.ForeColor = canReturn
-                ? Color.White
-                : Color.DarkGray;
-            btnReturn.Cursor = canReturn
-                ? Cursors.Hand
-                : Cursors.Default;
-        }
-
-        // =========================
-        // BUTTONS
-        // =========================
-
         private void BtnNewRental_Click(object sender, EventArgs e)
         {
             using var form = new NewRentalForm(
@@ -399,11 +274,9 @@ namespace VRMS.Controls
                 _customerService
             );
 
-
             if (form.ShowDialog(FindForm()) == DialogResult.OK)
                 LoadRentals();
-        }   
-
+        }
 
         private void BtnViewDetails_Click(object sender, EventArgs e)
         {
@@ -411,13 +284,83 @@ namespace VRMS.Controls
             form.ShowDialog(this);
         }
 
+        private void DgvRentals_SelectionChanged(object? sender, EventArgs e)
+        {
+            UpdateActionButtons();
+
+            if (dgvRentals.SelectedRows.Count == 0)
+            {
+                lblDetailVehicle.Text = "Vehicle";
+                lblDetailCustomer.Text = "Customer";
+                lblDetailDates.Text = "Period";
+                lblDetailAmount.Text = "Total: ₱ --";
+                pbVehicle.Image = null;
+                return;
+            }
+
+            if (dgvRentals.SelectedRows[0].DataBoundItem is not RentalGridRow row)
+                return;
+
+            var rental = _rentalService.GetRentalById(row.RentalId);
+            var reservation = _reservationService.GetReservationById(rental.ReservationId);
+            var vehicle = _vehicleService.GetVehicleById(reservation.VehicleId);
+            var customer = _customerService.GetCustomerById(reservation.CustomerId);
+
+            lblDetailVehicle.Text = $"{vehicle.Year} {vehicle.Make} {vehicle.Model}";
+            lblDetailCustomer.Text = $"{customer.FirstName} {customer.LastName}";
+            lblDetailDates.Text = $"From {rental.PickupDate:d} to {rental.ExpectedReturnDate:d}";
+            lblDetailAmount.Text = "Total: ₱ --";
+
+            LoadVehicleImage(vehicle.Id);
+        }
+
+        private void LoadVehicleImage(int vehicleId)
+        {
+            if (pbVehicle.Image != null)
+            {
+                pbVehicle.Image.Dispose();
+                pbVehicle.Image = null;
+            }
+
+            var images = _vehicleService.GetVehicleImages(vehicleId);
+
+            string? imagePath = images.Count > 0
+                ? Path.Combine(AppContext.BaseDirectory, "Storage", images[0].ImagePath)
+                : null;
+
+            if (imagePath == null || !File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(AppContext.BaseDirectory, PlaceholderImagePath);
+                if (!File.Exists(imagePath))
+                    return;
+            }
+
+            using var fs = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            pbVehicle.Image = Image.FromStream(fs);
+        }
+
         // =========================
-        // STATUS COLOR CODING
+        // BUTTON STATE LOGIC
         // =========================
 
-        private void DgvRentals_CellFormatting(
-            object? sender,
-            DataGridViewCellFormattingEventArgs e)
+        private void UpdateActionButtons()
+        {
+            bool hasSelection = dgvRentals.SelectedRows.Count > 0;
+
+            bool canReturn =
+                hasSelection &&
+                dgvRentals.SelectedRows[0].DataBoundItem is RentalGridRow row &&
+                (row.Status == RentalStatus.Active || row.Status == RentalStatus.Late);
+
+            btnViewDetails.Enabled = hasSelection;
+            btnReturn.Enabled = canReturn;
+        }
+
+        // =========================
+        // STATUS COLORS
+        // =========================
+
+        private void DgvRentals_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (dgvRentals.Columns[e.ColumnIndex].DataPropertyName != "Status")
                 return;
@@ -425,41 +368,16 @@ namespace VRMS.Controls
             if (e.Value is not RentalStatus status)
                 return;
 
-            e.CellStyle.Font = new Font(
-                dgvRentals.Font,
-                FontStyle.Bold);
+            e.CellStyle.Font = new Font(dgvRentals.Font, FontStyle.Bold);
 
             e.CellStyle.ForeColor = status switch
             {
                 RentalStatus.Active => Color.Green,
                 RentalStatus.Late => Color.OrangeRed,
                 RentalStatus.Completed => Color.Gray,
+                RentalStatus.Cancelled => Color.DarkGray,
                 _ => e.CellStyle.ForeColor
             };
         }
-        
-        private void ApplyFilters()
-        {
-            IEnumerable<RentalGridRow> filtered = _allRows;
-
-            // Status filter
-            if (cbStatusFilter.SelectedItem is RentalStatus status)
-            {
-                filtered = filtered.Where(r => r.Status == status);
-            }
-
-            // Search by customer name
-            var search = txtSearch.Text.Trim();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                filtered = filtered.Where(r =>
-                    r.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase));
-            }
-
-            dgvRentals.DataSource = filtered.ToList();
-            UpdateActionButtons();
-        }
-
     }
 }

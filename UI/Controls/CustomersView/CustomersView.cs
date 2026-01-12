@@ -4,10 +4,13 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using VRMS.Enums;
+using VRMS.Forms;
 using VRMS.Models.Customers;
 using VRMS.Services.Customer;
 using VRMS.UI.Forms.Customer;
-using VRMS.Forms;
+using VRMS.UI.Forms.Customers;
+
+
 
 namespace VRMS.Controls
 {
@@ -30,7 +33,7 @@ namespace VRMS.Controls
             InitializeComponent();
 
             // Allow table to expand
-            splitContainer1.FixedPanel = FixedPanel.Panel2; 
+            splitContainer1.FixedPanel = FixedPanel.Panel2;
             splitContainer1.IsSplitterFixed = false;
 
             // Safety limits
@@ -551,5 +554,22 @@ namespace VRMS.Controls
             if (dob > today.AddYears(-age)) age--;
             return age;
         }
+
+
+
+        private void btnManageAccount_Click(object sender, EventArgs e)
+        {
+            if (_selectedCustomer == null)
+            {
+                MessageBox.Show("Please select a customer first.");
+                return;
+            }
+
+            using var form = new CustomerAccountForm(_selectedCustomer);
+            form.ShowDialog(this);
+        }
+
+
+
     }
 }

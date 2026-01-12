@@ -58,10 +58,10 @@
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblTitle.ForeColor = Color.FromArgb(44, 62, 80);
-            lblTitle.Location = new Point(14, 15);
-            lblTitle.Margin = new Padding(4, 0, 4, 0);
+            lblTitle.Location = new Point(16, 20);
+            lblTitle.Margin = new Padding(5, 0, 5, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(272, 41);
+            lblTitle.Size = new Size(334, 50);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Rental Operations";
             // 
@@ -72,10 +72,10 @@
             btnNewRental.FlatStyle = FlatStyle.Flat;
             btnNewRental.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnNewRental.ForeColor = Color.White;
-            btnNewRental.Location = new Point(22, 64);
-            btnNewRental.Margin = new Padding(4);
+            btnNewRental.Location = new Point(25, 85);
+            btnNewRental.Margin = new Padding(5, 5, 5, 5);
             btnNewRental.Name = "btnNewRental";
-            btnNewRental.Size = new Size(162, 38);
+            btnNewRental.Size = new Size(185, 51);
             btnNewRental.TabIndex = 1;
             btnNewRental.Text = "➕ New Rental";
             btnNewRental.UseVisualStyleBackColor = false;
@@ -88,10 +88,10 @@
             btnReturn.FlatStyle = FlatStyle.Flat;
             btnReturn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnReturn.ForeColor = Color.White;
-            btnReturn.Location = new Point(189, 64);
-            btnReturn.Margin = new Padding(4);
+            btnReturn.Location = new Point(216, 85);
+            btnReturn.Margin = new Padding(5, 5, 5, 5);
             btnReturn.Name = "btnReturn";
-            btnReturn.Size = new Size(162, 38);
+            btnReturn.Size = new Size(185, 51);
             btnReturn.TabIndex = 2;
             btnReturn.Text = "↩ Return Vehicle";
             btnReturn.UseVisualStyleBackColor = false;
@@ -127,7 +127,7 @@
             dgvRentals.EnableHeadersVisualStyles = false;
             dgvRentals.GridColor = Color.WhiteSmoke;
             dgvRentals.Location = new Point(0, 0);
-            dgvRentals.Margin = new Padding(4);
+            dgvRentals.Margin = new Padding(5, 5, 5, 5);
             dgvRentals.MultiSelect = false;
             dgvRentals.Name = "dgvRentals";
             dgvRentals.ReadOnly = true;
@@ -135,14 +135,14 @@
             dgvRentals.RowHeadersWidth = 51;
             dgvRentals.RowTemplate.Height = 35;
             dgvRentals.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRentals.Size = new Size(800, 562);
+            dgvRentals.Size = new Size(914, 749);
             dgvRentals.TabIndex = 3;
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 108);
-            splitContainer1.Margin = new Padding(4);
+            splitContainer1.Location = new Point(0, 144);
+            splitContainer1.Margin = new Padding(5, 5, 5, 5);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -157,10 +157,10 @@
             splitContainer1.Panel2.Controls.Add(lblDetailCustomer);
             splitContainer1.Panel2.Controls.Add(lblDetailVehicle);
             splitContainer1.Panel2.Controls.Add(pbVehicle);
-            splitContainer1.Panel2.Padding = new Padding(14);
-            splitContainer1.Size = new Size(1200, 562);
-            splitContainer1.SplitterDistance = 800;
-            splitContainer1.SplitterWidth = 15;
+            splitContainer1.Panel2.Padding = new Padding(16, 19, 16, 19);
+            splitContainer1.Size = new Size(1371, 749);
+            splitContainer1.SplitterDistance = 914;
+            splitContainer1.SplitterWidth = 17;
             splitContainer1.TabIndex = 4;
             // 
             // lblDetailAmount
@@ -168,10 +168,10 @@
             lblDetailAmount.AutoSize = true;
             lblDetailAmount.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblDetailAmount.ForeColor = Color.FromArgb(46, 204, 113);
-            lblDetailAmount.Location = new Point(24, 338);
-            lblDetailAmount.Margin = new Padding(4, 0, 4, 0);
+            lblDetailAmount.Location = new Point(27, 451);
+            lblDetailAmount.Margin = new Padding(5, 0, 5, 0);
             lblDetailAmount.Name = "lblDetailAmount";
-            lblDetailAmount.Size = new Size(88, 20);
+            lblDetailAmount.Size = new Size(109, 25);
             lblDetailAmount.TabIndex = 4;
             lblDetailAmount.Text = "Total: ₱ 0.0";
             // 
@@ -180,10 +180,10 @@
             lblDetailDates.AutoSize = true;
             lblDetailDates.Font = new Font("Segoe UI", 10F);
             lblDetailDates.ForeColor = Color.DimGray;
-            lblDetailDates.Location = new Point(24, 309);
-            lblDetailDates.Margin = new Padding(4, 0, 4, 0);
+            lblDetailDates.Location = new Point(27, 412);
+            lblDetailDates.Margin = new Padding(5, 0, 5, 0);
             lblDetailDates.Name = "lblDetailDates";
-            lblDetailDates.Size = new Size(125, 19);
+            lblDetailDates.Size = new Size(156, 23);
             lblDetailDates.TabIndex = 3;
             lblDetailDates.Text = "Period: Select entry";
             // 
@@ -191,10 +191,10 @@
             // 
             lblDetailCustomer.AutoSize = true;
             lblDetailCustomer.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
-            lblDetailCustomer.Location = new Point(24, 281);
-            lblDetailCustomer.Margin = new Padding(4, 0, 4, 0);
+            lblDetailCustomer.Location = new Point(27, 375);
+            lblDetailCustomer.Margin = new Padding(5, 0, 5, 0);
             lblDetailCustomer.Name = "lblDetailCustomer";
-            lblDetailCustomer.Size = new Size(119, 20);
+            lblDetailCustomer.Size = new Size(152, 25);
             lblDetailCustomer.TabIndex = 2;
             lblDetailCustomer.Text = "Customer Name";
             // 
@@ -203,10 +203,10 @@
             lblDetailVehicle.AutoSize = true;
             lblDetailVehicle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
             lblDetailVehicle.ForeColor = Color.FromArgb(41, 128, 185);
-            lblDetailVehicle.Location = new Point(21, 244);
-            lblDetailVehicle.Margin = new Padding(4, 0, 4, 0);
+            lblDetailVehicle.Location = new Point(24, 325);
+            lblDetailVehicle.Margin = new Padding(5, 0, 5, 0);
             lblDetailVehicle.Name = "lblDetailVehicle";
-            lblDetailVehicle.Size = new Size(131, 25);
+            lblDetailVehicle.Size = new Size(168, 32);
             lblDetailVehicle.TabIndex = 1;
             lblDetailVehicle.Text = "Vehicle Name";
             // 
@@ -215,10 +215,10 @@
             pbVehicle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pbVehicle.BackColor = Color.WhiteSmoke;
             pbVehicle.BorderStyle = BorderStyle.FixedSingle;
-            pbVehicle.Location = new Point(16, 16);
-            pbVehicle.Margin = new Padding(4);
+            pbVehicle.Location = new Point(18, 21);
+            pbVehicle.Margin = new Padding(5, 5, 5, 5);
             pbVehicle.Name = "pbVehicle";
-            pbVehicle.Size = new Size(357, 216);
+            pbVehicle.Size = new Size(395, 287);
             pbVehicle.SizeMode = PictureBoxSizeMode.Zoom;
             pbVehicle.TabIndex = 0;
             pbVehicle.TabStop = false;
@@ -234,9 +234,9 @@
             panel1.Controls.Add(btnReturn);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(4);
+            panel1.Margin = new Padding(5, 5, 5, 5);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1200, 108);
+            panel1.Size = new Size(1371, 144);
             panel1.TabIndex = 5;
             // 
             // btnViewDetails
@@ -246,10 +246,10 @@
             btnViewDetails.FlatStyle = FlatStyle.Flat;
             btnViewDetails.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnViewDetails.ForeColor = Color.White;
-            btnViewDetails.Location = new Point(356, 64);
-            btnViewDetails.Margin = new Padding(4);
+            btnViewDetails.Location = new Point(407, 85);
+            btnViewDetails.Margin = new Padding(5, 5, 5, 5);
             btnViewDetails.Name = "btnViewDetails";
-            btnViewDetails.Size = new Size(162, 38);
+            btnViewDetails.Size = new Size(185, 51);
             btnViewDetails.TabIndex = 5;
             btnViewDetails.Text = "🔍 View Details";
             btnViewDetails.UseVisualStyleBackColor = false;
@@ -259,12 +259,12 @@
             // 
             txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             txtSearch.Font = new Font("Segoe UI", 10F);
-            txtSearch.Location = new Point(960, 36);
-            txtSearch.Margin = new Padding(4);
+            txtSearch.Location = new Point(1097, 48);
+            txtSearch.Margin = new Padding(5, 5, 5, 5);
             txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(220, 25);
-            txtSearch.TabIndex = 4;
             txtSearch.PlaceholderText = "Search by customer name...";
+            txtSearch.Size = new Size(251, 30);
+            txtSearch.TabIndex = 4;
             // 
             // cbStatusFilter
             // 
@@ -272,22 +272,22 @@
             cbStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
             cbStatusFilter.Font = new Font("Segoe UI", 10F);
             cbStatusFilter.FormattingEnabled = true;
-            cbStatusFilter.Location = new Point(960, 70);
-            cbStatusFilter.Margin = new Padding(4);
+            cbStatusFilter.Location = new Point(1097, 93);
+            cbStatusFilter.Margin = new Padding(5, 5, 5, 5);
             cbStatusFilter.Name = "cbStatusFilter";
-            cbStatusFilter.Size = new Size(220, 25);
+            cbStatusFilter.Size = new Size(251, 31);
             cbStatusFilter.TabIndex = 3;
             // 
             // RentalsView
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             Controls.Add(splitContainer1);
             Controls.Add(panel1);
-            Margin = new Padding(4);
+            Margin = new Padding(5, 5, 5, 5);
             Name = "RentalsView";
-            Size = new Size(1200, 670);
+            Size = new Size(1371, 893);
             ((System.ComponentModel.ISupportInitialize)dgvRentals).EndInit();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);

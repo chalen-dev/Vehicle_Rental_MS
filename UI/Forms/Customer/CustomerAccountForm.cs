@@ -1,96 +1,172 @@
 ﻿using System;
 using System.Windows.Forms;
 
+// 🔒 ALIAS THE MODEL TYPE (NO AMBIGUITY POSSIBLE)
+using CustomerModel = VRMS.Models.Customers.Customer;
+
 namespace VRMS.UI.Forms.Customers
 {
     public partial class CustomerAccountForm : Form
     {
-        public CustomerAccountForm()
+        private readonly CustomerModel _customer;
+
+        // =====================================================
+        // CONSTRUCTOR
+        // =====================================================
+
+        public CustomerAccountForm(CustomerModel customer)
         {
             InitializeComponent();
+            _customer = customer;
+
             InitializeDataGridView();
+            LoadCustomerAccount();
         }
+
+        // =====================================================
+        // DATAGRIDVIEW SETUP
+        // =====================================================
 
         private void InitializeDataGridView()
         {
-            // Configure DGV columns
             dgvCustomerAccounts.Columns.Clear();
+            dgvCustomerAccounts.AutoGenerateColumns = false;
+            dgvCustomerAccounts.MultiSelect = false;
+            dgvCustomerAccounts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCustomerAccounts.ReadOnly = true;
+            dgvCustomerAccounts.AllowUserToAddRows = false;
 
-            // Add sample columns (customize based on your needs)
             dgvCustomerAccounts.Columns.Add("CustomerId", "ID");
             dgvCustomerAccounts.Columns.Add("CustomerName", "Customer Name");
             dgvCustomerAccounts.Columns.Add("Username", "Username");
             dgvCustomerAccounts.Columns.Add("AccountStatus", "Status");
             dgvCustomerAccounts.Columns.Add("LastLogin", "Last Login");
 
-            // Adjust column widths
             dgvCustomerAccounts.Columns["CustomerId"].Width = 60;
-            dgvCustomerAccounts.Columns["CustomerName"].Width = 150;
-            dgvCustomerAccounts.Columns["Username"].Width = 100;
+            dgvCustomerAccounts.Columns["CustomerName"].Width = 160;
+            dgvCustomerAccounts.Columns["Username"].Width = 120;
             dgvCustomerAccounts.Columns["AccountStatus"].Width = 80;
-            dgvCustomerAccounts.Columns["LastLogin"].Width = 120;
+            dgvCustomerAccounts.Columns["LastLogin"].Width = 130;
 
-            // Load data (you'll replace this with your actual data loading)
-            LoadCustomerAccounts();
+            dgvCustomerAccounts.SelectionChanged += dgvCustomerAccounts_SelectionChanged;
         }
 
-        private void LoadCustomerAccounts()
+        // =====================================================
+        // LOAD ACCOUNT (SINGLE CUSTOMER)
+        // =====================================================
+
+        private void LoadCustomerAccount()
         {
-            // TODO: Load actual customer account data from your database
-            // For demonstration, adding sample data
-            dgvCustomerAccounts.Rows.Add(1, "John Smith", "john.smith", "Active", "2024-01-15 14:30");
-            dgvCustomerAccounts.Rows.Add(2, "Jane Doe", "jane.doe", "Disabled", "2024-01-10 09:15");
-            dgvCustomerAccounts.Rows.Add(3, "Robert Johnson", "r.johnson", "Active", "2024-01-20 16:45");
+            dgvCustomerAccounts.Rows.Clear();
+
+            // TEMP LOGIC (replace with service later)
+            bool hasAccount = !string.IsNullOrWhiteSpace(_customer.Email);
+
+            if (hasAccount)
+            {
+                dgvCustomerAccounts.Rows.Add(
+                    _customer.Id,
+                    $"{_customer.FirstName} {_customer.LastName}",
+                    _customer.Email,
+                    "Active",
+                    "—"
+                );
+
+                dgvCustomerAccounts.Rows[0].Selected = true;
+            }
+
+            UpdateFormState(hasAccount);
         }
+
+        // =====================================================
+        // FORM STATE
+        // =====================================================
+
+        private void UpdateFormState(bool hasAccount)
+        {
+            txtUsername.Text = hasAccount ? _customer.Email : "";
+            chkAccountEnabled.Checked = hasAccount;
+
+            lblAccountState.Text = hasAccount
+                ? "Login Account: Active"
+                : "Login Account: Not Created";
+
+            btnCreate.Enabled = !hasAccount;
+            btnResetPassword.Enabled = hasAccount;
+            btnDisable.Enabled = hasAccount;
+        }
+
+        // =====================================================
+        // DGV EVENTS
+        // =====================================================
 
         private void dgvCustomerAccounts_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvCustomerAccounts.SelectedRows.Count > 0)
-            {
-                var selectedRow = dgvCustomerAccounts.SelectedRows[0];
+            if (dgvCustomerAccounts.SelectedRows.Count == 0)
+                return;
 
-                // Update form fields based on selected customer
-                txtUsername.Text = selectedRow.Cells["Username"].Value?.ToString() ?? "";
+            var row = dgvCustomerAccounts.SelectedRows[0];
 
-                // Update account status
-                string status = selectedRow.Cells["AccountStatus"].Value?.ToString() ?? "";
-                chkAccountEnabled.Checked = status == "Active";
-                lblAccountState.Text = $"Login Account: {(status == "Active" ? "Active" : "Disabled")}";
+            txtUsername.Text = row.Cells["Username"].Value?.ToString() ?? "";
 
-                // Enable/disable buttons based on status
-                btnCreate.Enabled = string.IsNullOrEmpty(txtUsername.Text);
-                btnResetPassword.Enabled = !string.IsNullOrEmpty(txtUsername.Text);
-                btnDisable.Enabled = !string.IsNullOrEmpty(txtUsername.Text) && status == "Active";
-            }
+            string status = row.Cells["AccountStatus"].Value?.ToString() ?? "Disabled";
+            bool isActive = status == "Active";
+
+            chkAccountEnabled.Checked = isActive;
+            lblAccountState.Text =
+                $"Login Account: {(isActive ? "Active" : "Disabled")}";
+
+            btnCreate.Enabled = false;
+            btnResetPassword.Enabled = true;
+            btnDisable.Enabled = isActive;
         }
 
-        private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-            // The DGV automatically resizes with the split panel
-            // You can add additional logic here if needed
-        }
+        // =====================================================
+        // BUTTON ACTIONS
+        // =====================================================
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            // TODO: Implement create account logic
-            MessageBox.Show("Create account functionality to be implemented");
+            MessageBox.Show(
+                "Create account logic to be implemented",
+                "Create Account",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
         }
 
         private void btnResetPassword_Click(object sender, EventArgs e)
         {
-            // TODO: Implement reset password logic
-            MessageBox.Show("Reset password functionality to be implemented");
+            MessageBox.Show(
+                "Reset password logic to be implemented",
+                "Reset Password",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
         }
 
         private void btnDisable_Click(object sender, EventArgs e)
         {
-            // TODO: Implement disable account logic
-            MessageBox.Show("Disable account functionality to be implemented");
+            if (MessageBox.Show(
+                "Disable this customer account?",
+                "Confirm",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+
+            chkAccountEnabled.Checked = false;
+            lblAccountState.Text = "Login Account: Disabled";
+            btnDisable.Enabled = false;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
+        }
+
+        private void splitContainer_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            // optional layout logic
         }
     }
 }
