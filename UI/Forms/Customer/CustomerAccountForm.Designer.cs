@@ -17,206 +17,293 @@
 
         private void InitializeComponent()
         {
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.groupAccountStatus = new System.Windows.Forms.GroupBox();
-            this.lblAccountState = new System.Windows.Forms.Label();
-            this.chkAccountEnabled = new System.Windows.Forms.CheckBox();
-
-            this.groupCredentials = new System.Windows.Forms.GroupBox();
-            this.lblUsername = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.lblConfirmPassword = new System.Windows.Forms.Label();
-            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
-
-            this.panelActions = new System.Windows.Forms.Panel();
-            this.btnCreate = new System.Windows.Forms.Button();
-            this.btnResetPassword = new System.Windows.Forms.Button();
-            this.btnDisable = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-
-            this.groupAccountStatus.SuspendLayout();
-            this.groupCredentials.SuspendLayout();
-            this.panelActions.SuspendLayout();
-            this.SuspendLayout();
-
+            lblTitle = new Label();
+            splitContainer = new SplitContainer();
+            dgvCustomerAccounts = new DataGridView();
+            panelRight = new Panel();
+            groupAccountStatus = new GroupBox();
+            lblAccountState = new Label();
+            chkAccountEnabled = new CheckBox();
+            groupCredentials = new GroupBox();
+            lblUsername = new Label();
+            txtUsername = new TextBox();
+            lblPassword = new Label();
+            txtPassword = new TextBox();
+            lblConfirmPassword = new Label();
+            txtConfirmPassword = new TextBox();
+            panelActions = new Panel();
+            btnCreate = new Button();
+            btnResetPassword = new Button();
+            btnDisable = new Button();
+            btnClose = new Button();
+            ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+            splitContainer.Panel1.SuspendLayout();
+            splitContainer.Panel2.SuspendLayout();
+            splitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvCustomerAccounts).BeginInit();
+            panelRight.SuspendLayout();
+            groupAccountStatus.SuspendLayout();
+            groupCredentials.SuspendLayout();
+            panelActions.SuspendLayout();
+            SuspendLayout();
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(24, 20);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(278, 32);
-            this.lblTitle.Text = "Customer Login Account";
-
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI Semibold", 14F, FontStyle.Bold);
+            lblTitle.Location = new Point(24, 20);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(282, 32);
+            lblTitle.TabIndex = 1;
+            lblTitle.Text = "Customer Login Account";
+            // 
+            // splitContainer
+            // 
+            splitContainer.Dock = DockStyle.Fill;
+            splitContainer.Location = new Point(0, 0);
+            splitContainer.Name = "splitContainer";
+            // 
+            // splitContainer.Panel1
+            // 
+            splitContainer.Panel1.Controls.Add(dgvCustomerAccounts);
+            // 
+            // splitContainer.Panel2
+            // 
+            splitContainer.Panel2.Controls.Add(panelRight);
+            splitContainer.Size = new Size(1195, 660);
+            splitContainer.SplitterDistance = 545;
+            splitContainer.SplitterWidth = 8;
+            splitContainer.TabIndex = 0;
+            splitContainer.SplitterMoved += splitContainer_SplitterMoved;
+            // 
+            // dgvCustomerAccounts
+            // 
+            dgvCustomerAccounts.AllowUserToAddRows = false;
+            dgvCustomerAccounts.AllowUserToDeleteRows = false;
+            dgvCustomerAccounts.AllowUserToResizeRows = false;
+            dgvCustomerAccounts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCustomerAccounts.BackgroundColor = SystemColors.Window;
+            dgvCustomerAccounts.BorderStyle = BorderStyle.Fixed3D;
+            dgvCustomerAccounts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCustomerAccounts.Dock = DockStyle.Fill;
+            dgvCustomerAccounts.Location = new Point(0, 0);
+            dgvCustomerAccounts.MultiSelect = false;
+            dgvCustomerAccounts.Name = "dgvCustomerAccounts";
+            dgvCustomerAccounts.ReadOnly = true;
+            dgvCustomerAccounts.RowHeadersVisible = false;
+            dgvCustomerAccounts.RowHeadersWidth = 51;
+            dgvCustomerAccounts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCustomerAccounts.Size = new Size(545, 660);
+            dgvCustomerAccounts.TabIndex = 0;
+            dgvCustomerAccounts.SelectionChanged += dgvCustomerAccounts_SelectionChanged;
+            // 
+            // panelRight
+            // 
+            panelRight.Controls.Add(groupAccountStatus);
+            panelRight.Controls.Add(groupCredentials);
+            panelRight.Controls.Add(panelActions);
+            panelRight.Dock = DockStyle.Fill;
+            panelRight.Location = new Point(0, 0);
+            panelRight.Name = "panelRight";
+            panelRight.Padding = new Padding(20);
+            panelRight.Size = new Size(642, 660);
+            panelRight.TabIndex = 0;
             // 
             // groupAccountStatus
             // 
-            this.groupAccountStatus.Controls.Add(this.lblAccountState);
-            this.groupAccountStatus.Controls.Add(this.chkAccountEnabled);
-            this.groupAccountStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.groupAccountStatus.Location = new System.Drawing.Point(30, 70);
-            this.groupAccountStatus.Name = "groupAccountStatus";
-            this.groupAccountStatus.Size = new System.Drawing.Size(520, 110);
-            this.groupAccountStatus.Text = "Account Status";
-
+            groupAccountStatus.Controls.Add(lblAccountState);
+            groupAccountStatus.Controls.Add(chkAccountEnabled);
+            groupAccountStatus.Font = new Font("Segoe UI Semibold", 10F);
+            groupAccountStatus.Location = new Point(20, 20);
+            groupAccountStatus.Name = "groupAccountStatus";
+            groupAccountStatus.Size = new Size(602, 120);
+            groupAccountStatus.TabIndex = 0;
+            groupAccountStatus.TabStop = false;
+            groupAccountStatus.Text = "Account Status";
             // 
             // lblAccountState
             // 
-            this.lblAccountState.AutoSize = true;
-            this.lblAccountState.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.lblAccountState.Location = new System.Drawing.Point(25, 35);
-            this.lblAccountState.Text = "Login Account: Not Created";
-
+            lblAccountState.AutoSize = true;
+            lblAccountState.Font = new Font("Segoe UI", 9.75F);
+            lblAccountState.Location = new Point(20, 40);
+            lblAccountState.Name = "lblAccountState";
+            lblAccountState.Size = new Size(223, 23);
+            lblAccountState.TabIndex = 0;
+            lblAccountState.Text = "Login Account: Not Created";
             // 
             // chkAccountEnabled
             // 
-            this.chkAccountEnabled.AutoSize = true;
-            this.chkAccountEnabled.Font = new System.Drawing.Font("Segoe UI", 9.75F);
-            this.chkAccountEnabled.Location = new System.Drawing.Point(25, 70);
-            this.chkAccountEnabled.Text = "Account Enabled";
-
+            chkAccountEnabled.AutoSize = true;
+            chkAccountEnabled.Font = new Font("Segoe UI", 9.75F);
+            chkAccountEnabled.Location = new Point(20, 75);
+            chkAccountEnabled.Name = "chkAccountEnabled";
+            chkAccountEnabled.Size = new Size(161, 27);
+            chkAccountEnabled.TabIndex = 1;
+            chkAccountEnabled.Text = "Account Enabled";
             // 
             // groupCredentials
             // 
-            this.groupCredentials.Controls.Add(this.lblUsername);
-            this.groupCredentials.Controls.Add(this.txtUsername);
-            this.groupCredentials.Controls.Add(this.lblPassword);
-            this.groupCredentials.Controls.Add(this.txtPassword);
-            this.groupCredentials.Controls.Add(this.lblConfirmPassword);
-            this.groupCredentials.Controls.Add(this.txtConfirmPassword);
-            this.groupCredentials.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.groupCredentials.Location = new System.Drawing.Point(30, 200);
-            this.groupCredentials.Name = "groupCredentials";
-            this.groupCredentials.Size = new System.Drawing.Size(520, 230);
-            this.groupCredentials.Text = "Login Credentials";
-
+            groupCredentials.Controls.Add(lblUsername);
+            groupCredentials.Controls.Add(txtUsername);
+            groupCredentials.Controls.Add(lblPassword);
+            groupCredentials.Controls.Add(txtPassword);
+            groupCredentials.Controls.Add(lblConfirmPassword);
+            groupCredentials.Controls.Add(txtConfirmPassword);
+            groupCredentials.Font = new Font("Segoe UI Semibold", 10F);
+            groupCredentials.Location = new Point(20, 160);
+            groupCredentials.Name = "groupCredentials";
+            groupCredentials.Size = new Size(602, 280);
+            groupCredentials.TabIndex = 1;
+            groupCredentials.TabStop = false;
+            groupCredentials.Text = "Login Credentials";
             // 
             // lblUsername
             // 
-            this.lblUsername.AutoSize = true;
-            this.lblUsername.Location = new System.Drawing.Point(25, 40);
-            this.lblUsername.Text = "Username";
-
+            lblUsername.AutoSize = true;
+            lblUsername.Location = new Point(20, 45);
+            lblUsername.Name = "lblUsername";
+            lblUsername.Size = new Size(87, 23);
+            lblUsername.TabIndex = 0;
+            lblUsername.Text = "Username";
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(25, 65);
-            this.txtUsername.Size = new System.Drawing.Size(450, 30);
-
+            txtUsername.Location = new Point(20, 70);
+            txtUsername.Name = "txtUsername";
+            txtUsername.Size = new Size(560, 30);
+            txtUsername.TabIndex = 0;
             // 
             // lblPassword
             // 
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(25, 105);
-            this.lblPassword.Text = "Temporary Password";
-
+            lblPassword.AutoSize = true;
+            lblPassword.Location = new Point(20, 115);
+            lblPassword.Name = "lblPassword";
+            lblPassword.Size = new Size(169, 23);
+            lblPassword.TabIndex = 1;
+            lblPassword.Text = "Temporary Password";
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(25, 130);
-            this.txtPassword.PasswordChar = '●';
-            this.txtPassword.Size = new System.Drawing.Size(450, 30);
-
+            txtPassword.Location = new Point(20, 140);
+            txtPassword.Name = "txtPassword";
+            txtPassword.PasswordChar = '●';
+            txtPassword.Size = new Size(560, 30);
+            txtPassword.TabIndex = 1;
             // 
             // lblConfirmPassword
             // 
-            this.lblConfirmPassword.AutoSize = true;
-            this.lblConfirmPassword.Location = new System.Drawing.Point(25, 170);
-            this.lblConfirmPassword.Text = "Confirm Password";
-
+            lblConfirmPassword.AutoSize = true;
+            lblConfirmPassword.Location = new Point(20, 185);
+            lblConfirmPassword.Name = "lblConfirmPassword";
+            lblConfirmPassword.Size = new Size(149, 23);
+            lblConfirmPassword.TabIndex = 2;
+            lblConfirmPassword.Text = "Confirm Password";
             // 
             // txtConfirmPassword
             // 
-            this.txtConfirmPassword.Location = new System.Drawing.Point(25, 195);
-            this.txtConfirmPassword.PasswordChar = '●';
-            this.txtConfirmPassword.Size = new System.Drawing.Size(450, 30);
-
+            txtConfirmPassword.Location = new Point(20, 210);
+            txtConfirmPassword.Name = "txtConfirmPassword";
+            txtConfirmPassword.PasswordChar = '●';
+            txtConfirmPassword.Size = new Size(560, 30);
+            txtConfirmPassword.TabIndex = 2;
             // 
             // panelActions
             // 
-            this.panelActions.Controls.Add(this.btnCreate);
-            this.panelActions.Controls.Add(this.btnResetPassword);
-            this.panelActions.Controls.Add(this.btnDisable);
-            this.panelActions.Controls.Add(this.btnClose);
-            this.panelActions.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelActions.Location = new System.Drawing.Point(0, 460);
-            this.panelActions.Size = new System.Drawing.Size(600, 100);
-
+            panelActions.Controls.Add(btnCreate);
+            panelActions.Controls.Add(btnResetPassword);
+            panelActions.Controls.Add(btnDisable);
+            panelActions.Controls.Add(btnClose);
+            panelActions.Dock = DockStyle.Bottom;
+            panelActions.Location = new Point(20, 535);
+            panelActions.Name = "panelActions";
+            panelActions.Size = new Size(602, 105);
+            panelActions.TabIndex = 2;
             // 
             // btnCreate
             // 
-            this.btnCreate.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
-            this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreate.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.btnCreate.ForeColor = System.Drawing.Color.White;
-            this.btnCreate.Location = new System.Drawing.Point(30, 25);
-            this.btnCreate.Size = new System.Drawing.Size(140, 50);
-            this.btnCreate.Text = "Create Account";
-
+            btnCreate.BackColor = Color.FromArgb(46, 204, 113);
+            btnCreate.FlatStyle = FlatStyle.Flat;
+            btnCreate.Font = new Font("Segoe UI Semibold", 10F);
+            btnCreate.ForeColor = Color.White;
+            btnCreate.Location = new Point(20, 25);
+            btnCreate.Name = "btnCreate";
+            btnCreate.Size = new Size(140, 50);
+            btnCreate.TabIndex = 0;
+            btnCreate.Text = "Create Account";
+            btnCreate.UseVisualStyleBackColor = false;
             // 
             // btnResetPassword
             // 
-            this.btnResetPassword.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
-            this.btnResetPassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnResetPassword.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.btnResetPassword.ForeColor = System.Drawing.Color.White;
-            this.btnResetPassword.Location = new System.Drawing.Point(185, 25);
-            this.btnResetPassword.Size = new System.Drawing.Size(150, 50);
-            this.btnResetPassword.Text = "Reset Password";
-
+            btnResetPassword.BackColor = Color.FromArgb(52, 152, 219);
+            btnResetPassword.FlatStyle = FlatStyle.Flat;
+            btnResetPassword.Font = new Font("Segoe UI Semibold", 10F);
+            btnResetPassword.ForeColor = Color.White;
+            btnResetPassword.Location = new Point(168, 25);
+            btnResetPassword.Name = "btnResetPassword";
+            btnResetPassword.Size = new Size(150, 50);
+            btnResetPassword.TabIndex = 1;
+            btnResetPassword.Text = "Reset Password";
+            btnResetPassword.UseVisualStyleBackColor = false;
             // 
             // btnDisable
             // 
-            this.btnDisable.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
-            this.btnDisable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDisable.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            this.btnDisable.ForeColor = System.Drawing.Color.White;
-            this.btnDisable.Location = new System.Drawing.Point(350, 25);
-            this.btnDisable.Size = new System.Drawing.Size(140, 50);
-            this.btnDisable.Text = "Disable";
-
+            btnDisable.BackColor = Color.FromArgb(231, 76, 60);
+            btnDisable.FlatStyle = FlatStyle.Flat;
+            btnDisable.Font = new Font("Segoe UI Semibold", 10F);
+            btnDisable.ForeColor = Color.White;
+            btnDisable.Location = new Point(325, 25);
+            btnDisable.Name = "btnDisable";
+            btnDisable.Size = new Size(140, 50);
+            btnDisable.TabIndex = 2;
+            btnDisable.Text = "Disable";
+            btnDisable.UseVisualStyleBackColor = false;
             // 
             // btnClose
             // 
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnClose.Location = new System.Drawing.Point(505, 25);
-            this.btnClose.Size = new System.Drawing.Size(70, 50);
-            this.btnClose.Text = "Close";
-
+            btnClose.Font = new Font("Segoe UI", 10F);
+            btnClose.Location = new Point(490, 25);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(90, 50);
+            btnClose.TabIndex = 3;
+            btnClose.Text = "Close";
             // 
             // CustomerAccountForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 560);
-            this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.groupAccountStatus);
-            this.Controls.Add(this.groupCredentials);
-            this.Controls.Add(this.panelActions);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Manage Customer Login Account";
-
-            this.groupAccountStatus.ResumeLayout(false);
-            this.groupAccountStatus.PerformLayout();
-            this.groupCredentials.ResumeLayout(false);
-            this.groupCredentials.PerformLayout();
-            this.panelActions.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1195, 660);
+            Controls.Add(splitContainer);
+            Controls.Add(lblTitle);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "CustomerAccountForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Manage Customer Login Accounts";
+            splitContainer.Panel1.ResumeLayout(false);
+            splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+            splitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvCustomerAccounts).EndInit();
+            panelRight.ResumeLayout(false);
+            groupAccountStatus.ResumeLayout(false);
+            groupAccountStatus.PerformLayout();
+            groupCredentials.ResumeLayout(false);
+            groupCredentials.PerformLayout();
+            panelActions.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.SplitContainer splitContainer;
+        private System.Windows.Forms.DataGridView dgvCustomerAccounts;
+        private System.Windows.Forms.Panel panelRight;
         private System.Windows.Forms.GroupBox groupAccountStatus;
         private System.Windows.Forms.Label lblAccountState;
         private System.Windows.Forms.CheckBox chkAccountEnabled;
-
         private System.Windows.Forms.GroupBox groupCredentials;
         private System.Windows.Forms.Label lblUsername;
         private System.Windows.Forms.TextBox txtUsername;
@@ -224,7 +311,6 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label lblConfirmPassword;
         private System.Windows.Forms.TextBox txtConfirmPassword;
-
         private System.Windows.Forms.Panel panelActions;
         private System.Windows.Forms.Button btnCreate;
         private System.Windows.Forms.Button btnResetPassword;
