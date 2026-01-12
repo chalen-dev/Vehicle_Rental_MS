@@ -4,10 +4,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using VRMS.Enums;
+using VRMS.Forms;
 using VRMS.Models.Customers;
 using VRMS.Services.Customer;
 using VRMS.UI.Forms.Customer;
-using VRMS.Forms;
+using VRMS.UI.Forms.Customers;
 using VRMS.UI.Services;
 using VRMS.UI.State;
 using VRMS.UI.Validation;
@@ -19,9 +20,8 @@ namespace VRMS.Controls
         private readonly DriversLicenseService _driversLicenseService;
         private readonly CustomerService _customerService;
         private readonly CustomerImageService _imageService = new();
-        
+
         private readonly CustomerFormState _state = new();
-        
 
         private List<Customer> _allCustomers = new();
 
@@ -30,7 +30,7 @@ namespace VRMS.Controls
             InitializeComponent();
 
             // Allow table to expand
-            splitContainer1.FixedPanel = FixedPanel.Panel2; 
+            splitContainer1.FixedPanel = FixedPanel.Panel2;
             splitContainer1.IsSplitterFixed = false;
 
             // Safety limits
@@ -128,8 +128,6 @@ namespace VRMS.Controls
             
             
         }
-
-
 
         private void TxtSearch_TextChanged(object? sender, EventArgs e)
         {
@@ -388,7 +386,6 @@ namespace VRMS.Controls
             UpdateSaveButtonState();
         }
 
-
         private void ClearTextBoxes(Control parent)
         {
             foreach (Control c in parent.Controls)
@@ -502,6 +499,18 @@ namespace VRMS.Controls
 
             lblAgeCheck.Text = $"Age: {age}";
             lblAgeCheck.ForeColor = age >= 21 ? Color.Green : Color.Red;
+        }
+
+        private void btnManageAccount_Click(object sender, EventArgs e)
+        {
+            if (_state.SelectedCustomer == null)
+            {
+                MessageBox.Show("Please select a customer first.");
+                return;
+            }
+
+            using var form = new CustomerAccountForm(_state.SelectedCustomer);
+            form.ShowDialog(this);
         }
     }
 }
