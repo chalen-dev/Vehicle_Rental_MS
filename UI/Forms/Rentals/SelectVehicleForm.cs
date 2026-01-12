@@ -7,98 +7,101 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VRMS.Services.Customer;
+using VRMS.Services.Fleet;
+using VRMS.Models.Fleet;
+using VRMS.Enums;
 
 namespace VRMS.UI.Forms.Rentals
 {
-    public partial class SelectCustomerForm : Form
+    public partial class SelectVehicleForm : Form
     {
-        private readonly CustomerService _customerService;
-        private List<Models.Customers.Customer> _customers;
-        private Models.Customers.Customer _selectedCustomer;
+        private readonly VehicleService _vehicleService;
+        private List<Vehicle> _vehicles;
+        private Vehicle _selectedVehicle;
         private bool _isClosing = false; // Flag to prevent multiple close attempts
 
-        public Models.Customers.Customer SelectedCustomer => _selectedCustomer;
+        public Vehicle SelectedVehicle => _selectedVehicle;
 
-        public SelectCustomerForm(CustomerService customerService)
+        public SelectVehicleForm(VehicleService vehicleService)
         {
             InitializeComponent();
-            _customerService = customerService;
-            _customers = new List<Models.Customers.Customer>();
-            _selectedCustomer = null;
+            _vehicleService = vehicleService;
+            _vehicles = new List<Vehicle>();
+            _selectedVehicle = null;
             _isClosing = false;
 
             // Wire up events in constructor (only once)
             btnSelect.Click += btnSelect_Click;
-            dgvCustomers.CellDoubleClick += dgvCustomers_CellDoubleClick;
-            dgvCustomers.SelectionChanged += dgvCustomers_SelectionChanged;
+            dgvVehicles.CellDoubleClick += dgvVehicles_CellDoubleClick;
+            dgvVehicles.SelectionChanged += dgvVehicles_SelectionChanged;
             txtSearch.TextChanged += txtSearch_TextChanged;
         }
 
-        private void SelectCustomerForm_Load(object sender, EventArgs e)
+        private void SelectVehicleForm_Load(object sender, EventArgs e)
         {
-            LoadCustomers();
+            LoadVehicles();
         }
 
-        private void LoadCustomers(string searchTerm = "")
+        private void LoadVehicles(string searchTerm = "")
         {
             try
             {
-                // Get all customers
-                var allCustomers = _customerService.GetAllCustomers();
+                // Get all available vehicles
+                var allVehicles = _vehicleService.GetAllVehicles()
+                    .FindAll(v => v.Status == VehicleStatus.Available);
 
                 // Apply search filter if provided
                 if (!string.IsNullOrWhiteSpace(searchTerm))
                 {
                     searchTerm = searchTerm.ToLower();
-                    _customers = allCustomers
-                        .Where(c =>
-                            c.FirstName.ToLower().Contains(searchTerm) ||
-                            c.LastName.ToLower().Contains(searchTerm) ||
-                            c.Email?.ToLower().Contains(searchTerm) == true ||
-                            c.Phone?.ToLower().Contains(searchTerm) == true)
+                    _vehicles = allVehicles
+                        .Where(v =>
+                            v.Make.ToLower().Contains(searchTerm) ||
+                            v.Model.ToLower().Contains(searchTerm) ||
+                            v.LicensePlate.ToLower().Contains(searchTerm) ||
+                            v.VehicleCode.ToLower().Contains(searchTerm))
                         .ToList();
                 }
                 else
                 {
-                    _customers = allCustomers;
+                    _vehicles = allVehicles;
                 }
 
-                // Bind to DataGridView with only name column
-                dgvCustomers.DataSource = null;
+                // Bind to DataGridView with just the display name
+                dgvVehicles.DataSource = null;
 
-                // Create a simple list with just the ID and FullName for display
-                var displayList = _customers.Select(c => new
+                // Create a simple list with just the ID and display name
+                var displayList = _vehicles.Select(v => new
                 {
-                    c.Id,
-                    FullName = $"{c.FirstName} {c.LastName}"
+                    v.Id,
+                    DisplayName = $"{v.Make} {v.Model} - {v.LicensePlate}"
                 }).ToList();
 
-                dgvCustomers.DataSource = displayList;
+                dgvVehicles.DataSource = displayList;
 
                 // Clear selection
-                dgvCustomers.ClearSelection();
-                _selectedCustomer = null;
+                dgvVehicles.ClearSelection();
+                _selectedVehicle = null;
                 UpdateSelectButtonState();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading customers: {ex.Message}",
+                MessageBox.Show($"Error loading vehicles: {ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            LoadCustomers(txtSearch.Text);
+            LoadVehicles(txtSearch.Text);
         }
 
-        private void dgvCustomers_SelectionChanged(object sender, EventArgs e)
+        private void dgvVehicles_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvCustomers.SelectedRows.Count > 0)
+            if (dgvVehicles.SelectedRows.Count > 0)
             {
                 // Get the selected row's ID
-                var selectedRow = dgvCustomers.SelectedRows[0];
+                var selectedRow = dgvVehicles.SelectedRows[0];
                 if (selectedRow.DataBoundItem != null)
                 {
                     // Get the ID from the displayed anonymous object
@@ -107,20 +110,20 @@ namespace VRMS.UI.Forms.Rentals
                     if (idProperty != null)
                     {
                         int selectedId = (int)idProperty.GetValue(displayItem);
-                        // Find the actual customer object
-                        _selectedCustomer = _customers.FirstOrDefault(c => c.Id == selectedId);
+                        // Find the actual vehicle object
+                        _selectedVehicle = _vehicles.FirstOrDefault(v => v.Id == selectedId);
                     }
                 }
             }
             else
             {
-                _selectedCustomer = null;
+                _selectedVehicle = null;
             }
 
             UpdateSelectButtonState();
         }
 
-        private void dgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvVehicles_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && !_isClosing)
             {
@@ -132,7 +135,7 @@ namespace VRMS.UI.Forms.Rentals
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            if (_selectedCustomer == null || _isClosing) return;
+            if (_selectedVehicle == null || _isClosing) return;
 
             _isClosing = true;
             this.DialogResult = DialogResult.OK;
@@ -141,7 +144,7 @@ namespace VRMS.UI.Forms.Rentals
 
         private void UpdateSelectButtonState()
         {
-            btnSelect.Enabled = (_selectedCustomer != null);
+            btnSelect.Enabled = (_selectedVehicle != null);
         }
 
         // Prevent accidental closure without selection
