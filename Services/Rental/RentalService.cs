@@ -211,13 +211,10 @@ public class RentalService
     
     public void CancelRental(int rentalId)
     {
-        var rental = _rentalRepo.GetById(rentalId);
-
-        if (rental.Status == RentalStatus.Completed)
-            throw new InvalidOperationException(
-                "Cannot cancel a completed rental.");
-
-        _rentalRepo.Delete(rentalId);
+        _rentalRepo.UpdateStatus(
+            rentalId,
+            RentalStatus.Cancelled
+        );
     }
 
 

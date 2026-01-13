@@ -204,7 +204,6 @@ namespace VRMS.UI.Forms.Rentals
         // -------------------------------
         // SAVE
         // -------------------------------
-        int rentalId = 0;
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -223,19 +222,8 @@ namespace VRMS.UI.Forms.Rentals
                 if (odometer < _selectedVehicle.Odometer)
                     throw new InvalidOperationException(
                         $"Odometer cannot be less than {_selectedVehicle.Odometer}");
-                
-                // ---------------- RENTAL (WALK-IN) ----------------
 
-                rentalId =
-                    _rentalService.StartWalkInRental(
-                        _selectedCustomer.Id,
-                        _selectedVehicle.Id,
-                        dtPickup.Value,
-                        dtReturn.Value,
-                        (FuelLevel)cbFuel.SelectedValue);
-
-
-                // ---------------- PRICING ----------------
+                // ---------------- PRICING ONLY (NO DB) ----------------
 
                 decimal baseRental =
                     _rateService.CalculateRentalCost(
@@ -250,17 +238,6 @@ namespace VRMS.UI.Forms.Rentals
                 decimal securityDeposit =
                     category?.SecurityDeposit ?? 0m;
 
-                decimal totalDue =
-                    baseRental + securityDeposit;
-
-                // ---------------- INVOICE ----------------
-
-                var invoice =
-                    _billingService.CreateInitialCharges(
-                        rentalId,
-                        baseRental,
-                        securityDeposit);
-
                 // ---------------- PAYMENT UI ----------------
 
                 using var paymentForm =
@@ -270,14 +247,27 @@ namespace VRMS.UI.Forms.Rentals
                         baseRental,
                         securityDeposit);
 
-
                 if (paymentForm.ShowDialog() != DialogResult.OK)
-                    throw new InvalidOperationException("Payment was cancelled.");
+                    return; // ✅ NOTHING CREATED
 
                 if (paymentForm.SelectedPaymentMethod == null)
                     throw new InvalidOperationException("Payment method not selected.");
 
-                // ---------------- PAYMENT ----------------
+                // ---------------- COMMIT (NOW AND ONLY NOW) ----------------
+
+                int rentalId =
+                    _rentalService.StartWalkInRental(
+                        _selectedCustomer.Id,
+                        _selectedVehicle.Id,
+                        dtPickup.Value,
+                        dtReturn.Value,
+                        (FuelLevel)cbFuel.SelectedValue);
+
+                var invoice =
+                    _billingService.CreateInitialCharges(
+                        rentalId,
+                        baseRental,
+                        securityDeposit);
 
                 _billingService.AddPayment(
                     invoice.Id,
@@ -299,20 +289,14 @@ namespace VRMS.UI.Forms.Rentals
             }
             catch (Exception ex)
             {
-                if (rentalId > 0 &&
-                    ex.Message == "Payment was cancelled.")
-                {
-                    _rentalService.CancelRental(rentalId);
-                }
-
                 MessageBox.Show(
                     ex.Message,
                     "Cannot Proceed",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
-
         }
+
 
 
         private void UpdateSaveButtonState()
