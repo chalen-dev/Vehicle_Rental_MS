@@ -2,32 +2,31 @@
 using System.Collections.Generic;
 using System.Data;
 using VRMS.Database;
+using VRMS.Models.Customers;
 
 namespace VRMS.Repositories.Customers;
 
 public class EmergencyContactPhoneNumberRepository
 {
-    // ----------------------------
-    // PHONE NUMBERS
-    // ----------------------------
-
-    public int Create(int emergencyContactId, string phoneNumber)
+    public int Create(int emergencyContactId, string phoneNumber, bool isPrimary)
     {
         var table = DB.Query(
-            "CALL sp_emergency_contact_phone_numbers_create(@contactId, @phone);",
+            "CALL sp_emergency_contact_phone_numbers_create(@contactId, @phone, @isPrimary);",
             ("@contactId", emergencyContactId),
-            ("@phone", phoneNumber)
+            ("@phone", phoneNumber),
+            ("@isPrimary", isPrimary)
         );
 
         return Convert.ToInt32(table.Rows[0]["phone_number_id"]);
     }
 
-    public void Update(int phoneNumberId, string phoneNumber)
+    public void Update(int phoneNumberId, string phoneNumber, bool isPrimary)
     {
         DB.Execute(
-            "CALL sp_emergency_contact_phone_numbers_update(@id, @phone);",
+            "CALL sp_emergency_contact_phone_numbers_update(@id, @phone, @isPrimary);",
             ("@id", phoneNumberId),
-            ("@phone", phoneNumber)
+            ("@phone", phoneNumber),
+            ("@isPrimary", isPrimary)
         );
     }
 
@@ -39,16 +38,24 @@ public class EmergencyContactPhoneNumberRepository
         );
     }
 
-    public List<string> GetByEmergencyContactId(int emergencyContactId)
+    public List<EmergencyContactPhoneNumber> GetByEmergencyContactId(int emergencyContactId)
     {
         var table = DB.Query(
             "CALL sp_emergency_contact_phone_numbers_get_by_contact_id(@contactId);",
             ("@contactId", emergencyContactId)
         );
 
-        var list = new List<string>();
+        var list = new List<EmergencyContactPhoneNumber>();
         foreach (DataRow row in table.Rows)
-            list.Add(row["phone_number"].ToString()!);
+        {
+            list.Add(new EmergencyContactPhoneNumber
+            {
+                Id = Convert.ToInt32(row["id"]),
+                EmergencyContactId = Convert.ToInt32(row["emergency_contact_id"]),
+                PhoneNumber = row["phone_number"].ToString()!,
+                IsPrimary = Convert.ToBoolean(row["is_primary"])
+            });
+        }
 
         return list;
     }

@@ -188,6 +188,13 @@ public class VehicleService
     {
         return _vehicleRepo.GetFullById(vehicleId);
     }
+    
+    public List<Vehicle> SearchVehicles(
+        VehicleStatus? status,
+        string? search)
+    {
+        return _vehicleRepo.Search(status, search);
+    }
 
     // -------------------------------------------------
     // MAINTENANCE

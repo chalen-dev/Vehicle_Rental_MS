@@ -12,7 +12,8 @@ public static class SP_EmergencyContactPhoneNumbers_GetByEmergencyContactId
                                       SELECT
                                           id,
                                           emergency_contact_id,
-                                          phone_number
+                                          phone_number,
+                                          is_primary
                                       FROM emergency_contact_phone_numbers
                                       WHERE emergency_contact_id = p_emergency_contact_id;
                                   END;

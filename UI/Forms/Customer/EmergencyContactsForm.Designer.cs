@@ -430,6 +430,7 @@
             dgvPhoneNumbers.GridColor = Color.FromArgb(240, 240, 240);
             dgvPhoneNumbers.Location = new Point(15, 55);
             dgvPhoneNumbers.Name = "dgvPhoneNumbers";
+            dgvPhoneNumbers.EditMode = DataGridViewEditMode.EditOnEnter;
             dgvPhoneNumbers.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvPhoneNumbers.RowHeadersVisible = false;
             dgvPhoneNumbers.RowHeadersWidth = 51;
@@ -472,11 +473,17 @@
             // 
             // colPrimary
             // 
-            colPrimary.FillWeight = 10F;
-            colPrimary.HeaderText = "Primary";
-            colPrimary.MinimumWidth = 70;
+            colPrimary = new DataGridViewCheckBoxColumn();
             colPrimary.Name = "colPrimary";
-            colPrimary.Width = 125;
+            colPrimary.HeaderText = "Primary";
+            colPrimary.Width = 80;
+            colPrimary.TrueValue = true;
+            colPrimary.FalseValue = false;
+            colPrimary.IndeterminateValue = false;
+            colPrimary.ThreeState = false;
+            colPrimary.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colPrimary.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colPrimary.FlatStyle = FlatStyle.Standard;
             // 
             // colRemovePhone
             // 

@@ -10,6 +10,8 @@ public static class M_0020_CreateEmergencyContactPhoneNumbersTable
 
                                          phone_number VARCHAR(30) NOT NULL,
 
+                                         is_primary BOOLEAN NOT NULL DEFAULT FALSE,
+
                                          CONSTRAINT fk_ec_phone_numbers_contact
                                              FOREIGN KEY (emergency_contact_id)
                                              REFERENCES emergency_contacts(id)

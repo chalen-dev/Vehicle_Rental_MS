@@ -28,6 +28,7 @@ namespace VRMS.Controls
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
         private readonly VehicleImageRepository _vehicleImageRepo;
+        private VehicleStatus? _statusFilter = null;
 
         public VehiclesView()
         {
@@ -84,6 +85,19 @@ namespace VRMS.Controls
 
             flowLayoutPanelFeatures.AutoSize = true;
             flowLayoutPanelFeatures.WrapContents = true;
+            
+            // -------------------------
+            // FILTER WIRING
+            // -------------------------
+
+            btnAll.Click += (_, _) => SetStatusFilter(null);
+            btnAvailable.Click += (_, _) => SetStatusFilter(VehicleStatus.Available);
+            btnRented.Click += (_, _) => SetStatusFilter(VehicleStatus.Rented);
+            btnMaintenance.Click += (_, _) => SetStatusFilter(VehicleStatus.UnderMaintenance);
+            btnReserved.Click += (_, _) => SetStatusFilter(VehicleStatus.Reserved);
+
+            // Live search
+            txtSearch.TextChanged += (_, _) => ApplyFilters();
         }
 
         private void VehiclesView_Load(object? sender, EventArgs e)
@@ -112,11 +126,29 @@ namespace VRMS.Controls
 
         private void LoadVehicles()
         {
+            ApplyFilters();
+        }
+        
+        private void SetStatusFilter(VehicleStatus? status)
+        {
+            _statusFilter = status;
+            ApplyFilters();
+        }
+        
+        private void ApplyFilters()
+        {
+            var vehicles = _vehicleService.SearchVehicles(
+                _statusFilter,
+                txtSearch.Text
+            );
+
             dgvVehicles.DataSource = null;
-            dgvVehicles.DataSource = _vehicleService.GetAllVehicles();
-            lblVehicleCount.Text = $"Total: {dgvVehicles.Rows.Count} vehicles";
+            dgvVehicles.DataSource = vehicles;
+
+            lblVehicleCount.Text = $"Total: {vehicles.Count} vehicles";
             ClearVehiclePreview();
         }
+
 
         private void DgvVehicles_SelectionChanged(object? sender, EventArgs e)
         {

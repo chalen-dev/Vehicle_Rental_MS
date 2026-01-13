@@ -104,7 +104,12 @@ namespace VRMS.UI.Forms.Customer
                     Relationship = c.Relationship,
                     Phones = _service
                         .GetEmergencyContactPhoneNumbers(c.Id)
-                        .Select(p => new PhoneNumber { Number = p })
+                        .Select(p => new PhoneNumber
+                        {
+                            Type = "Mobile", // REQUIRED default
+                            Number = p.PhoneNumber,
+                            IsPrimary = p.IsPrimary
+                        })
                         .ToList()
                 };
 
@@ -139,6 +144,13 @@ namespace VRMS.UI.Forms.Customer
 
             dgvContacts.CellClick += SelectContact;
             dgvPhoneNumbers.CellClick += PhoneGridClick;
+            
+            dgvPhoneNumbers.CellValueChanged += PhonePrimaryChanged;
+            dgvPhoneNumbers.CurrentCellDirtyStateChanged += (_, _) =>
+            {
+                if (dgvPhoneNumbers.IsCurrentCellDirty)
+                    dgvPhoneNumbers.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            };
         }
 
         // =====================================================
@@ -160,7 +172,11 @@ namespace VRMS.UI.Forms.Customer
             foreach (var p in ReadPhones())
             {
                 if (!string.IsNullOrWhiteSpace(p.Normalized()))
-                    _service.AddEmergencyContactPhoneNumber(newId, p.Normalized());
+                    _service.AddEmergencyContactPhoneNumber(
+                        newId,
+                        p.Normalized(),
+                        p.IsPrimary
+                    );
             }
 
             LoadContacts();
@@ -185,8 +201,13 @@ namespace VRMS.UI.Forms.Customer
             foreach (var p in ReadPhones())
             {
                 if (!string.IsNullOrWhiteSpace(p.Normalized()))
-                    _service.AddEmergencyContactPhoneNumber(newId, p.Normalized());
+                    _service.AddEmergencyContactPhoneNumber(
+                        newId,
+                        p.Normalized(),
+                        p.IsPrimary
+                    );
             }
+
 
             LoadContacts();
             ResetForm();
@@ -265,7 +286,15 @@ namespace VRMS.UI.Forms.Customer
 
         private void AddPhoneRow()
         {
-            dgvPhoneNumbers.Rows.Add(null, "Mobile", "", false);
+            bool hasPrimary =
+                ReadPhones().Any(p => p.IsPrimary);
+
+            dgvPhoneNumbers.Rows.Add(
+                null,
+                "Mobile",
+                "",
+                !hasPrimary // first phone becomes primary
+            );
         }
 
         private void PhoneGridClick(object? sender, DataGridViewCellEventArgs e)
@@ -275,7 +304,46 @@ namespace VRMS.UI.Forms.Customer
 
             if (dgvPhoneNumbers.Columns[e.ColumnIndex].Name == "colRemovePhone")
             {
+                bool wasPrimary =
+                    Convert.ToBoolean(
+                        dgvPhoneNumbers.Rows[e.RowIndex]
+                            .Cells["colPrimary"].Value ?? false);
+
                 dgvPhoneNumbers.Rows.RemoveAt(e.RowIndex);
+
+                if (wasPrimary && dgvPhoneNumbers.Rows.Count > 0)
+                {
+                    // Promote first remaining phone
+                    dgvPhoneNumbers.Rows[0]
+                        .Cells["colPrimary"].Value = true;
+                }
+            }
+        }
+        
+
+        
+        private void PhonePrimaryChanged(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            if (dgvPhoneNumbers.Columns[e.ColumnIndex].Name != "colPrimary")
+                return;
+
+            var isChecked =
+                Convert.ToBoolean(dgvPhoneNumbers.Rows[e.RowIndex]
+                    .Cells["colPrimary"].Value);
+
+            if (!isChecked)
+                return;
+
+            // Uncheck all OTHER rows
+            foreach (DataGridViewRow row in dgvPhoneNumbers.Rows)
+            {
+                if (row.Index == e.RowIndex || row.IsNewRow)
+                    continue;
+
+                row.Cells["colPrimary"].Value = false;
             }
         }
 
@@ -306,6 +374,12 @@ namespace VRMS.UI.Forms.Customer
             if (ReadPhones().Count == 0)
             {
                 MessageBox.Show("At least one phone number is required.");
+                return false;
+            }
+            
+            if (!ReadPhones().Any(p => p.IsPrimary))
+            {
+                MessageBox.Show("Please select one primary phone number.");
                 return false;
             }
 

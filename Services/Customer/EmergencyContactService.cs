@@ -112,15 +112,18 @@ public class EmergencyContactService
     /// </summary>
     /// <param name="emergencyContactId">Emergency contact ID</param>
     /// <param name="phoneNumber">Phone number</param>
+    /// <param name="isPrimary"></param>
     /// <returns>Newly created phone number ID</returns>
     public int AddEmergencyContactPhoneNumber(
         int emergencyContactId,
-        string phoneNumber
+        string phoneNumber,
+        bool isPrimary
     )
     {
         return _phoneRepo.Create(
             emergencyContactId,
-            phoneNumber
+            phoneNumber,
+            isPrimary
         );
     }
 
@@ -129,14 +132,17 @@ public class EmergencyContactService
     /// </summary>
     /// <param name="phoneNumberId">Phone number ID</param>
     /// <param name="phoneNumber">Updated phone number</param>
+    /// <param name="isPrimary"></param>
     public void UpdateEmergencyContactPhoneNumber(
         int phoneNumberId,
-        string phoneNumber
+        string phoneNumber,
+        bool isPrimary
     )
     {
         _phoneRepo.Update(
             phoneNumberId,
-            phoneNumber
+            phoneNumber,
+            isPrimary
         );
     }
 
@@ -154,10 +160,10 @@ public class EmergencyContactService
     /// </summary>
     /// <param name="emergencyContactId">Emergency contact ID</param>
     /// <returns>List of phone numbers</returns>
-    public List<string> GetEmergencyContactPhoneNumbers(int emergencyContactId)
+    public List<EmergencyContactPhoneNumber> GetEmergencyContactPhoneNumbers(
+        int emergencyContactId
+    )
     {
-        return _phoneRepo.GetByEmergencyContactId(
-            emergencyContactId
-        );
+        return _phoneRepo.GetByEmergencyContactId(emergencyContactId);
     }
 }

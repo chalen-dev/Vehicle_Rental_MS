@@ -95,6 +95,19 @@ public class VehicleRepository
 
         return Map(table.Rows[0]);
     }
+    
+    public List<Vehicle> Search(
+        VehicleStatus? status,
+        string? search)
+    {
+        var table = DB.Query(
+            "CALL sp_vehicles_search(@status,@search);",
+            ("@status", status?.ToString()),
+            ("@search", string.IsNullOrWhiteSpace(search) ? null : search)
+        );
+
+        return MapList(table);
+    }
 
 
     // ---------- mapping ----------
