@@ -9,6 +9,7 @@ using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
 using VRMS.Services.Account;
 using VRMS.UI.Animation;
+using VRMS.UI.Forms.Main;
 
 namespace VRMS.UI.Forms
 {
@@ -26,7 +27,6 @@ namespace VRMS.UI.Forms
             // =========================
             // AUTH COMPOSITION ROOT
             // =========================
-
             var userRepo = new UserRepository();
             _userService = new UserService(userRepo);
 
@@ -39,6 +39,9 @@ namespace VRMS.UI.Forms
             InitializeForm();
         }
 
+        // =========================
+        // FORM INIT
+        // =========================
         private void InitializeForm()
         {
             DoubleBuffered = true;
@@ -47,8 +50,6 @@ namespace VRMS.UI.Forms
             {
                 WindowState = FormWindowState.Maximized;
                 UpdateLayout();
-
-                // ✅ IMPORTANT: initial hidden state
                 panelLogin.Visible = false;
             };
 
@@ -58,7 +59,6 @@ namespace VRMS.UI.Forms
         // =========================
         // ENTRY POINT
         // =========================
-
         private void btnProceed_Click(object sender, EventArgs e)
         {
             if (_animationManager.IsAnimating)
@@ -77,11 +77,9 @@ namespace VRMS.UI.Forms
             _animationManager.StartSlideAnimation();
         }
 
-
         // =========================
         // CONTROL LOADER
         // =========================
-
         private void LoadControl(UserControl control)
         {
             panelLogin.Controls.Clear();
@@ -120,12 +118,13 @@ namespace VRMS.UI.Forms
         }
 
         // =========================
-        // LOGIN SUCCESS
+        // LOGIN SUCCESS HANDLER
         // =========================
-
         private void HandleLoginSuccess(LoginUserControl login)
         {
-            // INTERNAL USER
+            // =========================
+            // INTERNAL USER (AGENT)
+            // =========================
             if (login.LoggedInUser != null)
             {
                 var user = login.LoggedInUser;
@@ -143,12 +142,16 @@ namespace VRMS.UI.Forms
                 return;
             }
 
+            // =========================
             // CUSTOMER
+            // =========================
             if (login.LoggedInCustomer != null)
             {
                 Session.CurrentCustomer = login.LoggedInCustomer;
 
-                var customerForm = new CustomerMainForm();
+                var customerForm =
+                    new CustomerMainForm(login.LoggedInCustomer);
+
                 customerForm.Show();
                 Hide();
 
@@ -156,18 +159,12 @@ namespace VRMS.UI.Forms
             }
         }
 
-
-
-
         // =========================
-        // IAnimationHost
+        // ANIMATION HOST
         // =========================
-
         public void OnAnimationStart()
         {
             btnProceed.Enabled = false;
-
-            // ✅ ENSURE VISIBILITY DURING ANIMATION
             panelLogin.Visible = true;
         }
 
@@ -186,7 +183,6 @@ namespace VRMS.UI.Forms
         // =========================
         // UI HELPERS
         // =========================
-
         private void FocusContent()
         {
             if (_currentControl is LoginUserControl login)
@@ -197,8 +193,6 @@ namespace VRMS.UI.Forms
 
         private void CenterControl(Control control)
         {
-            if (control == null) return;
-
             control.Location = new Point(
                 (panelLogin.Width - control.Width) / 2,
                 (panelLogin.Height - control.Height) / 2
@@ -227,6 +221,7 @@ namespace VRMS.UI.Forms
             }
             base.Dispose(disposing);
         }
+
         private void OnChildFormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
