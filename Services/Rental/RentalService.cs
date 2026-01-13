@@ -1,6 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using VRMS.DTOs;
 using VRMS.Enums;
 using VRMS.Repositories.Damages;
@@ -33,7 +30,6 @@ public class RentalService
     private readonly RentalRepository _rentalRepo;
     private readonly BillingService _billingService;
 
-    // Inspection & Damage
     private readonly VehicleInspectionRepository _inspectionRepo;
     private readonly DamageRepository _damageRepo;
     private readonly DamageReportRepository _damageReportRepo;
@@ -60,6 +56,7 @@ public class RentalService
         _damageRepo = damageRepo;
         _damageReportRepo = damageReportRepo;
     }
+
 
     // -------------------------------------------------
     // START RENTAL (PICKUP)
