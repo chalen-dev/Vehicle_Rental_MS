@@ -126,6 +126,32 @@ public class RentalRepository
 
         return rentals;
     }
+    
+    public List<(Rental rental, decimal? totalAmount)>
+        GetByCustomer(int customerId)
+    {
+        var result = new List<(Rental, decimal?)>();
+
+        var table = DB.Query(
+            "CALL sp_rentals_get_by_customer(@cid);",
+            ("@cid", customerId)
+        );
+
+        foreach (DataRow row in table.Rows)
+        {
+            var rental = Map(row);
+
+            decimal? total =
+                row["total_amount"] == DBNull.Value
+                    ? null
+                    : Convert.ToDecimal(row["total_amount"]);
+
+            result.Add((rental, total));
+        }
+
+        return result;
+    }
+
 
 
     // -------------------------------------------------

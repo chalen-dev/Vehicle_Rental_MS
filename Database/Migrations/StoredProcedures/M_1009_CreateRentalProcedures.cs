@@ -12,6 +12,7 @@ public static class M_1009_CreateRentalProcedures
                                       {SP_Rentals_Complete.Sql()}
                                       {SP_Rentals_UpdateStatus.Sql()}
                                       {SP_Rentals_GetAll.Sql()}
+                                      {SP_Rentals_GetByCustomer.Sql()}
                                       """;
 
     public static string Drop() => """
@@ -22,5 +23,6 @@ public static class M_1009_CreateRentalProcedures
                                    DROP PROCEDURE IF EXISTS sp_rentals_complete;
                                    DROP PROCEDURE IF EXISTS sp_rentals_update_status;
                                    DROP PROCEDURE IF EXISTS sp_rentals_get_all;
+                                   DROP PROCEDURE IF EXISTS sp_rentals_get_by_customer;
                                    """;
 }

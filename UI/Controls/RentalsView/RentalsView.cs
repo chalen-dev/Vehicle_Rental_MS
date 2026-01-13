@@ -31,6 +31,7 @@ namespace VRMS.Controls
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
         private readonly RateService _rateService;
+        private readonly BillingService _billingService;
 
         private List<RentalGridRow> _allRows = new();
         private readonly ToolTip _toolTip = new ToolTip();
@@ -78,7 +79,7 @@ namespace VRMS.Controls
             _reservationService = new ReservationService(_customerService, _vehicleService, reservationRepo);
             _rateService = new RateService(rateConfigRepo);
 
-            var billingService = new BillingService(
+            _billingService = new BillingService(
                 rentalRepo, _reservationService, _vehicleService, _rateService,
                 invoiceRepo, invoiceLineItemRepo, paymentRepo, damageReportRepo);
 
@@ -87,7 +88,7 @@ namespace VRMS.Controls
                 _reservationService,
                 _vehicleService,
                 rentalRepo,
-                billingService,
+                _billingService,
                 inspectionRepo,
                 damageRepo,
                 damageReportRepo
@@ -172,10 +173,19 @@ namespace VRMS.Controls
 
         private void BtnNewRental_Click(object sender, EventArgs e)
         {
-            using var form = new NewRentalForm(_customerService, _vehicleService, _reservationService, _rentalService, _rateService);
+            using var form =
+                new NewRentalForm(
+                    _customerService,
+                    _vehicleService,
+                    _reservationService,
+                    _rentalService,
+                    _billingService,
+                    _rateService);
+
             if (form.ShowDialog(FindForm()) == DialogResult.OK)
                 LoadRentals();
         }
+
 
         private bool _returnInProgress = false;
 

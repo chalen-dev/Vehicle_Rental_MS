@@ -1,6 +1,6 @@
-﻿namespace VRMS.UI.Forms.Rentals
+﻿namespace VRMS.UI.Forms.Select
 {
-    partial class SelectCustomerForm
+    partial class SelectVehicleForm
     {
         /// <summary>
         /// Required designer variable.
@@ -39,13 +39,13 @@
             panel2 = new Panel();
             txtSearch = new TextBox();
             lblSearch = new Label();
-            dgvCustomers = new DataGridView();
+            dgvVehicles = new DataGridView();
             colId = new DataGridViewTextBoxColumn();
-            colFullName = new DataGridViewTextBoxColumn();
+            colDisplayName = new DataGridViewTextBoxColumn();
             pnlHeader.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvVehicles).BeginInit();
             SuspendLayout();
             // 
             // pnlHeader
@@ -67,9 +67,9 @@
             lblTitle.Location = new Point(18, 17);
             lblTitle.Margin = new Padding(4, 0, 4, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(176, 32);
+            lblTitle.Size = new Size(154, 32);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "Select Customer";
+            lblTitle.Text = "Select Vehicle";
             // 
             // panel1
             // 
@@ -134,7 +134,7 @@
             txtSearch.Location = new Point(18, 31);
             txtSearch.Margin = new Padding(4, 3, 4, 3);
             txtSearch.Name = "txtSearch";
-            txtSearch.PlaceholderText = "Search by name...";
+            txtSearch.PlaceholderText = "Search by vehicle name or license plate...";
             txtSearch.Size = new Size(936, 27);
             txtSearch.TabIndex = 1;
             txtSearch.TextChanged += txtSearch_TextChanged;
@@ -147,19 +147,19 @@
             lblSearch.Location = new Point(14, 9);
             lblSearch.Margin = new Padding(4, 0, 4, 0);
             lblSearch.Name = "lblSearch";
-            lblSearch.Size = new Size(114, 19);
+            lblSearch.Size = new Size(107, 19);
             lblSearch.TabIndex = 0;
-            lblSearch.Text = "Search Customer";
+            lblSearch.Text = "Search Vehicle";
             // 
-            // dgvCustomers
+            // dgvVehicles
             // 
-            dgvCustomers.AllowUserToAddRows = false;
-            dgvCustomers.AllowUserToDeleteRows = false;
-            dgvCustomers.AllowUserToResizeRows = false;
-            dgvCustomers.BackgroundColor = Color.White;
-            dgvCustomers.BorderStyle = BorderStyle.None;
-            dgvCustomers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvCustomers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvVehicles.AllowUserToAddRows = false;
+            dgvVehicles.AllowUserToDeleteRows = false;
+            dgvVehicles.AllowUserToResizeRows = false;
+            dgvVehicles.BackgroundColor = Color.White;
+            dgvVehicles.BorderStyle = BorderStyle.None;
+            dgvVehicles.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvVehicles.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = Color.FromArgb(52, 73, 94);
             dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
@@ -168,10 +168,10 @@
             dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(52, 73, 94);
             dataGridViewCellStyle1.SelectionForeColor = Color.White;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvCustomers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvCustomers.ColumnHeadersHeight = 45;
-            dgvCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvCustomers.Columns.AddRange(new DataGridViewColumn[] { colId, colFullName });
+            dgvVehicles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvVehicles.ColumnHeadersHeight = 45;
+            dgvVehicles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvVehicles.Columns.AddRange(new DataGridViewColumn[] { colId, colDisplayName });
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
@@ -180,26 +180,26 @@
             dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(236, 240, 241);
             dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(44, 62, 80);
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvCustomers.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvCustomers.Dock = DockStyle.Fill;
-            dgvCustomers.EditMode = DataGridViewEditMode.EditProgrammatically;
-            dgvCustomers.EnableHeadersVisualStyles = false;
-            dgvCustomers.GridColor = Color.FromArgb(236, 240, 241);
-            dgvCustomers.Location = new Point(0, 140);
-            dgvCustomers.Margin = new Padding(4, 3, 4, 3);
-            dgvCustomers.MultiSelect = false;
-            dgvCustomers.Name = "dgvCustomers";
-            dgvCustomers.ReadOnly = true;
-            dgvCustomers.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvCustomers.RowHeadersVisible = false;
+            dgvVehicles.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvVehicles.Dock = DockStyle.Fill;
+            dgvVehicles.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dgvVehicles.EnableHeadersVisualStyles = false;
+            dgvVehicles.GridColor = Color.FromArgb(236, 240, 241);
+            dgvVehicles.Location = new Point(0, 140);
+            dgvVehicles.Margin = new Padding(4, 3, 4, 3);
+            dgvVehicles.MultiSelect = false;
+            dgvVehicles.Name = "dgvVehicles";
+            dgvVehicles.ReadOnly = true;
+            dgvVehicles.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvVehicles.RowHeadersVisible = false;
             dataGridViewCellStyle3.Padding = new Padding(8, 5, 8, 5);
-            dgvCustomers.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            dgvCustomers.RowTemplate.Height = 40;
-            dgvCustomers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCustomers.Size = new Size(984, 460);
-            dgvCustomers.TabIndex = 3;
-            dgvCustomers.SelectionChanged += dgvCustomers_SelectionChanged;
-            dgvCustomers.CellDoubleClick += dgvCustomers_CellDoubleClick;
+            dgvVehicles.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dgvVehicles.RowTemplate.Height = 40;
+            dgvVehicles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVehicles.Size = new Size(984, 460);
+            dgvVehicles.TabIndex = 3;
+            dgvVehicles.SelectionChanged += dgvVehicles_SelectionChanged;
+            dgvVehicles.CellDoubleClick += dgvVehicles_CellDoubleClick;
             // 
             // colId
             // 
@@ -209,23 +209,23 @@
             colId.ReadOnly = true;
             colId.Visible = false;
             // 
-            // colFullName
+            // colDisplayName
             // 
-            colFullName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colFullName.DataPropertyName = "FullName";
-            colFullName.FillWeight = 100F;
-            colFullName.HeaderText = "Customer Name";
-            colFullName.Name = "colFullName";
-            colFullName.ReadOnly = true;
+            colDisplayName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colDisplayName.DataPropertyName = "DisplayName";
+            colDisplayName.FillWeight = 100F;
+            colDisplayName.HeaderText = "Vehicle";
+            colDisplayName.Name = "colDisplayName";
+            colDisplayName.ReadOnly = true;
             // 
-            // SelectCustomerForm
+            // SelectVehicleForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             CancelButton = btnCancel;
             ClientSize = new Size(984, 661);
-            Controls.Add(dgvCustomers);
+            Controls.Add(dgvVehicles);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(pnlHeader);
@@ -234,16 +234,16 @@
             MaximizeBox = false;
             MinimizeBox = false;
             MinimumSize = new Size(1000, 700);
-            Name = "SelectCustomerForm";
+            Name = "SelectVehicleForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Select Customer";
-            Load += SelectCustomerForm_Load;
+            Text = "Select Vehicle";
+            Load += SelectVehicleForm_Load;
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvCustomers).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvVehicles).EndInit();
             ResumeLayout(false);
         }
 
@@ -257,8 +257,8 @@
         private Panel panel2;
         private TextBox txtSearch;
         private Label lblSearch;
-        private DataGridView dgvCustomers;
+        private DataGridView dgvVehicles;
         private DataGridViewTextBoxColumn colId;
-        private DataGridViewTextBoxColumn colFullName;
+        private DataGridViewTextBoxColumn colDisplayName;
     }
 }

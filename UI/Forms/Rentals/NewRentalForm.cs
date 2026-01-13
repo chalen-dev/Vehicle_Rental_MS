@@ -5,6 +5,7 @@ using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
+using VRMS.UI.Forms.Select;
 
 namespace VRMS.UI.Forms.Rentals
 {
@@ -20,12 +21,14 @@ namespace VRMS.UI.Forms.Rentals
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
         private readonly RateService _rateService;
+        private readonly BillingService _billingService;
 
         public NewRentalForm(
             CustomerService customerService,
             VehicleService vehicleService,
             ReservationService reservationService,
             RentalService rentalService,
+            BillingService billingService,
             RateService rateService)
         {
             InitializeComponent();
@@ -34,6 +37,7 @@ namespace VRMS.UI.Forms.Rentals
             _vehicleService = vehicleService;
             _reservationService = reservationService;
             _rentalService = rentalService;
+            _billingService = billingService;
             _rateService = rateService;
 
             // Date changes
@@ -43,15 +47,8 @@ namespace VRMS.UI.Forms.Rentals
             // Form lifecycle
             Load += NewRentalForm_Load;
             btnCancel.Click += (_, __) => Close();
-
-            // 🚫 DO NOT manually wire buttons here
-            // Designer already wires:
-            // btnSelectCustomer_Click
-            // btnClearCustomer_Click
-            // btnSelectVehicle_Click
-            // btnClearVehicle_Click
-            // btnSave_Click
         }
+
 
         // -------------------------------
         // LOAD
@@ -212,6 +209,8 @@ namespace VRMS.UI.Forms.Rentals
         {
             try
             {
+                // ---------------- VALIDATION ----------------
+
                 if (_selectedCustomer == null)
                     throw new InvalidOperationException("Please select a customer.");
 
@@ -225,14 +224,7 @@ namespace VRMS.UI.Forms.Rentals
                     throw new InvalidOperationException(
                         $"Odometer cannot be less than {_selectedVehicle.Odometer}");
 
-                using var paymentForm =
-                    new RentalDownPayment(
-                        $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}",
-                        $"{_selectedVehicle.Make} {_selectedVehicle.Model}",
-                        _lastCalculatedTotal);
-
-                if (paymentForm.ShowDialog() != DialogResult.OK)
-                    return;
+                // ---------------- RESERVATION ----------------
 
                 int reservationId =
                     _reservationService.CreateReservation(
@@ -243,25 +235,83 @@ namespace VRMS.UI.Forms.Rentals
 
                 _reservationService.ConfirmReservation(reservationId);
 
-                _rentalService.StartRental(
-                    reservationId,
-                    dtPickup.Value,
-                    (FuelLevel)cbFuel.SelectedValue);
+                // ---------------- RENTAL ----------------
 
-                MessageBox.Show("Rental successfully created.",
-                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                int rentalId =
+                    _rentalService.StartRental(
+                        reservationId,
+                        dtPickup.Value,
+                        (FuelLevel)cbFuel.SelectedValue);
+
+                // ---------------- PRICING ----------------
+
+                decimal baseRental =
+                    _rateService.CalculateRentalCost(
+                        dtPickup.Value,
+                        dtReturn.Value,
+                        _selectedVehicle.VehicleCategoryId);
+
+                var category =
+                    _vehicleService.GetCategoryById(
+                        _selectedVehicle.VehicleCategoryId);
+
+                decimal securityDeposit =
+                    category?.SecurityDeposit ?? 0m;
+
+                decimal totalDue =
+                    baseRental + securityDeposit;
+
+                // ---------------- INVOICE ----------------
+
+                var invoice =
+                    _billingService.CreateInitialCharges(
+                        rentalId,
+                        baseRental,
+                        securityDeposit);
+
+                // ---------------- PAYMENT UI ----------------
+
+                using var paymentForm =
+                    new RentalDownPayment(
+                        $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}",
+                        $"{_selectedVehicle.Make} {_selectedVehicle.Model}",
+                        totalDue);
+
+                if (paymentForm.ShowDialog() != DialogResult.OK)
+                    throw new InvalidOperationException("Payment was cancelled.");
+
+                if (paymentForm.SelectedPaymentMethod == null)
+                    throw new InvalidOperationException("Payment method not selected.");
+
+                // ---------------- PAYMENT ----------------
+
+                _billingService.AddPayment(
+                    invoice.Id,
+                    paymentForm.PaidAmount,
+                    paymentForm.SelectedPaymentMethod.Value,
+                    DateTime.UtcNow);
+
+                // ---------------- SUCCESS ----------------
+
+                MessageBox.Show(
+                    "Rental successfully created.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,
+                MessageBox.Show(
+                    ex.Message,
                     "Cannot Proceed",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
         }
+
 
         private void UpdateSaveButtonState()
         {

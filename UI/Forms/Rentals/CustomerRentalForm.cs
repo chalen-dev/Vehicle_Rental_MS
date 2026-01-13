@@ -5,6 +5,7 @@ using VRMS.Services.Billing;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Billing;
 using VRMS.Models.Fleet;
+using VRMS.UI.Forms.Select;
 
 namespace VRMS.UI.Forms.Rentals
 {

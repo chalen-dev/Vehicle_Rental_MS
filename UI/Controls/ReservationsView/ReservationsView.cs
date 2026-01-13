@@ -17,6 +17,7 @@ using VRMS.Services.Account;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
+using VRMS.UI.Forms.Reservation;
 
 namespace VRMS.Controls
 {
@@ -75,8 +76,6 @@ namespace VRMS.Controls
             dgvReservations.SelectionChanged += DgvReservations_SelectionChanged;
             txtSearch.TextChanged += (_, __) => ApplyFilters();
             cbStatusFilter.SelectedIndexChanged += (_, __) => ApplyFilters();
-
-            btnCancelReservation.Click += BtnCancelReservation_Click;
             btnViewDetails.Click += BtnViewDetails_Click;
         }
 
@@ -84,8 +83,31 @@ namespace VRMS.Controls
         {
             ConfigureGrid();
             LoadStatusFilter();
+
+            txtSearch.ForeColor = Color.Gray;
+            txtSearch.Text = "Search reservations...";
+
+            txtSearch.GotFocus += (_, __) =>
+            {
+                if (txtSearch.Text == "Search reservations...")
+                {
+                    txtSearch.Text = "";
+                    txtSearch.ForeColor = Color.Black;
+                }
+            };
+
+            txtSearch.LostFocus += (_, __) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtSearch.Text))
+                {
+                    txtSearch.Text = "Search reservations...";
+                    txtSearch.ForeColor = Color.Gray;
+                }
+            };
+
             LoadReservations();
         }
+
 
         private void ConfigureGrid()
         {
@@ -175,13 +197,8 @@ namespace VRMS.Controls
             }
 
             var search = txtSearch.Text.Trim();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                filtered = filtered.Where(r =>
-                    r.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase)
-                    || r.VehicleName.Contains(search, StringComparison.OrdinalIgnoreCase));
-            }
+            if (search == "Search reservations...")
+                search = "";
 
             dgvReservations.DataSource = filtered.ToList();
             UpdateActionButtons();

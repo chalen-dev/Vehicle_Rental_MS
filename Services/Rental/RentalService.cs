@@ -1,5 +1,6 @@
 using VRMS.DTOs;
 using VRMS.DTOs.Damage;
+using VRMS.DTOs.Rental;
 using VRMS.Enums;
 using VRMS.Repositories.Damages;
 using VRMS.Repositories.Inspections;
@@ -248,4 +249,24 @@ public class RentalService
     public Models.Rentals.Rental? GetRentalByReservation(
         int reservationId)
         => _rentalRepo.GetByReservation(reservationId);
+    
+    public IReadOnlyList<RentalHistoryRowDto>
+        GetRentalHistoryForCustomer(int customerId)
+    {
+        var rentals = _rentalRepo.GetByCustomer(customerId);
+
+        return rentals.Select(x => new RentalHistoryRowDto
+        {
+            RentalId = x.rental.Id,
+            PickupDate = x.rental.PickupDate,
+            ReturnDate = x.rental.ActualReturnDate,
+            DurationDays =
+                (int)((x.rental.ActualReturnDate
+                       ?? x.rental.ExpectedReturnDate)
+                      - x.rental.PickupDate).TotalDays,
+            Status = x.rental.Status,
+            TotalAmount = x.totalAmount
+        }).ToList();
+    }
+
 }

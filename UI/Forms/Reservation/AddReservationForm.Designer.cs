@@ -1,4 +1,4 @@
-﻿namespace VRMS.Forms
+﻿namespace VRMS.UI.Forms.Reservation
 {
     partial class AddReservationForm
     {

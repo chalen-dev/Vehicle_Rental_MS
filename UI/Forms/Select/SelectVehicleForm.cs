@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using VRMS.Services.Fleet;
+﻿using VRMS.Enums;
 using VRMS.Models.Fleet;
-using VRMS.Enums;
+using VRMS.Services.Fleet;
 
-namespace VRMS.UI.Forms.Rentals
+namespace VRMS.UI.Forms.Select
 {
     public partial class SelectVehicleForm : Form
     {

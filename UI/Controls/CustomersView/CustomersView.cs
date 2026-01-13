@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using VRMS.DTOs.Rental;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Models.Customers;
 using VRMS.Repositories.Accounts;
+using VRMS.Repositories.Billing;
+using VRMS.Repositories.Damages;
+using VRMS.Repositories.Fleet;
+using VRMS.Repositories.Inspections;
+using VRMS.Repositories.Rentals;
 using VRMS.Services.Account;
+using VRMS.Services.Billing;
 using VRMS.Services.Customer;
+using VRMS.Services.Fleet;
+using VRMS.Services.Rental;
 using VRMS.UI.Forms.Customer;
 using VRMS.UI.Forms.Customers;
 using VRMS.UI.Services;
@@ -21,6 +30,7 @@ namespace VRMS.Controls
     {
         private readonly DriversLicenseService _driversLicenseService;
         private readonly CustomerService _customerService;
+        private readonly RentalService _rentalService;
         private readonly CustomerAccountService _customerAccountService;
         private readonly CustomerImageService _imageService = new();
 
@@ -32,26 +42,16 @@ namespace VRMS.Controls
         {
             InitializeComponent();
 
-            // Allow table to expand
             splitContainer1.FixedPanel = FixedPanel.Panel2;
             splitContainer1.IsSplitterFixed = false;
-
-            // Safety limits
             splitContainer1.Panel1MinSize = 300;
             splitContainer1.Panel2MinSize = 450;
-
-            // Initial size
             splitContainer1.SplitterDistance = 400;
 
-            _driversLicenseService = new DriversLicenseService();
-
-            var customerAccountRepo = new CustomerAccountRepository();
-            _customerAccountService = new CustomerAccountService(customerAccountRepo);
-
-            _customerService = new CustomerService(
-                _driversLicenseService,
-                _customerAccountService
-            );
+            _driversLicenseService = ApplicationServices.DriversLicenseService;
+            _customerAccountService = ApplicationServices.CustomerAccountService;
+            _customerService = ApplicationServices.CustomerService;
+            _rentalService = ApplicationServices.RentalService;
 
             InitializeCustomerTypeCombo();
             HookEvents();
@@ -60,6 +60,7 @@ namespace VRMS.Controls
             btnEmergencyContacts.Enabled = false;
             UpdateSaveButtonState();
         }
+
 
         // =====================================================
         // INIT
@@ -187,12 +188,81 @@ namespace VRMS.Controls
             _state.SelectedCustomer =
                 dgvCustomers.SelectedRows[0].DataBoundItem as Customer;
 
-            if (_state.SelectedCustomer != null)
-            {
-                PopulateForm(_state.SelectedCustomer);
-                btnEmergencyContacts.Enabled = true;
-            }
+            if (_state.SelectedCustomer == null)
+                return;
+
+            PopulateForm(_state.SelectedCustomer);
+            LoadRentalHistory(_state.SelectedCustomer.Id);
+            btnEmergencyContacts.Enabled = true;
         }
+
+        
+        private void LoadRentalHistory(int customerId)
+        {
+            dgvRentalHistory.SuspendLayout();
+
+            dgvRentalHistory.AutoGenerateColumns = false;
+            dgvRentalHistory.Columns.Clear();
+            dgvRentalHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // ---- DEFINE COLUMNS FIRST ----
+
+            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Rental #",
+                DataPropertyName = nameof(RentalHistoryRowDto.RentalId),
+                Width = 80
+            });
+
+            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Pickup",
+                DataPropertyName = nameof(RentalHistoryRowDto.PickupDate)
+            });
+
+            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Return",
+                DataPropertyName = nameof(RentalHistoryRowDto.ReturnDate)
+            });
+
+            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Days",
+                DataPropertyName = nameof(RentalHistoryRowDto.DurationDays),
+                Width = 60
+            });
+
+            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Status",
+                DataPropertyName = nameof(RentalHistoryRowDto.Status)
+            });
+
+            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Total",
+                DataPropertyName = nameof(RentalHistoryRowDto.TotalAmount),
+                DefaultCellStyle = { Format = "₱#,##0.00" }
+            });
+
+            // ---- DATA SOURCE LAST ----
+
+            var data = _rentalService.GetRentalHistoryForCustomer(customerId)
+                       ?? new List<RentalHistoryRowDto>();
+
+            dgvRentalHistory.DataSource = data;
+
+            dgvRentalHistory.ResumeLayout();
+            
+            /*
+            MessageBox.Show(
+                $"Rental history rows: {data.Count}",
+                "Debug");
+                */
+        }
+
+
 
         // =====================================================
         // SAVE / DELETE / CLEAR

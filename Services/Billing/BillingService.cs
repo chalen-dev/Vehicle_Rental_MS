@@ -267,7 +267,7 @@ public class BillingService
                 method,
                 date);
 
-        // 🔒 AUTO-LOCK ON FULL PAYMENT
+        // AUTO-LOCK ON FULL PAYMENT
         if (GetInvoiceBalance(invoiceId) == 0m)
             _invoiceRepo.MarkPaid(invoiceId);
 
@@ -299,6 +299,37 @@ public class BillingService
 
         return invoice.TotalAmount - paid;
     }
+    
+    public Invoice CreateInitialCharges(
+        int rentalId,
+        decimal initialRentalFee,
+        decimal securityDeposit)
+    {
+        // Ensure rental is active (GetOrCreateInvoice already checks)
+        var invoice = GetOrCreateInvoice(rentalId);
+
+        // Prevent modifying a paid invoice
+        if (invoice.Status == InvoiceStatus.Paid)
+            throw new InvalidOperationException("Cannot add charges to a paid invoice.");
+
+        // Add line items
+        if (initialRentalFee > 0m)
+            _lineItemRepo.Create(invoice.Id, "Initial rental fee", initialRentalFee);
+
+        if (securityDeposit > 0m)
+            _lineItemRepo.Create(invoice.Id, "Security deposit", securityDeposit);
+
+        // Recompute total from line items and set on invoice
+        var items = _lineItemRepo.GetByInvoice(invoice.Id);
+        decimal total = 0m;
+        foreach (var it in items) total += it.Amount;
+
+        _invoiceRepo.FinalizeTotal(invoice.Id, total);
+
+        // Return fresh invoice object
+        return _invoiceRepo.GetById(invoice.Id);
+    }
+
 
     /// <summary>
     /// Ensures that an invoice is editable.

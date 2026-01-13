@@ -1,21 +1,25 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using VRMS.Forms.Payments;
+﻿using VRMS.Models.Fleet;
+using VRMS.Repositories.Billing;
+using VRMS.Repositories.Rentals;
+using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
-using VRMS.UI.Forms.Rentals;
-using VRMS.Models.Customers;
-using VRMS.Models.Fleet;
+using VRMS.Services.Rental;
+using VRMS.UI.Forms.Select;
 
-namespace VRMS.Forms
+namespace VRMS.UI.Forms.Reservation
 {
     public partial class AddReservationForm : Form
     {
         private readonly CustomerService _customerService;
         private readonly VehicleService _vehicleService;
+        private ReservationService _reservationService;
+        private RateService _rateService;
+        private readonly ReservationRepository _reservationRepo = new ReservationRepository();
+        private readonly RateConfigurationRepository _rateConfigRepo = new RateConfigurationRepository();
 
-        private Customer _selectedCustomer;
+
+        private Models.Customers.Customer _selectedCustomer;
         private Vehicle _selectedVehicle;
 
         public AddReservationForm(
@@ -27,8 +31,21 @@ namespace VRMS.Forms
             _customerService = customerService;
             _vehicleService = vehicleService;
 
+            // SERVICES USED IN FORM
+            _reservationService = new ReservationService(
+                _customerService,
+                _vehicleService,
+                _reservationRepo
+            );
+
+            _rateService = new RateService(_rateConfigRepo);
+
             // Designer already wires button clicks
             btnCancel.Click += (_, __) => Close();
+
+            // wire date changes to recalc price
+            dtpStart.ValueChanged += (_, __) => UpdateTotalEstimate();
+            dtpEnd.ValueChanged += (_, __) => UpdateTotalEstimate();
 
             UpdateSaveButtonState();
         }
@@ -107,6 +124,7 @@ namespace VRMS.Forms
             }
 
             UpdateSaveButtonState();
+            UpdateTotalEstimate();
         }
 
         // ----------------------------------
@@ -122,21 +140,27 @@ namespace VRMS.Forms
                 if (_selectedVehicle == null)
                     throw new InvalidOperationException("Please select a vehicle.");
 
-                // Example amount – replace with real calculation later
-                decimal amount = 1500.00m;
+                var start = dtpStart.Value;
+                var end = dtpEnd.Value;
 
-                using var paymentForm =
-                    new ReservationFee();
-                // Optional future:
-                // paymentForm.SetData(
-                //     $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}",
-                //     $"{_selectedVehicle.Make} {_selectedVehicle.Model}",
-                //     amount);
+                if (start >= end)
+                    throw new InvalidOperationException("Start date must be before end date.");
 
-                if (paymentForm.ShowDialog() != DialogResult.OK)
-                    return;
+                // Re-check customer eligibility (will throw if not eligible)
+                _customerService.EnsureCustomerCanRent(_selectedCustomer.Id, start);
 
-                // TODO: ReservationService.CreateReservation(...)
+                // Create reservation in Pending state
+                var reservationId = _reservationService.CreateReservation(
+                    _selectedCustomer.Id,
+                    _selectedVehicle.Id,
+                    start,
+                    end
+                );
+
+                // NOTE: payment / downpayment is not yet implemented.
+                // If you later want to require payment before creating the reservation,
+                // move the CreateReservation call after the payment flow and only create it on success.
+
                 MessageBox.Show(
                     "Reservation successfully created.",
                     "Success",
@@ -156,6 +180,7 @@ namespace VRMS.Forms
             }
         }
 
+
         // ----------------------------------
         // HELPERS
         // ----------------------------------
@@ -165,5 +190,34 @@ namespace VRMS.Forms
                 _selectedCustomer != null &&
                 _selectedVehicle != null;
         }
+
+        private void UpdateTotalEstimate()
+        {
+            if (_selectedVehicle == null)
+            {
+                lblTotal.Text = "Total: ₱0.00";
+                return;
+            }
+
+            var start = dtpStart.Value.Date;
+            var end = dtpEnd.Value.Date.AddDays(1).AddTicks(-1); // treat end date as inclusive day-end if that's your UX
+
+            try
+            {
+                // RateService expects pickup and return datetimes (use start at midnight and end at end-of-day)
+                var amount = _rateService.CalculateRentalCost(
+                    start,
+                    end,
+                    _selectedVehicle.VehicleCategoryId);
+
+                lblTotal.Text = $"Total: ₱{amount:N2}";
+            }
+            catch (Exception)
+            {
+                // On invalid dates or missing rate config, just show zero
+                lblTotal.Text = "Total: ₱0.00";
+            }
+        }
+
     }
 }
