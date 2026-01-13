@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Windows.Forms; 
-namespace VRMS.UI.Animation
+﻿namespace VRMS.UI.Config.Animation
 {
     public class WelcomeFormAnimationManager : IAnimationManager
     {

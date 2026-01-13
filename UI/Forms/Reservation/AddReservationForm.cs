@@ -46,6 +46,24 @@ namespace VRMS.UI.Forms.Reservation
             // wire date changes to recalc price
             dtpStart.ValueChanged += (_, __) => UpdateTotalEstimate();
             dtpEnd.ValueChanged += (_, __) => UpdateTotalEstimate();
+            
+            // default dates
+            dtpStart.Value = DateTime.Today;
+            dtpEnd.Value = dtpStart.Value.AddDays(1);
+
+            // keep end date always after start date
+            dtpStart.ValueChanged += (_, __) =>
+            {
+                if (dtpEnd.Value <= dtpStart.Value)
+                {
+                    dtpEnd.Value = dtpStart.Value.AddDays(1);
+                }
+
+                // optional: enforce minimum end date
+                dtpEnd.MinDate = dtpStart.Value.AddDays(1);
+
+                UpdateTotalEstimate();
+            };
 
             UpdateSaveButtonState();
         }

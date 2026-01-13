@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace VRMS.UI.Validation;
+﻿namespace VRMS.UI.Config.Validation;
 
 public static class CustomerFormValidator
 {

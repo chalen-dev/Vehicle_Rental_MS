@@ -11,19 +11,22 @@ public class PaymentRepository
         int invoiceId,
         decimal amount,
         PaymentMethod method,
+        PaymentType paymentType,
         DateTime date)
     {
         var table = DB.Query(
-            "CALL sp_payments_create(@iid,@amount,@method,@date);",
+            "CALL sp_payments_create(@iid,@amount,@method,@ptype,@date);",
             ("@iid", invoiceId),
             ("@amount", amount),
             ("@method", method.ToString()),
+            ("@ptype", paymentType.ToString()),
             ("@date", date)
         );
 
         return Convert.ToInt32(
             table.Rows[0]["payment_id"]);
     }
+
 
     public Payment GetById(int id)
     {
@@ -60,15 +63,12 @@ public class PaymentRepository
         return new Payment
         {
             Id = Convert.ToInt32(row["id"]),
-            InvoiceId =
-                Convert.ToInt32(row["invoice_id"]),
-            Amount =
-                Convert.ToDecimal(row["amount"]),
-            PaymentMethod =
-                Enum.Parse<PaymentMethod>(
-                    row["payment_method"].ToString()!, true),
-            PaymentDate =
-                Convert.ToDateTime(row["payment_date"])
+            InvoiceId = Convert.ToInt32(row["invoice_id"]),
+            Amount = Convert.ToDecimal(row["amount"]),
+            PaymentMethod = Enum.Parse<PaymentMethod>(row["payment_method"].ToString()!, true),
+            PaymentType = Enum.Parse<PaymentType>(row["payment_type"].ToString()!, true),
+            PaymentDate = Convert.ToDateTime(row["payment_date"])
         };
     }
+
 }

@@ -1,7 +1,6 @@
 ﻿// UI/Animation/IAnimationManager.cs
-using System;
 
-namespace VRMS.UI.Animation
+namespace VRMS.UI.Config.Animation
 {
     public interface IAnimationManager : IDisposable
     {

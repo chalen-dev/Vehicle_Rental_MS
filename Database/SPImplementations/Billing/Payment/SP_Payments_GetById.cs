@@ -14,9 +14,11 @@ public static class SP_Payments_GetById
                                           invoice_id,
                                           amount,
                                           payment_method,
+                                          payment_type,
                                           payment_date
                                       FROM payments
                                       WHERE id = p_payment_id;
+                                  
                                   END;
                                   """;
 }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows.Forms;
 using VRMS.Enums;
+using VRMS.Models.Billing;
 using VRMS.Models.Customers;
 using VRMS.Models.Rentals;
+using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
@@ -16,6 +18,8 @@ namespace VRMS.Forms
         private readonly ReservationService _reservationService;
         private readonly VehicleService _vehicleService;
         private readonly CustomerService _customerService;
+        private readonly BillingService _billingService;
+        private Invoice _invoice = null!;
 
         private Rental _rental = null!;
 
@@ -151,8 +155,18 @@ namespace VRMS.Forms
                     endFuelLevel: fuelLevel
                 );
 
+                // 🔽 NEW: open payment settlement
+                using (var paymentForm = new PaymentForm(_rentalId))
+                {
+                    var result = paymentForm.ShowDialog(this);
+
+                    if (result != DialogResult.OK)
+                        return;
+                }
+
                 DialogResult = DialogResult.OK;
                 Close();
+
             }
             catch (Exception ex)
             {

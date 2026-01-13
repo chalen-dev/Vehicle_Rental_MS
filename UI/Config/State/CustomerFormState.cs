@@ -1,8 +1,6 @@
-﻿using System.Drawing;
-using System.IO;
-using VRMS.Models.Customers;
+﻿using VRMS.Models.Customers;
 
-namespace VRMS.UI.State;
+namespace VRMS.UI.Config.State;
 
 public class CustomerFormState
 {

@@ -18,11 +18,12 @@ using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
+using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.Config.State;
+using VRMS.UI.Config.Validation;
 using VRMS.UI.Forms.Customer;
 using VRMS.UI.Forms.Customers;
 using VRMS.UI.Services;
-using VRMS.UI.State;
-using VRMS.UI.Validation;
 
 namespace VRMS.Controls
 {

@@ -5,14 +5,13 @@ using VRMS.Repositories.Damages;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Inspections;
 using VRMS.Repositories.Rentals;
-
 using VRMS.Services.Account;
 using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
 
-namespace VRMS.UI.Services;
+namespace VRMS.UI.Config.ApplicationService;
 
 public static class ApplicationServices
 {

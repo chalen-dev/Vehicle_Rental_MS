@@ -1,7 +1,5 @@
 ﻿
-using System;
-
-namespace VRMS.UI.Animation
+namespace VRMS.UI.Config.Animation
 {
     public static class EasingFunctions
     {

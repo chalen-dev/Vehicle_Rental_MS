@@ -74,6 +74,14 @@ public class RentalRepository
             ("@status", status.ToString())
         );
     }
+    
+    public void Delete(int rentalId)
+    {
+        DB.Execute(
+            "CALL sp_rentals_delete(@id);",
+            ("@id", rentalId)
+        );
+    }
 
     // -------------------------------------------------
     // READ

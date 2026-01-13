@@ -14,10 +14,12 @@ public static class SP_Payments_GetByInvoice
                                           invoice_id,
                                           amount,
                                           payment_method,
+                                          payment_type,
                                           payment_date
                                       FROM payments
                                       WHERE invoice_id = p_invoice_id
                                       ORDER BY payment_date DESC;
+                                  
                                   END;
                                   """;
 }

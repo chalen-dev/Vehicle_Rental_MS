@@ -1,14 +1,13 @@
-﻿using System;
-using System.Windows.Forms;
-using VRMS.Enums;
+﻿using VRMS.Enums;
 
-namespace VRMS.Forms.Payments
+namespace VRMS.UI.Forms.Payments
 {
     public partial class RentalDownPayment : Form
     {
         private readonly string _customerName;
         private readonly string _vehicleName;
-        private readonly decimal _totalAmount;
+        private readonly decimal _initialRentalFee;
+        private readonly decimal _securityDeposit;
         
         public decimal PaidAmount { get; private set; }
         public PaymentMethod? SelectedPaymentMethod { get; private set; }
@@ -19,16 +18,17 @@ namespace VRMS.Forms.Payments
         public RentalDownPayment(
             string customerName,
             string vehicleName,
-            decimal totalAmount)
+            decimal initialRentalFee,
+            decimal securityDeposit)
         {
             InitializeComponent();
 
             _customerName = customerName;
             _vehicleName = vehicleName;
-            _totalAmount = totalAmount;
+            _initialRentalFee = initialRentalFee;
+            _securityDeposit = securityDeposit;
 
             Load += RentalDownPayment_Load;
-
             btnProcess.Click += BtnProcess_Click;
             btnCancel.Click += (_, __) =>
             {
@@ -36,6 +36,7 @@ namespace VRMS.Forms.Payments
                 Close();
             };
         }
+
 
         // ✅ Keep parameterless constructor for designer safety
         public RentalDownPayment()
@@ -48,25 +49,21 @@ namespace VRMS.Forms.Payments
         // -------------------------------
         private void RentalDownPayment_Load(object? sender, EventArgs e)
         {
-            // Rental summary
             lblCustomerName.Text = $"Customer: {_customerName}";
             lblVehicleDetails.Text = $"Vehicle: {_vehicleName}";
             lblRentalID.Text = "Rental ID: (Pending)";
             lblReturnDate.Text = "Return Date: (Pending)";
 
-            // Initial cost breakdown (temporary logic)
-            decimal securityDeposit = 0m;     // TODO: configure later
-            decimal initialRentalFee = _totalAmount;
-
             lblFirstInstallment.Text =
-                $"Initial Rental Fee: ₱{initialRentalFee:N2}";
+                $"Initial Rental Fee: ₱{_initialRentalFee:N2}";
 
             lblSecurityDeposit.Text =
-                $"Security Deposit: ₱{securityDeposit:N2}";
+                $"Security Deposit: ₱{_securityDeposit:N2}";
 
             lblTotalInitialPayment.Text =
-                $"TOTAL DUE: ₱{(initialRentalFee + securityDeposit):N2}";
+                $"TOTAL DUE: ₱{(_initialRentalFee + _securityDeposit):N2}";
         }
+
 
         // -------------------------------
         // CONFIRM PAYMENT

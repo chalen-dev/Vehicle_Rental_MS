@@ -208,6 +208,15 @@ public class RentalService
 
         return result;
     }
+    
+    public void CancelRental(int rentalId)
+    {
+        _rentalRepo.UpdateStatus(
+            rentalId,
+            RentalStatus.Cancelled
+        );
+    }
+
 
     // -------------------------------------------------
     // COMPLETE RENTAL (RETURN)

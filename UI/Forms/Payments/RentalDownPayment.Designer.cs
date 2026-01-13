@@ -1,4 +1,4 @@
-﻿namespace VRMS.Forms.Payments
+﻿namespace VRMS.UI.Forms.Payments
 {
     partial class RentalDownPayment
     {

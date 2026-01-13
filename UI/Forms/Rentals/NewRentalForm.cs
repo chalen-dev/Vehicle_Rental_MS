@@ -5,6 +5,7 @@ using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
+using VRMS.UI.Forms.Payments;
 using VRMS.UI.Forms.Select;
 
 namespace VRMS.UI.Forms.Rentals
@@ -207,7 +208,7 @@ namespace VRMS.UI.Forms.Rentals
         {
             try
             {
-                // ---------------- VALIDATION ----------------
+                // ---------------- VALIDATION ---------------- //asd
 
                 if (_selectedCustomer == null)
                     throw new InvalidOperationException("Please select a customer.");
@@ -221,19 +222,8 @@ namespace VRMS.UI.Forms.Rentals
                 if (odometer < _selectedVehicle.Odometer)
                     throw new InvalidOperationException(
                         $"Odometer cannot be less than {_selectedVehicle.Odometer}");
-                
-                // ---------------- RENTAL (WALK-IN) ----------------
 
-                int rentalId =
-                    _rentalService.StartWalkInRental(
-                        _selectedCustomer.Id,
-                        _selectedVehicle.Id,
-                        dtPickup.Value,
-                        dtReturn.Value,
-                        (FuelLevel)cbFuel.SelectedValue);
-
-
-                // ---------------- PRICING ----------------
+                // ---------------- PRICING ONLY (NO DB) ----------------
 
                 decimal baseRental =
                     _rateService.CalculateRentalCost(
@@ -248,10 +238,30 @@ namespace VRMS.UI.Forms.Rentals
                 decimal securityDeposit =
                     category?.SecurityDeposit ?? 0m;
 
-                decimal totalDue =
-                    baseRental + securityDeposit;
+                // ---------------- PAYMENT UI ----------------
 
-                // ---------------- INVOICE ----------------
+                using var paymentForm =
+                    new RentalDownPayment(
+                        $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}",
+                        $"{_selectedVehicle.Make} {_selectedVehicle.Model}",
+                        baseRental,
+                        securityDeposit);
+
+                if (paymentForm.ShowDialog() != DialogResult.OK)
+                    return; // ✅ NOTHING CREATED
+
+                if (paymentForm.SelectedPaymentMethod == null)
+                    throw new InvalidOperationException("Payment method not selected.");
+
+                // ---------------- COMMIT (NOW AND ONLY NOW) ----------------
+
+                int rentalId =
+                    _rentalService.StartWalkInRental(
+                        _selectedCustomer.Id,
+                        _selectedVehicle.Id,
+                        dtPickup.Value,
+                        dtReturn.Value,
+                        (FuelLevel)cbFuel.SelectedValue);
 
                 var invoice =
                     _billingService.CreateInitialCharges(
@@ -259,26 +269,11 @@ namespace VRMS.UI.Forms.Rentals
                         baseRental,
                         securityDeposit);
 
-                // ---------------- PAYMENT UI ----------------
-
-                using var paymentForm =
-                    new RentalDownPayment(
-                        $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}",
-                        $"{_selectedVehicle.Make} {_selectedVehicle.Model}",
-                        totalDue);
-
-                if (paymentForm.ShowDialog() != DialogResult.OK)
-                    throw new InvalidOperationException("Payment was cancelled.");
-
-                if (paymentForm.SelectedPaymentMethod == null)
-                    throw new InvalidOperationException("Payment method not selected.");
-
-                // ---------------- PAYMENT ----------------
-
                 _billingService.AddPayment(
                     invoice.Id,
                     paymentForm.PaidAmount,
                     paymentForm.SelectedPaymentMethod.Value,
+                    PaymentType.Deposit,
                     DateTime.UtcNow);
 
                 // ---------------- SUCCESS ----------------
@@ -301,6 +296,7 @@ namespace VRMS.UI.Forms.Rentals
                     MessageBoxIcon.Error);
             }
         }
+
 
 
         private void UpdateSaveButtonState()

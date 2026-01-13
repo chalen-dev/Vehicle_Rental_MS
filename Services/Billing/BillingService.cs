@@ -133,10 +133,6 @@ public class BillingService
             ?? throw new InvalidOperationException(
                 "Invoice does not exist.");
 
-        if (invoice.Status == InvoiceStatus.Paid)
-            throw new InvalidOperationException(
-                "Paid invoices cannot be modified.");
-
         Reservation? reservation = null;
 
         if (rental.ReservationId.HasValue)
@@ -248,6 +244,7 @@ public class BillingService
         int invoiceId,
         decimal amount,
         PaymentMethod method,
+        PaymentType paymentType,
         DateTime date)
     {
         if (amount <= 0)
@@ -261,21 +258,30 @@ public class BillingService
             throw new InvalidOperationException(
                 "Invoice is already paid.");
 
-        var balance = GetInvoiceBalance(invoiceId);
-        if (amount > balance)
-            throw new InvalidOperationException(
-                "Payment exceeds outstanding balance.");
+        if (paymentType == PaymentType.Final)
+        {
+            var balance = GetInvoiceBalance(invoiceId);
+            if (amount > balance)
+                throw new InvalidOperationException(
+                    "Payment exceeds outstanding balance.");
+        }
 
         var paymentId =
             _paymentRepo.Create(
                 invoiceId,
                 amount,
                 method,
+                paymentType,
                 date);
 
-        // AUTO-LOCK ON FULL PAYMENT
-        if (GetInvoiceBalance(invoiceId) == 0m)
+        // Only mark PAID if the invoice has a finalized total
+        if (paymentType == PaymentType.Final &&
+            invoice.TotalAmount > 0m &&
+            GetInvoiceBalance(invoiceId) == 0m)
+        {
             _invoiceRepo.MarkPaid(invoiceId);
+        }
+
 
         return paymentId;
     }
@@ -296,15 +302,64 @@ public class BillingService
     public decimal GetInvoiceBalance(int invoiceId)
     {
         var invoice = _invoiceRepo.GetById(invoiceId);
-        var payments =
-            _paymentRepo.GetByInvoice(invoiceId);
+        var payments = _paymentRepo.GetByInvoice(invoiceId);
 
         decimal paid = 0m;
+        decimal refunded = 0m;
         foreach (var p in payments)
-            paid += p.Amount;
+        {
+            if (p.PaymentType == PaymentType.Refund)
+                refunded += p.Amount;
+            else
+                paid += p.Amount;
+        }
 
-        return invoice.TotalAmount - paid;
+        return invoice.TotalAmount - (paid - refunded);
     }
+    
+    public int IssueRefund(
+        int invoiceId,
+        decimal amount,
+        PaymentMethod method,
+        DateTime date)
+    {
+        if (amount <= 0m)
+            throw new InvalidOperationException(
+                "Refund amount must be greater than zero.");
+
+        var invoice = _invoiceRepo.GetById(invoiceId);
+
+        if (invoice.TotalAmount <= 0m)
+            throw new InvalidOperationException(
+                "Cannot issue refund before invoice is finalized.");
+
+        var payments = _paymentRepo.GetByInvoice(invoiceId);
+
+        decimal paid = 0m;
+        decimal refunded = 0m;
+
+        foreach (var p in payments)
+        {
+            if (p.PaymentType == PaymentType.Refund)
+                refunded += p.Amount;
+            else
+                paid += p.Amount;
+        }
+
+        var refundable = paid - refunded;
+        if (amount > refundable)
+            throw new InvalidOperationException(
+                "Refund exceeds paid amount.");
+
+        return _paymentRepo.Create(
+            invoiceId,
+            amount,
+            method,
+            PaymentType.Refund,
+            date);
+    }
+
+
     
     public Invoice CreateInitialCharges(
         int rentalId,
@@ -329,8 +384,6 @@ public class BillingService
         var items = _lineItemRepo.GetByInvoice(invoice.Id);
         decimal total = 0m;
         foreach (var it in items) total += it.Amount;
-
-        _invoiceRepo.FinalizeTotal(invoice.Id, total);
 
         // Return fresh invoice object
         return _invoiceRepo.GetById(invoice.Id);
