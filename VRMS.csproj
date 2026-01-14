@@ -54,8 +54,4 @@
 		</Compile>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="UI\Documents\" />
-	</ItemGroup>
-
 </Project>

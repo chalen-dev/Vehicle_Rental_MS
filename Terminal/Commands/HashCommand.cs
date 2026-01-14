@@ -1,4 +1,4 @@
-﻿using VRMS.Helpers.Security;
+﻿using VRMS.Helpers;
 using VRMS.Terminal;
 
 namespace VRMS.Terminal.Commands;
@@ -22,7 +22,7 @@ public class HashCommand : ICommand
 
         try
         {
-            var hash = Password.Hash(input);
+            var hash = PasswordHelper.Hash(input);
             return new CommandResult(true, hash);
         }
         catch (Exception ex)

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 using VRMS.Enums;
-using VRMS.Helpers.Security;
-using VRMS.Helpers.Storage;
+using VRMS.Helpers;
 using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
 
@@ -57,7 +56,7 @@ public class UserService
         var user =
             _userRepo.GetForAuthentication(username);
 
-        if (!Password.Verify(
+        if (!PasswordHelper.Verify(
                 plainPassword,
                 user.PasswordHash))
             throw new InvalidOperationException(
@@ -84,7 +83,7 @@ public class UserService
                 "Username cannot be empty.");
 
         var hash =
-            Password.Hash(plainPassword);
+            PasswordHelper.Hash(plainPassword);
 
         // User starts with NO uploaded photo
         return _userRepo.Create(
@@ -162,7 +161,7 @@ public class UserService
                 "Password cannot be empty.");
 
         var hash =
-            Password.Hash(newPlainPassword);
+            PasswordHelper.Hash(newPlainPassword);
 
         _userRepo.UpdatePassword(
             userId,
@@ -188,14 +187,14 @@ public class UserService
         var user =
             _userRepo.GetById(userId);
 
-        if (!Password.Verify(
+        if (!PasswordHelper.Verify(
                 currentPlainPassword,
                 user.PasswordHash))
             throw new InvalidOperationException(
                 "Current password is incorrect.");
 
         var newHash =
-            Password.Hash(newPlainPassword);
+            PasswordHelper.Hash(newPlainPassword);
 
         _userRepo.UpdatePassword(
             userId,

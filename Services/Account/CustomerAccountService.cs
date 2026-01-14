@@ -1,7 +1,7 @@
 ﻿using System;
 using VRMS.DTOs.Support;
 using VRMS.Enums;
-using VRMS.Helpers.Security;
+using VRMS.Helpers;
 using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
 
@@ -43,7 +43,7 @@ public class CustomerAccountService
                 "Customer already has a login account.");
 
         var passwordHash =
-            Password.Hash(plainPassword);
+            PasswordHelper.Hash(plainPassword);
 
         var agentId =
             Session.CurrentUser!.Id;
@@ -96,7 +96,7 @@ public class CustomerAccountService
                 "Password cannot be empty.");
 
         var hash =
-            Password.Hash(newPlainPassword);
+            PasswordHelper.Hash(newPlainPassword);
 
         _repo.UpdatePassword(
             accountId,

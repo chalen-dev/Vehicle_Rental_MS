@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-
-namespace Helpers.DirectoryCleaner
+﻿namespace VRMS.Helpers
 {
-    public static class Dir
+    public static class StorageCleaner
     {
         /// <summary>
         /// Empties a directory but preserves specific filenames

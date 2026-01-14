@@ -1,9 +1,9 @@
 ﻿using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
-using VRMS.Models.Rentals;
 using VRMS.Models.Fleet;
+using VRMS.Models.Rentals;
 
-namespace VRMS.UI.Pdf
+namespace VRMS.Helpers
 {
     public static class ReceiptPdfGenerator
     {

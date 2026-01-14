@@ -1,9 +1,8 @@
 ﻿using System.Security.Cryptography;
-using System.Text;
 
-namespace VRMS.Helpers.Security;
+namespace VRMS.Helpers;
 
-public static class Password
+public static class PasswordHelper
 {
     private const int SaltSize = 16;       // 128-bit
     private const int KeySize = 32;        // 256-bit

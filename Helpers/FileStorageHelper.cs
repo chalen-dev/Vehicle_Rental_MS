@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace VRMS.Helpers.Storage;
+﻿namespace VRMS.Helpers;
 
 public static class FileStorageHelper
 {

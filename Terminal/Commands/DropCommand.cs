@@ -1,7 +1,7 @@
 ﻿using VRMS.Database;
 using VRMS.Database.Exceptions;
 using VRMS.Database.Executors;
-using Helpers.DirectoryCleaner;
+using VRMS.Helpers;
 
 namespace VRMS.Terminal.Commands;
 
@@ -16,7 +16,7 @@ public class DropCommand : ICommand
             Drop.Run(DB.ExecuteRaw);
 
             // ✅ Clean runtime Storage directory (bin/.../Storage)
-            Dir.EmptyRuntimeStorage(".gitignore");
+            StorageCleaner.EmptyRuntimeStorage(".gitignore");
 
             return new CommandResult(
                 true,

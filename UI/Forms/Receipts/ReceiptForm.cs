@@ -4,11 +4,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using VRMS.Helpers;
 using VRMS.Services.Rental;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
-using VRMS.UI.Config.ApplicationService;
-
+using VRMS.UI.ApplicationService;
 
 
 namespace VRMS.UI.Forms.Receipts
@@ -107,7 +107,7 @@ namespace VRMS.UI.Forms.Receipts
                         baseDir,
                         $"Receipt_RENT-{rental.Id:D6}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
 
-                VRMS.UI.Pdf.ReceiptPdfGenerator.Generate(
+                ReceiptPdfGenerator.Generate(
                     filePath,
                     rental,
                     vehicle,

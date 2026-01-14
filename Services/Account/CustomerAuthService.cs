@@ -1,4 +1,4 @@
-﻿using VRMS.Helpers.Security;
+﻿using VRMS.Helpers;
 using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
 
@@ -19,7 +19,7 @@ public class CustomerAuthService
         if (!account.IsEnabled)
             throw new InvalidOperationException("Account is disabled.");
 
-        if (!Password.Verify(password, account.PasswordHash))
+        if (!PasswordHelper.Verify(password, account.PasswordHash))
             throw new InvalidOperationException("Invalid credentials.");
 
         return account;
