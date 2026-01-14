@@ -221,6 +221,17 @@ namespace VRMS.UI.Forms.Rentals
                 if (odometer < _selectedVehicle.Odometer)
                     throw new InvalidOperationException(
                         $"Odometer cannot be less than {_selectedVehicle.Odometer}");
+                
+                // ---------- CHECK FOR MAINTENANCE CONFLICT (fast fail, before accepting payment) ----------
+                if (_vehicleService.HasOverlappingMaintenance(_selectedVehicle.Id, dtPickup.Value.Date, dtReturn.Value.Date))
+                {
+                    MessageBox.Show(
+                        "This vehicle has scheduled or in-progress maintenance that overlaps your requested rental period. Please choose another vehicle or adjust dates.",
+                        "Maintenance Conflict",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
 
                 // ---------------- PRICING ONLY (NO DB) ----------------
 

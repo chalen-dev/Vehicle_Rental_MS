@@ -63,6 +63,23 @@ public class MaintenanceRepository
 
         return list;
     }
+    
+    public List<MaintenanceRecord> GetOverlapping(int vehicleId, DateTime start, DateTime end)
+    {
+        var table = DB.Query(
+            "CALL sp_maintenance_records_get_overlapping(@vid,@start,@end);",
+            ("@vid", vehicleId),
+            ("@start", start.Date),
+            ("@end", end.Date)
+        );
+
+        var list = new List<MaintenanceRecord>();
+        foreach (DataRow r in table.Rows)
+            list.Add(Map(r));
+
+        return list;
+    }
+
 
     private static MaintenanceRecord Map(DataRow r) => new()
     {

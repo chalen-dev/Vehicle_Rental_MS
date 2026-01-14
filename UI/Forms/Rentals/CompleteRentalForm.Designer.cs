@@ -1,6 +1,6 @@
-﻿namespace VRMS.Forms
+﻿namespace VRMS.UI.Forms.Rentals
 {
-    partial class ReturnVehicleForm
+    partial class CompleteRentalForm
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -295,6 +295,7 @@
             dgvDamages.ColumnHeadersHeight = 29;
             dgvDamages.Location = new Point(20, 50);
             dgvDamages.Name = "dgvDamages";
+            dgvDamages.ReadOnly = true;
             dgvDamages.RowHeadersWidth = 51;
             dgvDamages.Size = new Size(580, 240);
             dgvDamages.TabIndex = 2;
@@ -477,7 +478,7 @@
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "ReturnVehicleForm";
+            Name = "CompleteRentalForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Return Vehicle";
             pnlHeader.ResumeLayout(false);

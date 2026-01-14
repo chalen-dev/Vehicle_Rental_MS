@@ -25,7 +25,7 @@ namespace VRMS.Repositories.Inspections
                 ("@clean", cleanliness)
             );
 
-            return Convert.ToInt32(table.Rows[0]["id"]);
+            return Convert.ToInt32(table.Rows[0]["inspection_id"]);
             
         }
 
@@ -53,6 +53,35 @@ namespace VRMS.Repositories.Inspections
 
             return null;
         }
+
+        public VehicleInspection GetById(int inspectionId)
+        {
+            var table = DB.Query(
+                "CALL sp_vehicle_inspections_get_by_id(@id);",
+                ("@id", inspectionId)
+            );
+
+            if (table.Rows.Count == 0)
+                throw new InvalidOperationException("Vehicle inspection not found.");
+
+            return Map(table.Rows[0]);
+        }
+
+        public void Update(
+            int inspectionId,
+            string notes,
+            string fuelLevel,
+            string cleanliness)
+        {
+            DB.Execute(
+                "CALL sp_vehicle_inspections_update(@id,@notes,@fuel,@clean);",
+                ("@id", inspectionId),
+                ("@notes", notes),
+                ("@fuel", fuelLevel),
+                ("@clean", cleanliness)
+            );
+        }
+
 
         private static VehicleInspection Map(DataRow row)
         {

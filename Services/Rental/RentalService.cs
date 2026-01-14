@@ -61,24 +61,6 @@ public class RentalService
         _damageRepo = damageRepo;
         _damageReportRepo = damageReportRepo;
     }
-
-
-    // -------------------------------------------------
-    // START RENTAL (PICKUP)
-    // -------------------------------------------------
-
-    [Obsolete("Use StartRentalFromReservation or StartWalkInRental")]
-    public int StartRental(
-        int reservationId,
-        DateTime pickupDate,
-        FuelLevel startFuelLevel)
-    {
-        return StartRentalFromReservation(
-            reservationId,
-            pickupDate,
-            startFuelLevel);
-    }
-
     
     public int StartRentalFromReservation(
         int reservationId,
@@ -98,6 +80,9 @@ public class RentalService
 
         var vehicle =
             _vehicleService.GetVehicleById(reservation.VehicleId);
+        
+        if (_vehicleService.HasOverlappingMaintenance(vehicle.Id, pickupDate, reservation.EndDate))
+            throw new InvalidOperationException("Vehicle has scheduled or in-progress maintenance that overlaps the reservation period.");
 
         if (vehicle.Status != VehicleStatus.Reserved)
             throw new InvalidOperationException("Vehicle must be reserved.");
@@ -136,14 +121,19 @@ public class RentalService
 
         var vehicle = _vehicleService.GetVehicleById(vehicleId);
 
+        // PROACTIVE: do not allow new rental when vehicle has scheduled/in-progress maintenance overlapping this rental.
+        if (_vehicleService.HasOverlappingMaintenance(vehicleId, pickupDate, expectedReturnDate))
+            throw new InvalidOperationException("Vehicle has scheduled or in-progress maintenance that overlaps the requested rental period.");
+
+        // Existing status guard
         if (vehicle.Status != VehicleStatus.Available)
             throw new InvalidOperationException("Vehicle not available.");
 
-        // ✅ WALK-IN RENTAL: NO reservation, BUT customer IS KNOWN
+        // WALK-IN RENTAL: NO reservation, BUT customer IS KNOWN
         var rentalId =
             _rentalRepo.Create(
-                reservationId: null,          // ✅ NO reservation
-                customerId: customerId,       // ✅ THIS IS THE FIX
+                reservationId: null,          // NO reservation
+                customerId: customerId,       // THIS IS THE FIX
                 vehicleId: vehicleId,
                 pickupDate: pickupDate,
                 expectedReturnDate: expectedReturnDate,
@@ -187,6 +177,30 @@ public class RentalService
             cleanliness: string.Empty
         );
     }
+    
+    /// <summary>
+    /// Retrieves a vehicle inspection by id (thin wrapper).
+    /// </summary>
+    public Models.Damages.VehicleInspection GetInspectionById(int inspectionId)
+        => _inspectionRepo.GetById(inspectionId);
+
+    /// <summary>
+    /// Persist updates to a return inspection (notes, fuel level, cleanliness).
+    /// Thin wrapper to repository, used by the UI.
+    /// </summary>
+    public void UpdateReturnInspection(
+        int inspectionId,
+        string notes,
+        string fuelLevel,
+        string cleanliness)
+    {
+        // Basic validation (defensive)
+        if (inspectionId <= 0)
+            throw new InvalidOperationException("Invalid inspection id.");
+
+        _inspectionRepo.Update(inspectionId, notes ?? string.Empty, fuelLevel ?? string.Empty, cleanliness ?? string.Empty);
+    }
+
 
     /// <summary>
     /// Retrieves damages linked to a specific vehicle inspection.

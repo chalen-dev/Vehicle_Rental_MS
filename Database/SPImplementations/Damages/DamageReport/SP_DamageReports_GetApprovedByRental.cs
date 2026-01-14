@@ -10,7 +10,7 @@ public static class SP_DamageReports_GetApprovedByRental
                                   )
                                   BEGIN
                                       SELECT
-                                          dr.id AS damage_report_id,
+                                          dr.id AS id,
                                           d.description AS description,
                                           d.estimated_cost AS estimated_cost
                                       FROM damage_reports dr

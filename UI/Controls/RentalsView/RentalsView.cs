@@ -175,7 +175,7 @@ namespace VRMS.Controls
 
             try
             {
-                using var form = new ReturnVehicleForm(row.RentalId, _rentalService, _reservationService, _vehicleService, _customerService);
+                using var form = new CompleteRentalForm(row.RentalId, _rentalService, _reservationService, _vehicleService, _customerService);
                 if (form.ShowDialog(FindForm()) == DialogResult.OK)
                     LoadRentals();
             }

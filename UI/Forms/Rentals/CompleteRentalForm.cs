@@ -1,18 +1,14 @@
-﻿using System;
-using System.Windows.Forms;
-using VRMS.Enums;
-using VRMS.Models.Customers;
+﻿using VRMS.Enums;
+using System.Linq;
+using VRMS.Forms;
 using VRMS.Models.Rentals;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
-using VRMS.UI.Forms.Payments;
-using VRMS.UI.Forms.Rentals; // InspectionChecklistForm
-using VRMS.Forms;            // AddDamageForm
 
-namespace VRMS.Forms
+namespace VRMS.UI.Forms.Rentals
 {
-    public partial class ReturnVehicleForm : Form
+    public partial class CompleteRentalForm : Form
     {
         private readonly int _rentalId;
         private readonly RentalService _rentalService;
@@ -27,7 +23,7 @@ namespace VRMS.Forms
         private decimal _lateFees = 0m;
         private decimal _damageFees = 0m;
 
-        public ReturnVehicleForm(
+        public CompleteRentalForm(
             int rentalId,
             RentalService rentalService,
             ReservationService reservationService,
@@ -54,7 +50,7 @@ namespace VRMS.Forms
             _rental = _rentalService.GetRentalById(_rentalId);
             var vehicle = _vehicleService.GetVehicleById(_rental.VehicleId);
 
-            Customer? customer = null;
+            Models.Customers.Customer? customer = null;
             if (_rental.ReservationId.HasValue)
             {
                 var reservation =
@@ -87,6 +83,7 @@ namespace VRMS.Forms
 
             ConfigureDamageGrid();
             UpdateBillingUI();
+            LoadDamages();
         }
 
         // =====================================================
@@ -172,9 +169,8 @@ namespace VRMS.Forms
                 {
                     if (form.ShowDialog(this) == DialogResult.OK)
                     {
-                        // Future:
-                        // - Reload damage grid
-                        // - Update preview
+                        // Immediately reload damages and update preview
+                        LoadDamages();
                     }
                 }
             }
@@ -193,9 +189,13 @@ namespace VRMS.Forms
         // =====================================================
         private void BtnInspectionChecklist_Click(object sender, EventArgs e)
         {
-            using (var form = new InspectionChecklistForm())
+            using (var form = new InspectionChecklistForm(_rentalId, _rentalService))
             {
-                form.ShowDialog(this);
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    // Reload damages & preview (inspection changes might affect billing later)
+                    LoadDamages();
+                }
             }
         }
 
@@ -246,5 +246,38 @@ namespace VRMS.Forms
             DialogResult = DialogResult.Cancel;
             Close();
         }
+        
+        private void LoadDamages()
+        {
+            try
+            {
+                // Ensure return inspection exists
+                int inspectionId = _rentalService.CreateOrGetReturnInspection(_rentalId);
+
+                var damages = _rentalService.GetDamagesByInspectionId(inspectionId);
+
+                dgvDamages.Rows.Clear();
+
+                foreach (var d in damages)
+                {
+                    // Add a row using the columns you defined in ConfigureDamageGrid
+                    dgvDamages.Rows.Add(d.Description, d.EstimatedCost);
+                }
+
+                // Update UI-only damage fees preview
+                _damageFees = damages.Sum(x => x.EstimatedCost);
+                UpdateBillingUI();
+            }
+            catch (Exception ex)
+            {
+                // Non-fatal: show message but keep form open
+                MessageBox.Show(
+                    ex.Message,
+                    "Cannot load damages",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
     }
 }

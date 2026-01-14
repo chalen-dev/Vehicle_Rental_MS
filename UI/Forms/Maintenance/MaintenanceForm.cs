@@ -177,6 +177,59 @@ namespace VRMS.UI.Forms.Maintenance
                 PerformedBy = Session.CurrentUser?.Username ?? "SYSTEM"
             };
 
+            // effective end for overlap checks
+            var effectiveEnd = record.EndDate ?? record.StartDate.AddYears(10);
+
+            // Check for overlapping rentals
+            var overlappingRentals = _vehicleService.GetOverlappingRentalsForVehicle(
+                record.VehicleId,
+                record.StartDate,
+                record.EndDate);
+
+            if (overlappingRentals != null && overlappingRentals.Count > 0)
+            {
+                // If maintenance is EMERGENCY, allow but show strong warning
+                if (record.Type == MaintenanceType.Emergency)
+                {
+                    var r = overlappingRentals[0];
+                    var rentalEnd = (r.ActualReturnDate ?? r.ExpectedReturnDate).ToString("yyyy-MM-dd");
+                    var rentalStart = r.PickupDate.ToString("yyyy-MM-dd");
+
+                    var msg = $"WARNING: This vehicle is currently rented from {rentalStart} to {rentalEnd}.\n\n" +
+                              "Scheduling EMERGENCY maintenance while the vehicle is rented may interrupt the rental. " +
+                              "Only proceed if you're absolutely sure and have coordinated with the customer.\n\n" +
+                              "Do you want to continue and create an EMERGENCY maintenance record?";
+                    var res = MessageBox.Show(
+                        msg,
+                        "Emergency Maintenance Confirmation",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (res != DialogResult.Yes)
+                        return;
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Cannot schedule maintenance. The vehicle has an active rental that overlaps the selected dates.",
+                        "Maintenance Conflict",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            // Final explicit confirmation for creating maintenance
+            var confirmMsg = $"Create maintenance record:\n\nTitle: {record.Title}\nType: {record.Type}\nStart: {record.StartDate:yyyy-MM-dd}\nEnd: {(record.EndDate?.ToString("yyyy-MM-dd") ?? "N/A")}\nCost: ₱{record.Cost:N2}\n\nProceed?";
+            var confirm = MessageBox.Show(
+                confirmMsg,
+                "Confirm Create Maintenance",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
             try
             {
                 _vehicleService.StartMaintenance(record);
@@ -203,6 +256,7 @@ namespace VRMS.UI.Forms.Maintenance
             lblStatusMessage.Text =
                 $"Maintenance '{record.Title}' saved.";
         }
+
 
 
         private void btnMarkAvailable_Click(object sender, EventArgs e)

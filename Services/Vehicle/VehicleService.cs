@@ -52,6 +52,8 @@ public class VehicleService
     private readonly RateConfigurationRepository _rateRepo;
     
     private readonly RentalRepository _rentalRepo;
+    
+    
 
     /// <summary>
     /// Initializes the vehicle service with required repositories.
@@ -64,7 +66,7 @@ public class VehicleService
         VehicleImageRepository imageRepo,
         MaintenanceRepository maintenanceRepo,
         RateConfigurationRepository rateRepo,
-        RentalRepository rentalRepo)
+        RentalRepository rentalRepo) 
     {
         _vehicleRepo = vehicleRepo;
         _categoryRepo = categoryRepo;
@@ -73,7 +75,7 @@ public class VehicleService
         _imageRepo = imageRepo;
         _maintenanceRepo = maintenanceRepo;
         _rateRepo = rateRepo;
-        _rentalRepo = rentalRepo;
+        _rentalRepo = rentalRepo; 
     }
 
     // -------------------------------------------------
@@ -214,11 +216,13 @@ public class VehicleService
     {
         var vehicle = _vehicleRepo.GetById(record.VehicleId);
         EnsureNotRetired(vehicle);
+        
 
         EnsureNoRentalOverlap(
             record.VehicleId,
             record.StartDate,
             record.EndDate);
+
 
         var id = _maintenanceRepo.Create(record);
 
@@ -228,6 +232,7 @@ public class VehicleService
 
         return id;
     }
+
 
 
 
@@ -267,6 +272,25 @@ public class VehicleService
     public MaintenanceRecord GetMaintenanceById(
         int maintenanceId)
         => _maintenanceRepo.GetById(maintenanceId);
+    
+    /// <summary>
+    /// Returns list of overlapping rentals for a vehicle in [start,end].
+    /// Uses rental repo stored proc that already respects 'Active'/'Late' statuses.
+    /// </summary>
+    public List<Models.Rentals.Rental> GetOverlappingRentalsForVehicle(int vehicleId, DateTime start, DateTime? end)
+    {
+        var effectiveEnd = end ?? start.AddYears(10);
+        return _rentalRepo.GetOverlappingRentals(vehicleId, start, effectiveEnd);
+    }
+
+    /// <summary>
+    /// Returns true if there is any Scheduled or InProgress maintenance overlapping [start,end].
+    /// </summary>
+    public bool HasOverlappingMaintenance(int vehicleId, DateTime start, DateTime end)
+    {
+        var overlaps = _maintenanceRepo.GetOverlapping(vehicleId, start, end);
+        return overlaps != null && overlaps.Count > 0;
+    }
 
     // -------------------------------------------------
     // CATEGORIES
