@@ -39,7 +39,6 @@
             panelSearch = new Panel();
             txtSearch = new TextBox();
             cmbStatusFilter = new ComboBox();
-            btnRetire = new Button();
             btnDelete = new Button();
             btnEdit = new Button();
             btnAdd = new Button();
@@ -71,6 +70,7 @@
             panelPreviewHeader = new Panel();
             lblVehicleDetails = new Label();
             picVehiclePreview = new PictureBox();
+            btnRetire = new Button();
             panelHeader.SuspendLayout();
             panelToolbar.SuspendLayout();
             panelSearch.SuspendLayout();
@@ -204,21 +204,6 @@
             cmbStatusFilter.Name = "cmbStatusFilter";
             cmbStatusFilter.Size = new Size(160, 28);
             cmbStatusFilter.TabIndex = 5;
-            // 
-            // btnRetire
-            // 
-            btnRetire.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRetire.BackColor = Color.FromArgb(150, 150, 150);
-            btnRetire.FlatAppearance.BorderSize = 0;
-            btnRetire.FlatStyle = FlatStyle.Flat;
-            btnRetire.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnRetire.ForeColor = Color.White;
-            btnRetire.Location = new Point(637, 10);
-            btnRetire.Name = "btnRetire";
-            btnRetire.Size = new Size(100, 40);
-            btnRetire.TabIndex = 8;
-            btnRetire.Text = "♻ Retire";
-            btnRetire.UseVisualStyleBackColor = false;
             // 
             // btnDelete
             // 
@@ -640,6 +625,21 @@
             picVehiclePreview.TabIndex = 0;
             picVehiclePreview.TabStop = false;
             // 
+            // btnRetire
+            // 
+            btnRetire.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRetire.BackColor = Color.FromArgb(150, 150, 150);
+            btnRetire.FlatAppearance.BorderSize = 0;
+            btnRetire.FlatStyle = FlatStyle.Flat;
+            btnRetire.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnRetire.ForeColor = Color.White;
+            btnRetire.Location = new Point(637, 10);
+            btnRetire.Name = "btnRetire";
+            btnRetire.Size = new Size(100, 40);
+            btnRetire.TabIndex = 8;
+            btnRetire.Text = "♻ Retire";
+            btnRetire.UseVisualStyleBackColor = false;
+            // 
             // VehiclesView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -713,8 +713,8 @@
         private Label lblFeaturesTitle;
         private FlowLayoutPanel flowLayoutPanelFeatures;
         private Button btnAddCategory;
-        private Button btnRetire;
         private ComboBox cmbAdvancedFilter;
         private Button btnUnderMaintenance;
+        private Button btnRetire;
     }
 }
