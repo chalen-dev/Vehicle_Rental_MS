@@ -17,7 +17,7 @@ using VRMS.Services.Account;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
 using VRMS.UI.Forms.Reservation;
 
 namespace VRMS.Controls

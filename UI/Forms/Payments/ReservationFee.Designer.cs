@@ -1,8 +1,9 @@
-﻿namespace VRMS.Forms.Payments
+﻿namespace VRMS.UI.Forms.Payments
 {
     partial class ReservationFee
     {
         private System.ComponentModel.IContainer components = null;
+        
 
         // Constructor
         
@@ -244,51 +245,6 @@
         }
 
         #endregion
-
-        private void SetupEventHandlers()
-        {
-            // Add event handlers here
-            this.btnConfirm.Click += BtnConfirm_Click;
-            this.btnCancel.Click += BtnCancel_Click;
-            this.txtAmountPaid.KeyPress += TxtAmountPaid_KeyPress;
-        }
-
-        private void BtnConfirm_Click(object sender, System.EventArgs e)
-        {
-            // Handle confirm button click
-        }
-
-        private void BtnCancel_Click(object sender, System.EventArgs e)
-        {
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Close();
-        }
-
-        private void TxtAmountPaid_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-        {
-            // Allow numbers, decimal point, and backspace
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.')
-            {
-                e.Handled = true;
-            }
-
-            // Only allow one decimal point
-            if (e.KeyChar == '.' && (sender as System.Windows.Forms.TextBox).Text.IndexOf('.') > -1)
-            {
-                e.Handled = true;
-            }
-        }
-
-        // Public methods to set data
-        public void SetReservationDetails(string customerName, string vehicleInfo, string reservationId, decimal estimatedTotal, decimal reservationFee)
-        {
-            this.lblCustomerInfo.Text = $"Customer: {customerName}";
-            this.lblVehicleInfo.Text = $"Vehicle: {vehicleInfo}";
-            this.lblReservationID.Text = $"Reservation ID: {reservationId}";
-            this.lblEstimatedTotal.Text = $"Estimated Rental Cost: ₱{estimatedTotal:N2}";
-            this.lblReservationFee.Text = $"RESERVATION FEE: ₱{reservationFee:N2}";
-            this.txtAmountPaid.Text = reservationFee.ToString("N2");
-        }
 
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblHeader;

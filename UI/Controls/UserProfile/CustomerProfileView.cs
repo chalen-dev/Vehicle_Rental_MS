@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using VRMS.Models.Customers;
 using VRMS.Services.Customer;
 using VRMS.Services.Account;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
 using VRMS.UI.Services;
 
 namespace VRMS.UI.Controls.UserProfile

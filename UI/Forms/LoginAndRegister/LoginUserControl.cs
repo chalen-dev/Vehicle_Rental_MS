@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Services.Account;
 using VRMS.Models.Accounts;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
 
 namespace VRMS.Controls
 {

@@ -13,7 +13,7 @@ using VRMS.Services.Dashboard;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
 
-namespace VRMS.UI.Config.ApplicationService;
+namespace VRMS.UI.ApplicationService;
 
 public static class ApplicationServices
 {
@@ -112,6 +112,9 @@ public static class ApplicationServices
             _rateConfigRepo
         );
 
+    public static RateService RateService { get; } =
+        new RateService(_rateConfigRepo);
+    
     public static ReservationService ReservationService { get; } =
         new ReservationService(
             CustomerService,
@@ -119,9 +122,6 @@ public static class ApplicationServices
             _reservationRepo,
             RateService
         );
-
-    public static RateService RateService { get; } =
-        new RateService(_rateConfigRepo);
 
     public static BillingService BillingService { get; } =
         new BillingService(
@@ -149,6 +149,9 @@ public static class ApplicationServices
     
     public static DashboardService DashboardService { get; } =
         new DashboardService(_dashboardRepo);
+    
+    public static PaymentRepository PaymentRepository { get; } =
+        _paymentRepo;
     
     public static CustomerAuthService CustomerAuthService =>
         _customerAuthService;

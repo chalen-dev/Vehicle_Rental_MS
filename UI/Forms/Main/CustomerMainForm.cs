@@ -13,7 +13,7 @@ using VRMS.UI.Controls.CustomerVehicleCatalog;
 using VRMS.UI.Controls.UserProfile;
 using VRMS.UI.Forms.Rentals;
 using VRMS.Controls;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
 
 namespace VRMS.UI.Forms.Main
 {

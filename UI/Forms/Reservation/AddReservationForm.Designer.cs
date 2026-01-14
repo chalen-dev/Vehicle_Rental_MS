@@ -1,8 +1,11 @@
-﻿namespace VRMS.UI.Forms.Reservation
+﻿using VRMS.Repositories.Billing;
+
+namespace VRMS.UI.Forms.Reservation
 {
     partial class AddReservationForm
     {
         private System.ComponentModel.IContainer components = null;
+
 
         protected override void Dispose(bool disposing)
         {

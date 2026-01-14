@@ -8,8 +8,8 @@ using VRMS.Forms;
 using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
 using VRMS.Services.Account;
+using VRMS.UI.ApplicationService;
 using VRMS.UI.Config.Animation;
-using VRMS.UI.Config.ApplicationService;
 using VRMS.UI.Forms.Main;
 
 namespace VRMS.UI.Forms

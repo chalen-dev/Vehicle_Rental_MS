@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Models.Billing;
 using VRMS.Services.Billing;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
 
 namespace VRMS.Forms
 {

@@ -5,7 +5,8 @@ using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
+using VRMS.UI.Forms.Payments;
 using VRMS.UI.Forms.Select;
 
 namespace VRMS.UI.Forms.Reservation
@@ -133,24 +134,10 @@ namespace VRMS.UI.Forms.Reservation
         // ----------------------------------
         private void btnSave_Click(object sender, EventArgs e)
         {
+            var start = dtpStart.Value.Date;
+            var end = dtpEnd.Value.Date.AddDays(1).AddTicks(-1);
             try
             {
-                if (_selectedCustomer == null)
-                    throw new InvalidOperationException("Please select a customer.");
-
-                if (_selectedVehicle == null)
-                    throw new InvalidOperationException("Please select a vehicle.");
-
-                var start = dtpStart.Value;
-                var end = dtpEnd.Value;
-
-                if (start >= end)
-                    throw new InvalidOperationException("Start date must be before end date.");
-
-                // Re-check customer eligibility (will throw if not eligible)
-                _customerService.EnsureCustomerCanRent(_selectedCustomer.Id, start);
-
-                // Create reservation in Pending state
                 var reservationId = _reservationService.CreateReservation(
                     _selectedCustomer.Id,
                     _selectedVehicle.Id,
@@ -158,18 +145,58 @@ namespace VRMS.UI.Forms.Reservation
                     end
                 );
 
-                // NOTE: payment / downpayment is not yet implemented.
-                // If you later want to require payment before creating the reservation,
-                // move the CreateReservation call after the payment flow and only create it on success.
+                // ----------------------------
+                // OPEN RESERVATION FEE FORM
+                // ----------------------------
+                using var feeForm = new ReservationFee();
+
+                // Calculate estimated rental (same as UI)
+                var estimatedTotal = _rateService.CalculateRentalCost(
+                    start,
+                    end,
+                    _selectedVehicle.VehicleCategoryId);
+
+                // Get reservation (for fee amount)
+                var reservation = _reservationService.GetReservationById(reservationId);
+
+                // Pass data to fee form
+                feeForm.SetReservationDetails(
+                    customerName: $"{_selectedCustomer.FirstName} {_selectedCustomer.LastName}",
+                    vehicleInfo: $"{_selectedVehicle.Make} {_selectedVehicle.Model}",
+                    reservationId: reservationId.ToString(),
+                    estimatedTotal: estimatedTotal,
+                    reservationFee: reservation.ReservationFeeAmount
+                );
+
+                // SHOW MODAL
+                if (feeForm.ShowDialog(this) != DialogResult.OK)
+                {
+                    // User cancelled payment → leave reservation as Pending
+                    MessageBox.Show(
+                        "Reservation created but NOT confirmed.\nReservation fee was not paid.",
+                        "Pending Reservation",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    DialogResult = DialogResult.OK;
+                    Close();
+                    return;
+                }
+
+                // ----------------------------
+                // CONFIRM RESERVATION
+                // ----------------------------
+                _reservationService.ConfirmReservation(reservationId);
 
                 MessageBox.Show(
-                    "Reservation successfully created.",
+                    "Reservation successfully created and confirmed.",
                     "Success",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
                 Close();
+
             }
             catch (Exception ex)
             {

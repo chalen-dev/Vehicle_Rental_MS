@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using VRMS.Models.Accounts;
 using VRMS.Services.Account;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
 
 namespace VRMS.Controls.UserProfile
 {

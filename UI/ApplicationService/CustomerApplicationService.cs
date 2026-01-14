@@ -1,7 +1,7 @@
 ﻿using VRMS.Models.Customers;
 using VRMS.Services.Customer;
 
-namespace VRMS.UI.Config.ApplicationService
+namespace VRMS.UI.ApplicationService
 {
     /// <summary>
     /// Coordinates customer-related UI workflows.

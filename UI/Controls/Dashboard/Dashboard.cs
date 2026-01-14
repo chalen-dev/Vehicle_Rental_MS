@@ -6,7 +6,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using VRMS.Models.Dashboard;
 using VRMS.Repositories.Dashboard;
 using VRMS.Services.Dashboard;
-using VRMS.UI.Config.ApplicationService;
+using VRMS.UI.ApplicationService;
 
 namespace VRMS.Controls
 {
