@@ -13,7 +13,10 @@ using VRMS.UI.Forms;
 using VRMS.UI.Controls.CustomerVehicleCatalog;
 using VRMS.UI.Controls.Reports;
 using VRMS.UI.Controls.History;
-using VRMS.UI.Controls.VehiclesView; // ✅ HISTORY
+using VRMS.UI.Controls.VehiclesView;
+using VRMS.Repositories.Reports;
+using VRMS.Services.Reports;
+
 
 namespace VRMS.Forms
 {
@@ -234,21 +237,26 @@ namespace VRMS.Forms
                     );
                     break;
 
-                case "btnHistory": // ✅ HISTORY NAVIGATION
+                case "btnHistory": 
                     ShowView(
                         new History(),
                         "History",
                         "Reservations & Rental Records"
                     );
                     break;
-
                 case "btnReports":
-                    ShowView(
-                        new ReportsView(),
-                        "Reports",
-                        "Analytics and Insights"
-                    );
-                    break;
+                    {
+                        var reportsRepo = new ReportsRepository();
+                        var reportsService = new ReportsService(reportsRepo);
+
+                        ShowView(
+                            new ReportsView(reportsService),
+                            "Reports",
+                            "Analytics and Insights"
+                        );
+                        break;
+                    }
+
 
                 case "btnAdmin":
                     if (!IsAdmin())

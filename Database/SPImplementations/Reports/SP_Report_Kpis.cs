@@ -11,15 +11,25 @@ public static class SP_Report_Kpis
     )
     BEGIN
         SELECT
-            (SELECT COUNT(*) FROM vehicles)
+            -- ============================
+            -- VEHICLES
+            -- ============================
+            (SELECT COUNT(*)
+             FROM vehicles)
                 AS total_vehicles,
 
+            -- ============================
+            -- RENTALS COUNT (DATE FILTERED)
+            -- ============================
             (SELECT COUNT(*)
              FROM rentals r
              WHERE DATE(r.pickup_date)
                    BETWEEN p_from AND p_to)
                 AS total_rentals,
 
+            -- ============================
+            -- TOTAL RENTAL DAYS (OVERLAP)
+            -- ============================
             COALESCE(
                 (SELECT SUM(
                     GREATEST(
@@ -36,6 +46,9 @@ public static class SP_Report_Kpis
                 0
             ) AS total_rental_days,
 
+            -- ============================
+            -- TOTAL REVENUE
+            -- ============================
             COALESCE(
                 (SELECT SUM(i.total_amount)
                  FROM invoices i
@@ -44,6 +57,9 @@ public static class SP_Report_Kpis
                 0
             ) AS total_revenue,
 
+            -- ============================
+            -- AVERAGE RENTAL DURATION
+            -- ============================
             COALESCE(
                 (SELECT AVG(
                     DATEDIFF(
@@ -57,6 +73,9 @@ public static class SP_Report_Kpis
                 0
             ) AS avg_rental_duration,
 
+            -- ============================
+            -- FLEET UTILIZATION (%)
+            -- ============================
             ROUND(
                 COALESCE(
                     (SELECT SUM(
@@ -80,10 +99,14 @@ public static class SP_Report_Kpis
                 2
             ) AS fleet_utilization_percent,
 
+            -- ============================
+            -- DAMAGE INCIDENTS
+            -- NOTE:
+            -- damages table has NO date column yet
+            -- so we safely count all records
+            -- ============================
             (SELECT COUNT(*)
-             FROM damages d
-             WHERE DATE(d.report_date)
-                   BETWEEN p_from AND p_to)
+             FROM damages)
                 AS damage_incident_count;
     END;
     """;

@@ -81,9 +81,9 @@
             lblFormTitle.ForeColor = Color.FromArgb(44, 62, 80);
             lblFormTitle.Location = new Point(25, 25);
             lblFormTitle.Name = "lblFormTitle";
-            lblFormTitle.Size = new Size(221, 41);
+            lblFormTitle.Size = new Size(257, 41);
             lblFormTitle.TabIndex = 0;
-            lblFormTitle.Text = "Vehicle Return";
+            lblFormTitle.Text = "Complete Return";
             // 
             // pnlRentalSummary
             // 
@@ -447,7 +447,7 @@
             btnCompleteReturn.Name = "btnCompleteReturn";
             btnCompleteReturn.Size = new Size(450, 51);
             btnCompleteReturn.TabIndex = 0;
-            btnCompleteReturn.Text = "Complete Return Process";
+            btnCompleteReturn.Text = "Finalize Payment";
             btnCompleteReturn.UseVisualStyleBackColor = false;
             btnCompleteReturn.Click += btnCompleteReturn_Click;
             // 
@@ -466,7 +466,7 @@
             btnCancels.UseVisualStyleBackColor = false;
             btnCancels.Click += btnCancel_Click;
             // 
-            // ReturnVehicleForm
+            // CompleteRentalForm
             // 
             ClientSize = new Size(1300, 889);
             Controls.Add(pnlHeader);
@@ -480,7 +480,7 @@
             MinimizeBox = false;
             Name = "CompleteRentalForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Return Vehicle";
+            Text = "Complete Return";
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             pnlRentalSummary.ResumeLayout(false);

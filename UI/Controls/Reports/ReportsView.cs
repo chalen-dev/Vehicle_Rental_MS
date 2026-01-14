@@ -1,179 +1,236 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using VRMS.DTOs.Reports;
+using VRMS.Services.Reports;
 
 namespace VRMS.UI.Controls.Reports
 {
     public partial class ReportsView : UserControl
     {
-        private Random _random = new Random();
+        private readonly ReportsService _reportsService;
 
-        public ReportsView()
+        public ReportsView(ReportsService reportsService)
         {
+            _reportsService = reportsService;
+
             InitializeComponent();
             SetupDesign();
 
-            // Wire up Events
             tcReports.SelectedIndexChanged += TcReports_SelectedIndexChanged;
             btnApplyFilter.Click += BtnApplyFilter_Click;
-            btnExportExcel.Click += (s, e) => MessageBox.Show("Exporting to Excel...", "System Export");
-            btnExportPDF.Click += (s, e) => MessageBox.Show("Exporting to PDF...", "System Export");
 
-            // Initial Data Load
-            LoadFleetData();
+            btnExportExcel.Click += (s, e) =>
+                MessageBox.Show("Export to Excel not implemented yet.", "Export");
+
+            btnExportPDF.Click += (s, e) =>
+                MessageBox.Show("Export to PDF not implemented yet.", "Export");
+
+            RefreshCurrentTab();
         }
+
+        // =====================================================
+        // UI SETUP
+        // =====================================================
 
         private void SetupDesign()
         {
-            // Grid Styling
-            dgvReportData.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-            dgvReportData.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(52, 73, 94);
+            dgvReportData.AlternatingRowsDefaultCellStyle.BackColor =
+                Color.FromArgb(245, 245, 245);
+
+            dgvReportData.ColumnHeadersDefaultCellStyle.BackColor =
+                Color.FromArgb(52, 73, 94);
+
             dgvReportData.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvReportData.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvReportData.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 10, FontStyle.Bold);
+
             dgvReportData.EnableHeadersVisualStyles = false;
-            dgvReportData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvReportData.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvReportData.BackgroundColor = Color.White;
-            dgvReportData.BorderStyle = BorderStyle.None;
+            dgvReportData.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvReportData.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+
             dgvReportData.ReadOnly = true;
+            dgvReportData.BorderStyle = BorderStyle.None;
+            dgvReportData.BackgroundColor = Color.White;
 
-            // Enable Double Buffering to prevent flickering with "a lot of data"
-            PropertyInfo pi = typeof(DataGridView).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
-            pi.SetValue(dgvReportData, true, null);
+            // Enable double buffering
+            PropertyInfo pi =
+                typeof(DataGridView).GetProperty(
+                    "DoubleBuffered",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+
+            pi?.SetValue(dgvReportData, true, null);
         }
 
-        private void TcReports_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Move grid to the current active tab
-            tcReports.SelectedTab.Controls.Add(dgvReportData);
-            RefreshCurrentTab();
-        }
+        // =====================================================
+        // EVENTS
+        // =====================================================
 
         private void BtnApplyFilter_Click(object sender, EventArgs e)
         {
             RefreshCurrentTab();
         }
 
+        private void TcReports_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!tcReports.SelectedTab.Controls.Contains(dgvReportData))
+                tcReports.SelectedTab.Controls.Add(dgvReportData);
+
+            dgvReportData.Dock = DockStyle.Fill;
+            RefreshCurrentTab();
+        }
+
+        // =====================================================
+        // TAB DISPATCHER
+        // =====================================================
+
         private void RefreshCurrentTab()
         {
-            switch (tcReports.SelectedIndex)
+            try
             {
-                case 0: LoadFleetData(); break;
-                case 1: LoadRevenueData(); break;
-                case 2: LoadKPIData(); break;
-            }
-        }
-
-        #region Business Logic & Data Generation
-
-        private void LoadFleetData()
-        {
-            var data = new List<FleetReportItem>();
-            string[] makes = { "Toyota", "Mitsubishi", "Ford", "Honda", "Isuzu" };
-            string[] models = { "Hiace (Van)", "Montero (SUV)", "Ranger (Pickup)", "Civic (Sedan)", "Vios (Sedan)" };
-            string[] status = { "Available", "Rented", "Reserved", "Under Maintenance", "Out of Service" };
-
-            for (int i = 1; i <= 100; i++)
-            {
-                int totalAvailableDays = 30;
-                int rentalDays = _random.Next(5, 29);
-                // Formula: (Total Rental Days / Total Available Days) × 100%
-                double utilization = (double)rentalDays / totalAvailableDays * 100;
-
-                data.Add(new FleetReportItem
+                switch (tcReports.SelectedIndex)
                 {
-                    VehicleID = $"V-{1000 + i}",
-                    Model = models[_random.Next(models.Length)],
-                    Category = "Standard",
-                    Status = status[_random.Next(status.Length)],
-                    TotalRentalDays = rentalDays,
-                    UtilizationRate = utilization.ToString("F1") + "%",
-                    LastMaintenance = DateTime.Now.AddDays(-_random.Next(5, 60)).ToShortDateString()
-                });
+                    case 0:
+                        LoadFleetUtilization();
+                        break;
+
+                    case 1:
+                        LoadRevenueReport();
+                        break;
+
+                    case 2:
+                        LoadKpiReport();
+                        break;
+                }
             }
-            dgvReportData.DataSource = data;
-        }
-
-        private void LoadRevenueData()
-        {
-            var data = new List<RevenueReportItem>();
-            string[] types = { "Hatchback", "Sedan", "SUV", "Pickup", "Van" };
-
-            for (int i = 0; i < 50; i++)
+            catch (Exception ex)
             {
-                decimal baseRate = _random.Next(1500, 5000);
-                int days = _random.Next(1, 14);
-                decimal rentalRev = baseRate * days;
-                decimal damageFees = (_random.Next(0, 10) > 8) ? _random.Next(500, 5000) : 0;
-                decimal total = rentalRev + damageFees;
-
-                data.Add(new RevenueReportItem
-                {
-                    TxnID = $"TRX-{5000 + i}",
-                    Category = types[_random.Next(types.Length)],
-                    RentalRevenue = rentalRev,
-                    DamageFees = damageFees,
-                    TotalCollected = total,
-                    Date = DateTime.Now.AddDays(-_random.Next(0, 30)).ToShortDateString()
-                });
+                MessageBox.Show(
+                    ex.Message,
+                    "Report Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
-            dgvReportData.DataSource = data;
-
-            // Format Currency
-            dgvReportData.Columns["RentalRevenue"].DefaultCellStyle.Format = "N2";
-            dgvReportData.Columns["DamageFees"].DefaultCellStyle.Format = "N2";
-            dgvReportData.Columns["TotalCollected"].DefaultCellStyle.Format = "N2";
         }
 
-        private void LoadKPIData()
+        // =====================================================
+        // FLEET UTILIZATION
+        // =====================================================
+
+        private void LoadFleetUtilization()
         {
-            var data = new List<KPIReportItem>
-            {
-                new KPIReportItem { Metric = "Fleet Utilization Rate", Value = "74.2%", Target = "85.0%", Status = "Action Required" },
-                new KPIReportItem { Metric = "Revenue Per Vehicle (RPV)", Value = "₱1,420.50", Target = "₱1,200.00", Status = "Optimal" },
-                new KPIReportItem { Metric = "Average Rental Duration", Value = "4.5 Days", Target = "3.0 Days", Status = "Good" },
-                new KPIReportItem { Metric = "Damage Incident Rate", Value = "8.2%", Target = "5.0%", Status = "High" },
-                new KPIReportItem { Metric = "Customer Retention Rate", Value = "61.0%", Target = "60.0%", Status = "Optimal" }
-            };
+            var from = dtpStart.Value.Date;
+            var to = dtpEnd.Value.Date;
+
+            var data = _reportsService.GetFleetUtilization(from, to);
             dgvReportData.DataSource = data;
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.VehicleId)].Visible = false;
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.VehicleCode)].HeaderText =
+                "Vehicle Code";
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.MakeModel)].HeaderText =
+                "Make / Model";
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.DaysRented)].HeaderText =
+                "Days Rented";
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.TotalDays)].HeaderText =
+                "Total Days";
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.UtilizationPercent)].HeaderText =
+                "Utilization (%)";
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.UtilizationPercent)]
+                .DefaultCellStyle.Format = "N2";
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.DaysRented)]
+                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.TotalDays)]
+                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvReportData.Columns[nameof(FleetUtilizationRowDto.UtilizationPercent)]
+                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
         }
 
-        #endregion
+        // =====================================================
+        // REVENUE REPORT
+        // =====================================================
+
+        private void LoadRevenueReport()
+        {
+            var from = dtpStart.Value.Date;
+            var to = dtpEnd.Value.Date;
+
+            var data = _reportsService.GetRevenueReport(from, to);
+            dgvReportData.DataSource = data;
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.InvoiceId)].HeaderText =
+                "Invoice #";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.RentalId)].HeaderText =
+                "Rental #";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.VehicleCode)].HeaderText =
+                "Vehicle";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.InvoiceDate)].HeaderText =
+                "Invoice Date";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.Amount)].HeaderText =
+                "Amount (₱)";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.IsPaid)].HeaderText =
+                "Paid";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.InvoiceDate)]
+                .DefaultCellStyle.Format = "yyyy-MM-dd";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.Amount)]
+                .DefaultCellStyle.Format = "N2";
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.Amount)]
+                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            dgvReportData.Columns[nameof(RevenueReportRowDto.IsPaid)]
+                .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        }
+
+        // =====================================================
+        // KPI REPORT
+        // =====================================================
+
+        private void LoadKpiReport()
+        {
+            var from = dtpStart.Value.Date;
+            var to = dtpEnd.Value.Date;
+
+            var kpi = _reportsService.GetKpis(from, to);
+
+            dgvReportData.DataSource = new[]
+            {
+        new { Metric = "Total Vehicles", Value = kpi.TotalVehicles.ToString() },
+        new { Metric = "Total Rentals", Value = kpi.TotalRentals.ToString() },
+        new { Metric = "Total Rental Days", Value = kpi.TotalRentalDays.ToString() },
+        new { Metric = "Total Revenue (₱)", Value = kpi.TotalRevenue.ToString("N2") },
+        new { Metric = "Avg Rental Duration (Days)", Value = kpi.AverageRentalDurationDays.ToString("N2") },
+        new { Metric = "Fleet Utilization (%)", Value = kpi.FleetUtilizationPercent.ToString("N2") },
+        new { Metric = "Damage Incidents", Value = kpi.DamageIncidentCount.ToString() }
+    };
+
+            dgvReportData.Columns["Metric"].Width = 350;
+            dgvReportData.Columns["Metric"].DefaultCellStyle.Font =
+                new Font("Segoe UI", 10, FontStyle.Bold);
+
+            dgvReportData.Columns["Value"].DefaultCellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleRight;
+        }
+
     }
-
-    #region Requirement-Specific Classes (OOP)
-
-    public class FleetReportItem
-    {
-        public string VehicleID { get; set; }
-        public string Model { get; set; }
-        public string Category { get; set; }
-        public string Status { get; set; }
-        public int TotalRentalDays { get; set; }
-        public string UtilizationRate { get; set; }
-        public string LastMaintenance { get; set; }
-    }
-
-    public class RevenueReportItem
-    {
-        public string TxnID { get; set; }
-        public string Date { get; set; }
-        public string Category { get; set; }
-        public decimal RentalRevenue { get; set; }
-        public decimal DamageFees { get; set; }
-        public decimal TotalCollected { get; set; }
-    }
-
-    public class KPIReportItem
-    {
-        public string Metric { get; set; }
-        public string Value { get; set; }
-        public string Target { get; set; }
-        public string Status { get; set; }
-    }
-
-    #endregion
 }
