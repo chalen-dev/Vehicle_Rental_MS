@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
+﻿using VRMS.DTOs.Vehicle;
 using VRMS.Enums;
 using VRMS.Forms;
+using VRMS.Helpers;
 using VRMS.Models.Fleet;
-using VRMS.Repositories.Accounts;
-using VRMS.Repositories.Billing;
-using VRMS.Repositories.Fleet;
-using VRMS.Repositories.Rentals;
-using VRMS.Repositories.Inspections;
-using VRMS.Repositories.Damages;
-using VRMS.Services.Account;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
 using VRMS.UI.ApplicationService;
 using VRMS.UI.Forms;
+using VRMS.UI.Forms.Maintenance;
 
-namespace VRMS.Controls
+namespace VRMS.UI.Controls.VehiclesView
 {
     public partial class VehiclesView : UserControl
     {
@@ -230,7 +221,11 @@ namespace VRMS.Controls
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Plate No.", DataPropertyName = "LicensePlate" });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Transmission", DataPropertyName = "Transmission" });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Fuel", DataPropertyName = "FuelType" });
-            dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Status", DataPropertyName = "Status" });
+            dgvVehicles.Columns.Add(
+                new DataGridViewTextBoxColumn {
+                    HeaderText = "Status",
+                    DataPropertyName = "StatusDisplay"
+                });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Odometer", DataPropertyName = "Odometer" });
         }
 
@@ -293,7 +288,11 @@ namespace VRMS.Controls
             }
             catch { lblCategoryValue.Text = "Unknown"; }
 
-            lblStatusValue.Text = vehicle.Status.ToString();
+            lblStatusValue.Text = EnumComboHelper
+                .ToComboItems<VehicleStatus>()
+                .First(x => x.Value == vehicle.Status)
+                .Display;
+
             lblStatusValue.ForeColor = GetStatusColor(vehicle.Status);
 
             LoadVehicleImage(vehicle.Id);
@@ -392,61 +391,50 @@ namespace VRMS.Controls
         
         private void btnUnderMaintenance_Click(object sender, EventArgs e)
         {
+            // 1. Ensure a vehicle is selected
             if (dgvVehicles.SelectedRows.Count == 0 ||
                 dgvVehicles.SelectedRows[0].DataBoundItem is not Vehicle vehicle)
             {
                 MessageBox.Show(
-                    "Please select a vehicle.",
-                    "Under Maintenance",
+                    "Please select a vehicle first.",
+                    "Maintenance",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
                 return;
             }
 
-            if (vehicle.Status == VehicleStatus.UnderMaintenance)
+            // 2. Map Vehicle -> SimpleVehicleDto
+            var vehicleDto = new VehicleDto
             {
-                MessageBox.Show(
-                    "This vehicle is already under maintenance.",
-                    "Under Maintenance",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                return;
-            }
+                Id = vehicle.Id,
+                Make = vehicle.Make,
+                Model = vehicle.Model,
+                LicensePlate = vehicle.LicensePlate,
+                Status = vehicle.Status
+            };
 
-            var result = MessageBox.Show(
-                $"Mark this vehicle as UNDER MAINTENANCE?\n\n" +
-                $"{vehicle.Make} {vehicle.Model}\n" +
-                $"Plate: {vehicle.LicensePlate}",
-                "Confirm",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
-            if (result != DialogResult.Yes)
-                return;
-
-            try
+            // 3. Open Maintenance Form
+            using var form = new MaintenanceForm(_vehicleService, vehicleDto)
             {
+                StartPosition = FormStartPosition.CenterParent
+            };
+
+            var result = form.ShowDialog(this);
+
+            // 4. If maintenance form updated vehicle status, persist it
+            if (result == DialogResult.OK && form.IsVehicleStatusUpdated())
+            {
+                var updatedStatus = form.GetUpdatedVehicleStatus();
+
                 _vehicleService.UpdateVehicleStatus(
                     vehicle.Id,
-                    VehicleStatus.UnderMaintenance);
+                    (VehicleStatus)updatedStatus
+                );
 
                 LoadVehicles();
-
-                MessageBox.Show(
-                    "Vehicle status updated to Under Maintenance.",
-                    "Success",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
             }
         }
+
 
 
     }

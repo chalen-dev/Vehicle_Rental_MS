@@ -1,4 +1,4 @@
-﻿namespace VRMS.Controls
+﻿namespace VRMS.UI.Controls.VehiclesView
 {
     partial class VehiclesView
     {
@@ -28,49 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            panelHeader = new System.Windows.Forms.Panel();
-            label1 = new System.Windows.Forms.Label();
-            lblVehicleCount = new System.Windows.Forms.Label();
-            panelToolbar = new System.Windows.Forms.Panel();
-            btnUnderMaintenance = new System.Windows.Forms.Button();
-            btnAddCategory = new System.Windows.Forms.Button();
-            panelSearch = new System.Windows.Forms.Panel();
-            txtSearch = new System.Windows.Forms.TextBox();
-            cmbStatusFilter = new System.Windows.Forms.ComboBox();
-            btnRetire = new System.Windows.Forms.Button();
-            btnDelete = new System.Windows.Forms.Button();
-            btnEdit = new System.Windows.Forms.Button();
-            btnAdd = new System.Windows.Forms.Button();
-            splitContainerMain = new System.Windows.Forms.SplitContainer();
-            panelVehicleList = new System.Windows.Forms.Panel();
-            dgvVehicles = new System.Windows.Forms.DataGridView();
-            panelStatusFilter = new System.Windows.Forms.Panel();
-            cmbAdvancedFilter = new System.Windows.Forms.ComboBox();
-            lblStatusFilter = new System.Windows.Forms.Label();
-            panelVehicleDetails = new System.Windows.Forms.Panel();
-            panelFeatures = new System.Windows.Forms.Panel();
-            flowLayoutPanelFeatures = new System.Windows.Forms.FlowLayoutPanel();
-            lblFeaturesTitle = new System.Windows.Forms.Label();
-            panelVehicleInfo = new System.Windows.Forms.Panel();
-            lblMileageValue = new System.Windows.Forms.Label();
-            lblMileage = new System.Windows.Forms.Label();
-            lblPlateValue = new System.Windows.Forms.Label();
-            lblPlate = new System.Windows.Forms.Label();
-            lblDailyRateValue = new System.Windows.Forms.Label();
-            lblDailyRate = new System.Windows.Forms.Label();
-            lblYearColorValue = new System.Windows.Forms.Label();
-            lblYearColor = new System.Windows.Forms.Label();
-            lblCategoryValue = new System.Windows.Forms.Label();
-            lblStatusValue = new System.Windows.Forms.Label();
-            lblStatus = new System.Windows.Forms.Label();
-            lblCategory = new System.Windows.Forms.Label();
-            lblMakeModel = new System.Windows.Forms.Label();
-            lblDetailsTitle = new System.Windows.Forms.Label();
-            panelPreviewHeader = new System.Windows.Forms.Panel();
-            lblVehicleDetails = new System.Windows.Forms.Label();
-            picVehiclePreview = new System.Windows.Forms.PictureBox();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            panelHeader = new Panel();
+            label1 = new Label();
+            lblVehicleCount = new Label();
+            panelToolbar = new Panel();
+            btnUnderMaintenance = new Button();
+            btnAddCategory = new Button();
+            panelSearch = new Panel();
+            txtSearch = new TextBox();
+            cmbStatusFilter = new ComboBox();
+            btnRetire = new Button();
+            btnDelete = new Button();
+            btnEdit = new Button();
+            btnAdd = new Button();
+            splitContainerMain = new SplitContainer();
+            panelVehicleList = new Panel();
+            dgvVehicles = new DataGridView();
+            panelStatusFilter = new Panel();
+            cmbAdvancedFilter = new ComboBox();
+            lblStatusFilter = new Label();
+            panelVehicleDetails = new Panel();
+            panelFeatures = new Panel();
+            flowLayoutPanelFeatures = new FlowLayoutPanel();
+            lblFeaturesTitle = new Label();
+            panelVehicleInfo = new Panel();
+            lblMileageValue = new Label();
+            lblMileage = new Label();
+            lblPlateValue = new Label();
+            lblPlate = new Label();
+            lblDailyRateValue = new Label();
+            lblDailyRate = new Label();
+            lblYearColorValue = new Label();
+            lblYearColor = new Label();
+            lblCategoryValue = new Label();
+            lblStatusValue = new Label();
+            lblStatus = new Label();
+            lblCategory = new Label();
+            lblMakeModel = new Label();
+            lblDetailsTitle = new Label();
+            panelPreviewHeader = new Panel();
+            lblVehicleDetails = new Label();
+            picVehiclePreview = new PictureBox();
             panelHeader.SuspendLayout();
             panelToolbar.SuspendLayout();
             panelSearch.SuspendLayout();
@@ -90,41 +90,41 @@
             // 
             // panelHeader
             // 
-            panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
+            panelHeader.BackColor = Color.FromArgb(30, 60, 90);
             panelHeader.Controls.Add(label1);
             panelHeader.Controls.Add(lblVehicleCount);
-            panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            panelHeader.Location = new System.Drawing.Point(0, 0);
+            panelHeader.Dock = DockStyle.Top;
+            panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new System.Drawing.Size(1491, 70);
+            panelHeader.Size = new Size(1491, 70);
             panelHeader.TabIndex = 0;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
-            label1.ForeColor = System.Drawing.Color.White;
-            label1.Location = new System.Drawing.Point(20, 15);
+            label1.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(20, 15);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(127, 41);
+            label1.Size = new Size(127, 41);
             label1.TabIndex = 0;
             label1.Text = "Vehicles";
             // 
             // lblVehicleCount
             // 
-            lblVehicleCount.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            lblVehicleCount.Font = new System.Drawing.Font("Segoe UI", 10F);
-            lblVehicleCount.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)200)), ((int)((byte)200)), ((int)((byte)200)));
-            lblVehicleCount.Location = new System.Drawing.Point(1291, 15);
+            lblVehicleCount.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblVehicleCount.Font = new Font("Segoe UI", 10F);
+            lblVehicleCount.ForeColor = Color.FromArgb(200, 200, 200);
+            lblVehicleCount.Location = new Point(1291, 15);
             lblVehicleCount.Name = "lblVehicleCount";
-            lblVehicleCount.Size = new System.Drawing.Size(180, 40);
+            lblVehicleCount.Size = new Size(180, 40);
             lblVehicleCount.TabIndex = 1;
             lblVehicleCount.Text = "Total: 0 vehicles";
-            lblVehicleCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblVehicleCount.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelToolbar
             // 
-            panelToolbar.BackColor = System.Drawing.Color.White;
+            panelToolbar.BackColor = Color.White;
             panelToolbar.Controls.Add(btnUnderMaintenance);
             panelToolbar.Controls.Add(btnAddCategory);
             panelToolbar.Controls.Add(panelSearch);
@@ -133,39 +133,39 @@
             panelToolbar.Controls.Add(btnDelete);
             panelToolbar.Controls.Add(btnEdit);
             panelToolbar.Controls.Add(btnAdd);
-            panelToolbar.Dock = System.Windows.Forms.DockStyle.Top;
-            panelToolbar.Location = new System.Drawing.Point(0, 70);
+            panelToolbar.Dock = DockStyle.Top;
+            panelToolbar.Location = new Point(0, 70);
             panelToolbar.Name = "panelToolbar";
-            panelToolbar.Padding = new System.Windows.Forms.Padding(15, 10, 15, 10);
-            panelToolbar.Size = new System.Drawing.Size(1491, 60);
+            panelToolbar.Padding = new Padding(15, 10, 15, 10);
+            panelToolbar.Size = new Size(1491, 60);
             panelToolbar.TabIndex = 1;
             // 
             // btnUnderMaintenance
             // 
-            btnUnderMaintenance.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            btnUnderMaintenance.BackColor = System.Drawing.Color.Gold;
+            btnUnderMaintenance.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnUnderMaintenance.BackColor = Color.Gold;
             btnUnderMaintenance.FlatAppearance.BorderSize = 0;
-            btnUnderMaintenance.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnUnderMaintenance.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            btnUnderMaintenance.ForeColor = System.Drawing.Color.White;
-            btnUnderMaintenance.Location = new System.Drawing.Point(756, 10);
+            btnUnderMaintenance.FlatStyle = FlatStyle.Flat;
+            btnUnderMaintenance.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnUnderMaintenance.ForeColor = Color.White;
+            btnUnderMaintenance.Location = new Point(756, 10);
             btnUnderMaintenance.Name = "btnUnderMaintenance";
-            btnUnderMaintenance.Size = new System.Drawing.Size(184, 40);
+            btnUnderMaintenance.Size = new Size(184, 40);
             btnUnderMaintenance.TabIndex = 9;
-            btnUnderMaintenance.Text = "🔧 Under Maintenance";
+            btnUnderMaintenance.Text = "🔧 Maintenance";
             btnUnderMaintenance.UseVisualStyleBackColor = false;
             // 
             // btnAddCategory
             // 
-            btnAddCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            btnAddCategory.BackColor = System.Drawing.Color.FromArgb(((int)((byte)128)), ((int)((byte)128)), ((int)((byte)255)));
+            btnAddCategory.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAddCategory.BackColor = Color.FromArgb(128, 128, 255);
             btnAddCategory.FlatAppearance.BorderSize = 0;
-            btnAddCategory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnAddCategory.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            btnAddCategory.ForeColor = System.Drawing.Color.White;
-            btnAddCategory.Location = new System.Drawing.Point(1329, 11);
+            btnAddCategory.FlatStyle = FlatStyle.Flat;
+            btnAddCategory.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnAddCategory.ForeColor = Color.White;
+            btnAddCategory.Location = new Point(1329, 11);
             btnAddCategory.Name = "btnAddCategory";
-            btnAddCategory.Size = new System.Drawing.Size(119, 40);
+            btnAddCategory.Size = new Size(119, 40);
             btnAddCategory.TabIndex = 7;
             btnAddCategory.Text = "➕ Categories";
             btnAddCategory.UseVisualStyleBackColor = false;
@@ -173,79 +173,79 @@
             // 
             // panelSearch
             // 
-            panelSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
-            panelSearch.BackColor = System.Drawing.Color.FromArgb(((int)((byte)248)), ((int)((byte)249)), ((int)((byte)250)));
-            panelSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            panelSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panelSearch.BackColor = Color.FromArgb(248, 249, 250);
+            panelSearch.BorderStyle = BorderStyle.FixedSingle;
             panelSearch.Controls.Add(txtSearch);
-            panelSearch.Location = new System.Drawing.Point(15, 10);
+            panelSearch.Location = new Point(15, 10);
             panelSearch.Name = "panelSearch";
-            panelSearch.Size = new System.Drawing.Size(415, 40);
+            panelSearch.Size = new Size(415, 40);
             panelSearch.TabIndex = 6;
             // 
             // txtSearch
             // 
-            txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            txtSearch.Font = new System.Drawing.Font("Segoe UI", 10F);
-            txtSearch.Location = new System.Drawing.Point(35, 8);
+            txtSearch.BorderStyle = BorderStyle.None;
+            txtSearch.Font = new Font("Segoe UI", 10F);
+            txtSearch.Location = new Point(35, 8);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "🔍 Search vehicles...";
-            txtSearch.Size = new System.Drawing.Size(310, 23);
+            txtSearch.Size = new Size(310, 23);
             txtSearch.TabIndex = 1;
             // 
             // cmbStatusFilter
             // 
-            cmbStatusFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            cmbStatusFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            cmbStatusFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            cmbStatusFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
+            cmbStatusFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            cmbStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbStatusFilter.FlatStyle = FlatStyle.Flat;
+            cmbStatusFilter.Font = new Font("Segoe UI", 9F);
             cmbStatusFilter.FormattingEnabled = true;
             cmbStatusFilter.Items.AddRange(new object[] { "🚗 All Vehicles", "✅ Available", "🔧 Under Maintenance", "🚗 Rented", "📅 Reserved", "♻ Retired" });
-            cmbStatusFilter.Location = new System.Drawing.Point(462, 18);
+            cmbStatusFilter.Location = new Point(462, 18);
             cmbStatusFilter.Name = "cmbStatusFilter";
-            cmbStatusFilter.Size = new System.Drawing.Size(160, 28);
+            cmbStatusFilter.Size = new Size(160, 28);
             cmbStatusFilter.TabIndex = 5;
             // 
             // btnRetire
             // 
-            btnRetire.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            btnRetire.BackColor = System.Drawing.Color.FromArgb(((int)((byte)150)), ((int)((byte)150)), ((int)((byte)150)));
+            btnRetire.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRetire.BackColor = Color.FromArgb(150, 150, 150);
             btnRetire.FlatAppearance.BorderSize = 0;
-            btnRetire.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnRetire.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            btnRetire.ForeColor = System.Drawing.Color.White;
-            btnRetire.Location = new System.Drawing.Point(637, 10);
+            btnRetire.FlatStyle = FlatStyle.Flat;
+            btnRetire.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnRetire.ForeColor = Color.White;
+            btnRetire.Location = new Point(637, 10);
             btnRetire.Name = "btnRetire";
-            btnRetire.Size = new System.Drawing.Size(100, 40);
+            btnRetire.Size = new Size(100, 40);
             btnRetire.TabIndex = 8;
             btnRetire.Text = "♻ Retire";
             btnRetire.UseVisualStyleBackColor = false;
             // 
             // btnDelete
             // 
-            btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)((byte)231)), ((int)((byte)76)), ((int)((byte)60)));
+            btnDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDelete.BackColor = Color.FromArgb(231, 76, 60);
             btnDelete.FlatAppearance.BorderSize = 0;
-            btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnDelete.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            btnDelete.ForeColor = System.Drawing.Color.White;
-            btnDelete.Location = new System.Drawing.Point(1008, 10);
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(1008, 10);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new System.Drawing.Size(100, 40);
+            btnDelete.Size = new Size(100, 40);
             btnDelete.TabIndex = 3;
             btnDelete.Text = "🗑 Delete";
             btnDelete.UseVisualStyleBackColor = false;
             // 
             // btnEdit
             // 
-            btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            btnEdit.BackColor = System.Drawing.Color.FromArgb(((int)((byte)243)), ((int)((byte)156)), ((int)((byte)18)));
+            btnEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnEdit.BackColor = Color.FromArgb(243, 156, 18);
             btnEdit.FlatAppearance.BorderSize = 0;
-            btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnEdit.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            btnEdit.ForeColor = System.Drawing.Color.White;
-            btnEdit.Location = new System.Drawing.Point(1116, 10);
+            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnEdit.ForeColor = Color.White;
+            btnEdit.Location = new Point(1116, 10);
             btnEdit.Name = "btnEdit";
-            btnEdit.Size = new System.Drawing.Size(90, 40);
+            btnEdit.Size = new Size(90, 40);
             btnEdit.TabIndex = 2;
             btnEdit.Text = "✏ Edit";
             btnEdit.UseVisualStyleBackColor = false;
@@ -253,15 +253,15 @@
             // 
             // btnAdd
             // 
-            btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
-            btnAdd.BackColor = System.Drawing.Color.FromArgb(((int)((byte)46)), ((int)((byte)204)), ((int)((byte)113)));
+            btnAdd.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAdd.BackColor = Color.FromArgb(46, 204, 113);
             btnAdd.FlatAppearance.BorderSize = 0;
-            btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnAdd.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            btnAdd.ForeColor = System.Drawing.Color.White;
-            btnAdd.Location = new System.Drawing.Point(1213, 11);
+            btnAdd.FlatStyle = FlatStyle.Flat;
+            btnAdd.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(1213, 11);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new System.Drawing.Size(110, 40);
+            btnAdd.Size = new Size(110, 40);
             btnAdd.TabIndex = 1;
             btnAdd.Text = "➕ Add";
             btnAdd.UseVisualStyleBackColor = false;
@@ -269,34 +269,34 @@
             // 
             // splitContainerMain
             // 
-            splitContainerMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            splitContainerMain.Location = new System.Drawing.Point(0, 130);
+            splitContainerMain.Dock = DockStyle.Fill;
+            splitContainerMain.Location = new Point(0, 130);
             splitContainerMain.Name = "splitContainerMain";
             // 
             // splitContainerMain.Panel1
             // 
             splitContainerMain.Panel1.Controls.Add(panelVehicleList);
             splitContainerMain.Panel1.Controls.Add(panelStatusFilter);
-            splitContainerMain.Panel1.Padding = new System.Windows.Forms.Padding(10);
+            splitContainerMain.Panel1.Padding = new Padding(10);
             // 
             // splitContainerMain.Panel2
             // 
             splitContainerMain.Panel2.Controls.Add(panelVehicleDetails);
-            splitContainerMain.Panel2.Padding = new System.Windows.Forms.Padding(10);
-            splitContainerMain.Size = new System.Drawing.Size(1491, 670);
+            splitContainerMain.Panel2.Padding = new Padding(10);
+            splitContainerMain.Size = new Size(1491, 670);
             splitContainerMain.SplitterDistance = 1108;
             splitContainerMain.SplitterWidth = 8;
             splitContainerMain.TabIndex = 2;
             // 
             // panelVehicleList
             // 
-            panelVehicleList.BackColor = System.Drawing.Color.White;
+            panelVehicleList.BackColor = Color.White;
             panelVehicleList.Controls.Add(dgvVehicles);
-            panelVehicleList.Dock = System.Windows.Forms.DockStyle.Fill;
-            panelVehicleList.Location = new System.Drawing.Point(10, 40);
+            panelVehicleList.Dock = DockStyle.Fill;
+            panelVehicleList.Location = new Point(10, 40);
             panelVehicleList.Name = "panelVehicleList";
-            panelVehicleList.Padding = new System.Windows.Forms.Padding(10);
-            panelVehicleList.Size = new System.Drawing.Size(1088, 620);
+            panelVehicleList.Padding = new Padding(10);
+            panelVehicleList.Size = new Size(1088, 620);
             panelVehicleList.TabIndex = 1;
             // 
             // dgvVehicles
@@ -304,134 +304,134 @@
             dgvVehicles.AllowUserToAddRows = false;
             dgvVehicles.AllowUserToDeleteRows = false;
             dgvVehicles.AllowUserToResizeRows = false;
-            dgvVehicles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dgvVehicles.BackgroundColor = System.Drawing.Color.White;
-            dgvVehicles.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dgvVehicles.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvVehicles.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgvVehicles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvVehicles.BackgroundColor = Color.White;
+            dgvVehicles.BorderStyle = BorderStyle.None;
+            dgvVehicles.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvVehicles.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvVehicles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvVehicles.ColumnHeadersHeight = 40;
-            dgvVehicles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)64)), ((int)((byte)64)), ((int)((byte)64)));
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)((byte)236)), ((int)((byte)240)), ((int)((byte)241)));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dgvVehicles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(236, 240, 241);
+            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             dgvVehicles.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvVehicles.Dock = System.Windows.Forms.DockStyle.Fill;
+            dgvVehicles.Dock = DockStyle.Fill;
             dgvVehicles.EnableHeadersVisualStyles = false;
-            dgvVehicles.GridColor = System.Drawing.Color.WhiteSmoke;
-            dgvVehicles.Location = new System.Drawing.Point(10, 10);
+            dgvVehicles.GridColor = Color.WhiteSmoke;
+            dgvVehicles.Location = new Point(10, 10);
             dgvVehicles.MultiSelect = false;
             dgvVehicles.Name = "dgvVehicles";
             dgvVehicles.ReadOnly = true;
             dgvVehicles.RowHeadersVisible = false;
             dgvVehicles.RowHeadersWidth = 51;
             dgvVehicles.RowTemplate.Height = 35;
-            dgvVehicles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvVehicles.Size = new System.Drawing.Size(1068, 600);
+            dgvVehicles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVehicles.Size = new Size(1068, 600);
             dgvVehicles.TabIndex = 0;
             // 
             // panelStatusFilter
             // 
-            panelStatusFilter.BackColor = System.Drawing.Color.White;
+            panelStatusFilter.BackColor = Color.White;
             panelStatusFilter.Controls.Add(cmbAdvancedFilter);
             panelStatusFilter.Controls.Add(lblStatusFilter);
-            panelStatusFilter.Dock = System.Windows.Forms.DockStyle.Top;
-            panelStatusFilter.Location = new System.Drawing.Point(10, 10);
+            panelStatusFilter.Dock = DockStyle.Top;
+            panelStatusFilter.Location = new Point(10, 10);
             panelStatusFilter.Name = "panelStatusFilter";
-            panelStatusFilter.Size = new System.Drawing.Size(1088, 30);
+            panelStatusFilter.Size = new Size(1088, 30);
             panelStatusFilter.TabIndex = 0;
             // 
             // cmbAdvancedFilter
             // 
-            cmbAdvancedFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            cmbAdvancedFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            cmbAdvancedFilter.Font = new System.Drawing.Font("Segoe UI", 8F);
+            cmbAdvancedFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbAdvancedFilter.FlatStyle = FlatStyle.Flat;
+            cmbAdvancedFilter.Font = new Font("Segoe UI", 8F);
             cmbAdvancedFilter.FormattingEnabled = true;
             cmbAdvancedFilter.Items.AddRange(new object[] { "⚙ Advanced Filters", "📍 By Location", "📅 By Year", "💰 By Price Range", "📊 By Category", "⛽ By Fuel Type", "⚙ By Transmission" });
-            cmbAdvancedFilter.Location = new System.Drawing.Point(60, 3);
+            cmbAdvancedFilter.Location = new Point(60, 3);
             cmbAdvancedFilter.Name = "cmbAdvancedFilter";
-            cmbAdvancedFilter.Size = new System.Drawing.Size(150, 25);
+            cmbAdvancedFilter.Size = new Size(150, 25);
             cmbAdvancedFilter.TabIndex = 1;
             // 
             // lblStatusFilter
             // 
             lblStatusFilter.AutoSize = true;
-            lblStatusFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            lblStatusFilter.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblStatusFilter.Location = new System.Drawing.Point(10, 6);
+            lblStatusFilter.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblStatusFilter.ForeColor = Color.FromArgb(30, 60, 90);
+            lblStatusFilter.Location = new Point(10, 6);
             lblStatusFilter.Name = "lblStatusFilter";
-            lblStatusFilter.Size = new System.Drawing.Size(49, 20);
+            lblStatusFilter.Size = new Size(49, 20);
             lblStatusFilter.TabIndex = 0;
             lblStatusFilter.Text = "Filter:";
             // 
             // panelVehicleDetails
             // 
-            panelVehicleDetails.BackColor = System.Drawing.Color.White;
+            panelVehicleDetails.BackColor = Color.White;
             panelVehicleDetails.Controls.Add(panelFeatures);
             panelVehicleDetails.Controls.Add(panelVehicleInfo);
             panelVehicleDetails.Controls.Add(panelPreviewHeader);
             panelVehicleDetails.Controls.Add(picVehiclePreview);
-            panelVehicleDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            panelVehicleDetails.Location = new System.Drawing.Point(10, 10);
+            panelVehicleDetails.Dock = DockStyle.Fill;
+            panelVehicleDetails.Location = new Point(10, 10);
             panelVehicleDetails.Name = "panelVehicleDetails";
-            panelVehicleDetails.Size = new System.Drawing.Size(355, 650);
+            panelVehicleDetails.Size = new Size(355, 650);
             panelVehicleDetails.TabIndex = 0;
             // 
             // panelFeatures
             // 
             panelFeatures.AutoScroll = true;
-            panelFeatures.BackColor = System.Drawing.Color.White;
+            panelFeatures.BackColor = Color.White;
             panelFeatures.Controls.Add(flowLayoutPanelFeatures);
             panelFeatures.Controls.Add(lblFeaturesTitle);
-            panelFeatures.Dock = System.Windows.Forms.DockStyle.Fill;
-            panelFeatures.Location = new System.Drawing.Point(0, 530);
+            panelFeatures.Dock = DockStyle.Fill;
+            panelFeatures.Location = new Point(0, 530);
             panelFeatures.Name = "panelFeatures";
-            panelFeatures.Padding = new System.Windows.Forms.Padding(10, 10, 10, 5);
-            panelFeatures.Size = new System.Drawing.Size(355, 120);
+            panelFeatures.Padding = new Padding(10, 10, 10, 5);
+            panelFeatures.Size = new Size(355, 120);
             panelFeatures.TabIndex = 7;
             // 
             // flowLayoutPanelFeatures
             // 
-            flowLayoutPanelFeatures.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
+            flowLayoutPanelFeatures.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             flowLayoutPanelFeatures.AutoScroll = true;
             flowLayoutPanelFeatures.AutoSize = true;
-            flowLayoutPanelFeatures.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            flowLayoutPanelFeatures.BackColor = System.Drawing.Color.Transparent;
-            flowLayoutPanelFeatures.Location = new System.Drawing.Point(10, 35);
-            flowLayoutPanelFeatures.MaximumSize = new System.Drawing.Size(330, 80);
-            flowLayoutPanelFeatures.MinimumSize = new System.Drawing.Size(330, 30);
+            flowLayoutPanelFeatures.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flowLayoutPanelFeatures.BackColor = Color.Transparent;
+            flowLayoutPanelFeatures.Location = new Point(10, 35);
+            flowLayoutPanelFeatures.MaximumSize = new Size(330, 80);
+            flowLayoutPanelFeatures.MinimumSize = new Size(330, 30);
             flowLayoutPanelFeatures.Name = "flowLayoutPanelFeatures";
-            flowLayoutPanelFeatures.Padding = new System.Windows.Forms.Padding(0, 0, 0, 5);
-            flowLayoutPanelFeatures.Size = new System.Drawing.Size(330, 30);
+            flowLayoutPanelFeatures.Padding = new Padding(0, 0, 0, 5);
+            flowLayoutPanelFeatures.Size = new Size(330, 30);
             flowLayoutPanelFeatures.TabIndex = 1;
             // 
             // lblFeaturesTitle
             // 
             lblFeaturesTitle.AutoSize = true;
-            lblFeaturesTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            lblFeaturesTitle.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblFeaturesTitle.Location = new System.Drawing.Point(10, 10);
+            lblFeaturesTitle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblFeaturesTitle.ForeColor = Color.FromArgb(30, 60, 90);
+            lblFeaturesTitle.Location = new Point(10, 10);
             lblFeaturesTitle.Name = "lblFeaturesTitle";
-            lblFeaturesTitle.Size = new System.Drawing.Size(75, 23);
+            lblFeaturesTitle.Size = new Size(75, 23);
             lblFeaturesTitle.TabIndex = 0;
             lblFeaturesTitle.Text = "Features";
             // 
             // panelVehicleInfo
             // 
-            panelVehicleInfo.BackColor = System.Drawing.Color.White;
+            panelVehicleInfo.BackColor = Color.White;
             panelVehicleInfo.Controls.Add(lblMileageValue);
             panelVehicleInfo.Controls.Add(lblMileage);
             panelVehicleInfo.Controls.Add(lblPlateValue);
@@ -446,209 +446,210 @@
             panelVehicleInfo.Controls.Add(lblCategory);
             panelVehicleInfo.Controls.Add(lblMakeModel);
             panelVehicleInfo.Controls.Add(lblDetailsTitle);
-            panelVehicleInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            panelVehicleInfo.Location = new System.Drawing.Point(0, 290);
+            panelVehicleInfo.Dock = DockStyle.Top;
+            panelVehicleInfo.Location = new Point(0, 290);
             panelVehicleInfo.Name = "panelVehicleInfo";
-            panelVehicleInfo.Padding = new System.Windows.Forms.Padding(10);
-            panelVehicleInfo.Size = new System.Drawing.Size(355, 240);
+            panelVehicleInfo.Padding = new Padding(10);
+            panelVehicleInfo.Size = new Size(355, 240);
             panelVehicleInfo.TabIndex = 6;
             // 
             // lblMileageValue
             // 
             lblMileageValue.AutoSize = true;
-            lblMileageValue.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            lblMileageValue.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblMileageValue.Location = new System.Drawing.Point(85, 200);
+            lblMileageValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblMileageValue.ForeColor = Color.FromArgb(30, 60, 90);
+            lblMileageValue.Location = new Point(85, 200);
             lblMileageValue.Name = "lblMileageValue";
-            lblMileageValue.Size = new System.Drawing.Size(79, 20);
+            lblMileageValue.Size = new Size(79, 20);
             lblMileageValue.TabIndex = 13;
             lblMileageValue.Text = "25,450 km";
             // 
             // lblMileage
             // 
             lblMileage.AutoSize = true;
-            lblMileage.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            lblMileage.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)100)), ((int)((byte)100)), ((int)((byte)100)));
-            lblMileage.Location = new System.Drawing.Point(10, 200);
+            lblMileage.Font = new Font("Segoe UI", 8.5F);
+            lblMileage.ForeColor = Color.FromArgb(100, 100, 100);
+            lblMileage.Location = new Point(10, 200);
             lblMileage.Name = "lblMileage";
-            lblMileage.Size = new System.Drawing.Size(66, 20);
+            lblMileage.Size = new Size(66, 20);
             lblMileage.TabIndex = 12;
             lblMileage.Text = "Mileage:";
             // 
             // lblPlateValue
             // 
             lblPlateValue.AutoSize = true;
-            lblPlateValue.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            lblPlateValue.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblPlateValue.Location = new System.Drawing.Point(85, 170);
+            lblPlateValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblPlateValue.ForeColor = Color.FromArgb(30, 60, 90);
+            lblPlateValue.Location = new Point(85, 170);
             lblPlateValue.Name = "lblPlateValue";
-            lblPlateValue.Size = new System.Drawing.Size(74, 20);
+            lblPlateValue.Size = new Size(74, 20);
             lblPlateValue.TabIndex = 11;
             lblPlateValue.Text = "ABC-1234";
             // 
             // lblPlate
             // 
             lblPlate.AutoSize = true;
-            lblPlate.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            lblPlate.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)100)), ((int)((byte)100)), ((int)((byte)100)));
-            lblPlate.Location = new System.Drawing.Point(10, 170);
+            lblPlate.Font = new Font("Segoe UI", 8.5F);
+            lblPlate.ForeColor = Color.FromArgb(100, 100, 100);
+            lblPlate.Location = new Point(10, 170);
             lblPlate.Name = "lblPlate";
-            lblPlate.Size = new System.Drawing.Size(72, 20);
+            lblPlate.Size = new Size(72, 20);
             lblPlate.TabIndex = 10;
             lblPlate.Text = "Plate No.:";
             // 
             // lblDailyRateValue
             // 
             lblDailyRateValue.AutoSize = true;
-            lblDailyRateValue.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            lblDailyRateValue.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)46)), ((int)((byte)204)), ((int)((byte)113)));
-            lblDailyRateValue.Location = new System.Drawing.Point(85, 140);
+            lblDailyRateValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblDailyRateValue.ForeColor = Color.FromArgb(46, 204, 113);
+            lblDailyRateValue.Location = new Point(85, 140);
             lblDailyRateValue.Name = "lblDailyRateValue";
-            lblDailyRateValue.Size = new System.Drawing.Size(53, 20);
+            lblDailyRateValue.Size = new Size(53, 20);
             lblDailyRateValue.TabIndex = 9;
             lblDailyRateValue.Text = "$65.00";
             // 
             // lblDailyRate
             // 
             lblDailyRate.AutoSize = true;
-            lblDailyRate.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            lblDailyRate.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)100)), ((int)((byte)100)), ((int)((byte)100)));
-            lblDailyRate.Location = new System.Drawing.Point(10, 140);
+            lblDailyRate.Font = new Font("Segoe UI", 8.5F);
+            lblDailyRate.ForeColor = Color.FromArgb(100, 100, 100);
+            lblDailyRate.Location = new Point(10, 140);
             lblDailyRate.Name = "lblDailyRate";
-            lblDailyRate.Size = new System.Drawing.Size(80, 20);
+            lblDailyRate.Size = new Size(80, 20);
             lblDailyRate.TabIndex = 8;
             lblDailyRate.Text = "Daily Rate:";
             // 
             // lblYearColorValue
             // 
             lblYearColorValue.AutoSize = true;
-            lblYearColorValue.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            lblYearColorValue.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblYearColorValue.Location = new System.Drawing.Point(85, 110);
+            lblYearColorValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblYearColorValue.ForeColor = Color.FromArgb(30, 60, 90);
+            lblYearColorValue.Location = new Point(85, 110);
             lblYearColorValue.Name = "lblYearColorValue";
-            lblYearColorValue.Size = new System.Drawing.Size(74, 20);
+            lblYearColorValue.Size = new Size(74, 20);
             lblYearColorValue.TabIndex = 7;
             lblYearColorValue.Text = "2024/Red";
             // 
             // lblYearColor
             // 
             lblYearColor.AutoSize = true;
-            lblYearColor.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            lblYearColor.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)100)), ((int)((byte)100)), ((int)((byte)100)));
-            lblYearColor.Location = new System.Drawing.Point(10, 110);
+            lblYearColor.Font = new Font("Segoe UI", 8.5F);
+            lblYearColor.ForeColor = Color.FromArgb(100, 100, 100);
+            lblYearColor.Location = new Point(10, 110);
             lblYearColor.Name = "lblYearColor";
-            lblYearColor.Size = new System.Drawing.Size(82, 20);
+            lblYearColor.Size = new Size(82, 20);
             lblYearColor.TabIndex = 6;
             lblYearColor.Text = "Year/Color:";
             // 
             // lblCategoryValue
             // 
             lblCategoryValue.AutoSize = true;
-            lblCategoryValue.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            lblCategoryValue.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblCategoryValue.Location = new System.Drawing.Point(85, 80);
+            lblCategoryValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblCategoryValue.ForeColor = Color.FromArgb(30, 60, 90);
+            lblCategoryValue.Location = new Point(85, 80);
             lblCategoryValue.Name = "lblCategoryValue";
-            lblCategoryValue.Size = new System.Drawing.Size(51, 20);
+            lblCategoryValue.Size = new Size(51, 20);
             lblCategoryValue.TabIndex = 5;
             lblCategoryValue.Text = "Sedan";
             // 
             // lblStatusValue
             // 
             lblStatusValue.AutoSize = true;
-            lblStatusValue.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            lblStatusValue.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)231)), ((int)((byte)76)), ((int)((byte)60)));
-            lblStatusValue.Location = new System.Drawing.Point(85, 50);
+            lblStatusValue.Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold);
+            lblStatusValue.ForeColor = Color.FromArgb(231, 76, 60);
+            lblStatusValue.Location = new Point(85, 50);
             lblStatusValue.Name = "lblStatusValue";
-            lblStatusValue.Size = new System.Drawing.Size(57, 20);
+            lblStatusValue.Size = new Size(57, 20);
             lblStatusValue.TabIndex = 4;
             lblStatusValue.Text = "Rented";
             // 
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)100)), ((int)((byte)100)), ((int)((byte)100)));
-            lblStatus.Location = new System.Drawing.Point(10, 50);
+            lblStatus.Font = new Font("Segoe UI", 8.5F);
+            lblStatus.ForeColor = Color.FromArgb(100, 100, 100);
+            lblStatus.Location = new Point(10, 50);
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new System.Drawing.Size(52, 20);
+            lblStatus.Size = new Size(52, 20);
             lblStatus.TabIndex = 3;
             lblStatus.Text = "Status:";
             // 
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            lblCategory.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)100)), ((int)((byte)100)), ((int)((byte)100)));
-            lblCategory.Location = new System.Drawing.Point(10, 80);
+            lblCategory.Font = new Font("Segoe UI", 8.5F);
+            lblCategory.ForeColor = Color.FromArgb(100, 100, 100);
+            lblCategory.Location = new Point(10, 80);
             lblCategory.Name = "lblCategory";
-            lblCategory.Size = new System.Drawing.Size(72, 20);
+            lblCategory.Size = new Size(72, 20);
             lblCategory.TabIndex = 2;
             lblCategory.Text = "Category:";
             // 
             // lblMakeModel
             // 
             lblMakeModel.AutoSize = true;
-            lblMakeModel.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
-            lblMakeModel.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)44)), ((int)((byte)62)), ((int)((byte)80)));
-            lblMakeModel.Location = new System.Drawing.Point(10, 15);
+            lblMakeModel.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            lblMakeModel.ForeColor = Color.FromArgb(44, 62, 80);
+            lblMakeModel.Location = new Point(10, 15);
             lblMakeModel.Name = "lblMakeModel";
-            lblMakeModel.Size = new System.Drawing.Size(131, 25);
+            lblMakeModel.Size = new Size(131, 25);
             lblMakeModel.TabIndex = 1;
             lblMakeModel.Text = "Toyota Camry";
             // 
             // lblDetailsTitle
             // 
             lblDetailsTitle.AutoSize = true;
-            lblDetailsTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            lblDetailsTitle.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblDetailsTitle.Location = new System.Drawing.Point(10, -10);
+            lblDetailsTitle.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblDetailsTitle.ForeColor = Color.FromArgb(30, 60, 90);
+            lblDetailsTitle.Location = new Point(10, -10);
             lblDetailsTitle.Name = "lblDetailsTitle";
-            lblDetailsTitle.Size = new System.Drawing.Size(0, 23);
+            lblDetailsTitle.Size = new Size(0, 23);
             lblDetailsTitle.TabIndex = 0;
             // 
             // panelPreviewHeader
             // 
-            panelPreviewHeader.BackColor = System.Drawing.Color.FromArgb(((int)((byte)248)), ((int)((byte)249)), ((int)((byte)250)));
+            panelPreviewHeader.BackColor = Color.FromArgb(248, 249, 250);
             panelPreviewHeader.Controls.Add(lblVehicleDetails);
-            panelPreviewHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            panelPreviewHeader.Location = new System.Drawing.Point(0, 250);
+            panelPreviewHeader.Dock = DockStyle.Top;
+            panelPreviewHeader.Location = new Point(0, 250);
             panelPreviewHeader.Name = "panelPreviewHeader";
-            panelPreviewHeader.Size = new System.Drawing.Size(355, 40);
+            panelPreviewHeader.Size = new Size(355, 40);
             panelPreviewHeader.TabIndex = 5;
             // 
             // lblVehicleDetails
             // 
-            lblVehicleDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            lblVehicleDetails.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            lblVehicleDetails.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)30)), ((int)((byte)60)), ((int)((byte)90)));
-            lblVehicleDetails.Location = new System.Drawing.Point(0, 0);
+            lblVehicleDetails.Dock = DockStyle.Fill;
+            lblVehicleDetails.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            lblVehicleDetails.ForeColor = Color.FromArgb(30, 60, 90);
+            lblVehicleDetails.Location = new Point(0, 0);
             lblVehicleDetails.Name = "lblVehicleDetails";
-            lblVehicleDetails.Size = new System.Drawing.Size(355, 40);
+            lblVehicleDetails.Size = new Size(355, 40);
             lblVehicleDetails.TabIndex = 0;
             lblVehicleDetails.Text = "🚗 Vehicle Details";
-            lblVehicleDetails.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            lblVehicleDetails.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // picVehiclePreview
             // 
-            picVehiclePreview.BackColor = System.Drawing.Color.White;
-            picVehiclePreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            picVehiclePreview.Dock = System.Windows.Forms.DockStyle.Top;
-            picVehiclePreview.Location = new System.Drawing.Point(0, 0);
+            picVehiclePreview.BackColor = Color.White;
+            picVehiclePreview.BorderStyle = BorderStyle.FixedSingle;
+            picVehiclePreview.Dock = DockStyle.Top;
+            picVehiclePreview.Location = new Point(0, 0);
             picVehiclePreview.Name = "picVehiclePreview";
-            picVehiclePreview.Size = new System.Drawing.Size(355, 250);
-            picVehiclePreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            picVehiclePreview.Size = new Size(355, 250);
+            picVehiclePreview.SizeMode = PictureBoxSizeMode.Zoom;
             picVehiclePreview.TabIndex = 0;
             picVehiclePreview.TabStop = false;
             // 
             // VehiclesView
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            BackColor = System.Drawing.Color.White;
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
             Controls.Add(splitContainerMain);
             Controls.Add(panelToolbar);
             Controls.Add(panelHeader);
-            Size = new System.Drawing.Size(1491, 800);
+            Name = "VehiclesView";
+            Size = new Size(1491, 800);
             panelHeader.ResumeLayout(false);
             panelHeader.PerformLayout();
             panelToolbar.ResumeLayout(false);

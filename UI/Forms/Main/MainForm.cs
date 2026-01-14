@@ -12,7 +12,8 @@ using VRMS.UI.Controls.CustomersView;
 using VRMS.UI.Forms;
 using VRMS.UI.Controls.CustomerVehicleCatalog;
 using VRMS.UI.Controls.Reports;
-using VRMS.UI.Controls.History; // ✅ HISTORY
+using VRMS.UI.Controls.History;
+using VRMS.UI.Controls.VehiclesView; // ✅ HISTORY
 
 namespace VRMS.Forms
 {

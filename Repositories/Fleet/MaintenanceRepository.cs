@@ -1,36 +1,41 @@
 ﻿using System.Data;
 using VRMS.Database;
+using VRMS.Enums;
 using VRMS.Models.Fleet;
 
 namespace VRMS.Repositories.Fleet;
 
 public class MaintenanceRepository
 {
-    public int Create(
-        int vehicleId,
-        string description,
-        decimal cost,
-        DateTime start)
+    public int Create(MaintenanceRecord record)
     {
         var table = DB.Query(
-            "CALL sp_maintenance_records_create(@vid,@desc,@cost,@start);",
-            ("@vid", vehicleId),
-            ("@desc", description),
-            ("@cost", cost),
-            ("@start", start)
+            "CALL sp_maintenance_records_create(" +
+            "@vid,@title,@desc,@type,@status,@start,@cost,@by);",
+            ("@vid", record.VehicleId),
+            ("@title", record.Title),
+            ("@desc", record.Description),
+            ("@type", (int)record.Type),
+            ("@status", (int)record.Status),
+            ("@start", record.StartDate),
+            ("@cost", record.Cost),
+            ("@by", record.PerformedBy)
         );
 
         return Convert.ToInt32(table.Rows[0]["maintenance_record_id"]);
     }
 
-    public void Close(int id, DateTime end)
+
+    public void Close(int id, DateTime end, MaintenanceStatus status)
     {
         DB.Execute(
-            "CALL sp_maintenance_records_close(@id,@end);",
+            "CALL sp_maintenance_records_close(@id,@end,@status);",
             ("@id", id),
-            ("@end", end)
+            ("@end", end),
+            ("@status", (int)status)
         );
     }
+
 
     public MaintenanceRecord GetById(int id)
     {
@@ -63,11 +68,16 @@ public class MaintenanceRepository
     {
         Id = Convert.ToInt32(r["id"]),
         VehicleId = Convert.ToInt32(r["vehicle_id"]),
+        Title = r["title"].ToString()!,
         Description = r["description"].ToString()!,
-        Cost = Convert.ToDecimal(r["cost"]),
+        Type = (MaintenanceType)Convert.ToInt32(r["type"]),
+        Status = (MaintenanceStatus)Convert.ToInt32(r["status"]),
         StartDate = Convert.ToDateTime(r["start_date"]),
-        EndDate = r["end_date"] == DBNull.Value
-            ? null
-            : Convert.ToDateTime(r["end_date"])
+        EndDate = r["end_date"] == DBNull.Value ? null : Convert.ToDateTime(r["end_date"]),
+        Cost = Convert.ToDecimal(r["cost"]),
+        PerformedBy = r["performed_by"].ToString() ?? "",
+        CreatedAt = Convert.ToDateTime(r["created_at"]),
+        UpdatedAt = Convert.ToDateTime(r["updated_at"])
     };
+
 }

@@ -1,9 +1,9 @@
 ﻿using System;
-using VRMS.DTOs.Support;
 using VRMS.Enums;
 using VRMS.Helpers;
 using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
+using VRMS.UI.Config.Support;
 
 namespace VRMS.Services.Account;
 

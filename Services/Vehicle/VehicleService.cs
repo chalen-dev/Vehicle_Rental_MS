@@ -3,6 +3,7 @@ using VRMS.Models.Billing;
 using VRMS.Models.Fleet;
 using VRMS.Repositories.Billing;
 using VRMS.Repositories.Fleet;
+using VRMS.Repositories.Rentals;
 
 namespace VRMS.Services.Fleet;
 
@@ -49,6 +50,8 @@ public class VehicleService
 
     /// <summary>Rate configuration repository</summary>
     private readonly RateConfigurationRepository _rateRepo;
+    
+    private readonly RentalRepository _rentalRepo;
 
     /// <summary>
     /// Initializes the vehicle service with required repositories.
@@ -60,7 +63,8 @@ public class VehicleService
         VehicleFeatureMappingRepository featureMapRepo,
         VehicleImageRepository imageRepo,
         MaintenanceRepository maintenanceRepo,
-        RateConfigurationRepository rateRepo)
+        RateConfigurationRepository rateRepo,
+        RentalRepository rentalRepo)
     {
         _vehicleRepo = vehicleRepo;
         _categoryRepo = categoryRepo;
@@ -69,6 +73,7 @@ public class VehicleService
         _imageRepo = imageRepo;
         _maintenanceRepo = maintenanceRepo;
         _rateRepo = rateRepo;
+        _rentalRepo = rentalRepo;
     }
 
     // -------------------------------------------------
@@ -205,28 +210,26 @@ public class VehicleService
     /// Starts a maintenance record and places the vehicle
     /// into UnderMaintenance status.
     /// </summary>
-    public int StartMaintenance(
-        int vehicleId,
-        string description,
-        decimal cost,
-        DateTime startDate)
+    public int StartMaintenance(MaintenanceRecord record)
     {
-        var vehicle = _vehicleRepo.GetById(vehicleId);
+        var vehicle = _vehicleRepo.GetById(record.VehicleId);
         EnsureNotRetired(vehicle);
 
-        var maintenanceId =
-            _maintenanceRepo.Create(
-                vehicleId,
-                description,
-                cost,
-                startDate);
+        EnsureNoRentalOverlap(
+            record.VehicleId,
+            record.StartDate,
+            record.EndDate);
+
+        var id = _maintenanceRepo.Create(record);
 
         _vehicleRepo.UpdateStatus(
-            vehicleId,
+            record.VehicleId,
             VehicleStatus.UnderMaintenance);
 
-        return maintenanceId;
+        return id;
     }
+
+
 
     /// <summary>
     /// Closes a maintenance record and transitions the vehicle
@@ -235,20 +238,21 @@ public class VehicleService
     public void CloseMaintenance(
         int maintenanceRecordId,
         DateTime endDate,
-        VehicleStatus postMaintenanceStatus)
+        MaintenanceStatus status,
+        VehicleStatus vehicleStatus)
     {
-        var record =
-            _maintenanceRepo.GetById(
-                maintenanceRecordId);
+        var record = _maintenanceRepo.GetById(maintenanceRecordId);
 
         _maintenanceRepo.Close(
             maintenanceRecordId,
-            endDate);
+            endDate,
+            status);
 
         UpdateVehicleStatus(
             record.VehicleId,
-            postMaintenanceStatus);
+            vehicleStatus);
     }
+
 
     /// <summary>
     /// Retrieves maintenance records for a vehicle.
@@ -614,4 +618,32 @@ public class VehicleService
             StorageRoot,
             VehicleImageFolder,
             vehicleId.ToString());
+    
+    private void EnsureNoRentalOverlap(
+        int vehicleId,
+        DateTime start,
+        DateTime? end)
+    {
+        var effectiveEnd =
+            end ?? start.AddYears(10); // open-ended maintenance
+
+        var rentals =
+            _rentalRepo.GetOverlappingRentals(
+                vehicleId,
+                start,
+                effectiveEnd);
+
+        if (rentals.Count == 0)
+            return;
+
+        var r = rentals[0];
+
+        var rentalEnd =
+            r.ActualReturnDate ?? r.ExpectedReturnDate;
+
+        throw new InvalidOperationException(
+            $"Cannot schedule maintenance. Vehicle is rented from " +
+            $"{r.PickupDate:yyyy-MM-dd} to {rentalEnd:yyyy-MM-dd}.");
+    }
+
 }

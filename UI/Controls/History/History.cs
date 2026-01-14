@@ -16,6 +16,7 @@ namespace VRMS.UI.Controls.History
         private readonly RentalService _rentalService;
         private readonly CustomerService _customerService;
         private readonly VehicleService _vehicleService;
+        private readonly ReservationService _reservationService;
 
         private static readonly string PlaceholderImagePath =
             Path.Combine(AppContext.BaseDirectory, "Assets", "img_placeholder.png");
@@ -26,15 +27,27 @@ namespace VRMS.UI.Controls.History
 
             _rentalService = ApplicationServices.RentalService;
             _customerService = ApplicationServices.CustomerService;
-            _vehicleService = ApplicationServices.VehicleService;
+            _vehicleService = ApplicationServices.VehicleService; // <-- if you used this exact name; if not keep your existing variable
+            _reservationService = ApplicationServices.ReservationService;
 
             Load += History_Load;
+
+            // Rentals tab wiring (existing)
             dgvRentals.SelectionChanged += DgvRentals_SelectionChanged;
 
+            // Reservations wiring (new)
+            dgvReservations.SelectionChanged += DgvReservations_SelectionChanged;
+            dgvReservations.CellFormatting += DgvReservations_CellFormatting;
+
+            // When user switches tabs, refresh the visible tab
+            tabControlHistory.SelectedIndexChanged += TabControlHistory_SelectedIndexChanged;
+
+            // Action buttons (existing)
             btnViewReceipt.Click += BtnViewReceipt_Click;
             btnRefund.Click += BtnRefund_Click;
             btnCancel.Click += BtnCancel_Click;
         }
+
 
         // =====================================================
         // LOAD
@@ -42,8 +55,11 @@ namespace VRMS.UI.Controls.History
 
         private void History_Load(object sender, EventArgs e)
         {
-            ConfigureGrid();
+            ConfigureRentalsGrid();
+
             LoadRentals();
+            LoadReservations();
+
             ResetDetails();
         }
 
@@ -51,7 +67,7 @@ namespace VRMS.UI.Controls.History
         // GRID SETUP
         // =====================================================
 
-        private void ConfigureGrid()
+        private void ConfigureRentalsGrid()
         {
             dgvRentals.AutoGenerateColumns = false;
             dgvRentals.Columns.Clear();
@@ -71,6 +87,7 @@ namespace VRMS.UI.Controls.History
 
             dgvRentals.CellFormatting += DgvRentals_CellFormatting;
         }
+
 
         // =====================================================
         // LOAD RENTALS (ALL STATUSES)
@@ -103,6 +120,32 @@ namespace VRMS.UI.Controls.History
 
             lblSummary.Text = $"Total Rentals: {rentals.Count}";
         }
+        
+        private void LoadReservations()
+        {
+            dgvReservations.Rows.Clear();
+
+            var reservations = _reservationService
+                .GetAllForGrid()
+                .OrderByDescending(r => r.StartDate)
+                .ToList();
+
+            foreach (var r in reservations)
+            {
+                dgvReservations.Rows.Add(
+                    r.ReservationId,
+                    r.VehicleName,
+                    $"{r.StartDate:MMM dd, yyyy} → {r.EndDate:MMM dd, yyyy}",
+                    r.Status.ToString(),
+                    "—" // amount not returned by grid DTO; show later in details
+                );
+            }
+
+            // Update summary label with both counts (simple approach)
+            var rentalsCount = _rentalService.GetAllRentals().Count;
+            lblSummary.Text = $"Total: {reservations.Count} reservations | {rentalsCount} rentals";
+        }
+
 
         // =====================================================
         // STATUS STYLING
@@ -130,6 +173,27 @@ namespace VRMS.UI.Controls.History
                 _ => e.CellStyle.ForeColor
             };
         }
+        
+        private void DgvReservations_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgvReservations.Columns[e.ColumnIndex].Name != "Status")
+                return;
+
+            if (e.Value is not string status)
+                return;
+
+            e.CellStyle.Font = new Font(dgvReservations.Font, FontStyle.Bold);
+
+            e.CellStyle.ForeColor = status switch
+            {
+                nameof(ReservationStatus.Pending) => Color.Orange,
+                nameof(ReservationStatus.Confirmed) => Color.Green,
+                nameof(ReservationStatus.Rented) => Color.Blue,
+                nameof(ReservationStatus.Cancelled) => Color.DarkGray,
+                _ => e.CellStyle.ForeColor
+            };
+        }
+
 
         // =====================================================
         // SELECTION → DETAILS
@@ -185,6 +249,61 @@ namespace VRMS.UI.Controls.History
             btnRefund.Enabled = false; // billing not ready
             btnCancel.Enabled = rental.Status == RentalStatus.Active;
         }
+        
+        private void DgvReservations_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvReservations.SelectedRows.Count == 0)
+            {
+                ResetDetails();
+                return;
+            }
+
+            int reservationId =
+                Convert.ToInt32(dgvReservations.SelectedRows[0].Cells["colResId"].Value);
+
+            var reservation = _reservationService.GetReservationById(reservationId);
+            var vehicle = _vehicleService.GetVehicleById(reservation.VehicleId);
+
+            string customerName = "Walk-in";
+            if (reservation.CustomerId != 0)
+            {
+                var customer = _customerService.GetCustomerById(reservation.CustomerId);
+                customerName = $"{customer.FirstName} {customer.LastName}";
+            }
+
+            // Populate right-hand details (reuse same labels)
+            lblReservationIdValue.Text = reservation.Id.ToString();
+            lblStatusValue.Text = reservation.Status.ToString();
+            lblDatesValue.Text = $"{reservation.StartDate:d} → {reservation.EndDate:d}";
+            lblCustomerValue.Text = customerName;
+            lblVehicleName.Text = $"{vehicle.Make} {vehicle.Model}";
+            lblAmountValue.Text = reservation.ReservationFeeAmount > 0
+                ? reservation.ReservationFeeAmount.ToString("C")
+                : "—";
+
+            // Payment: best-effort (Confirmed/Rented => paid)
+            lblPaymentValue.Text = reservation.Status is ReservationStatus.Confirmed or ReservationStatus.Rented
+                ? "Paid"
+                : "Not paid";
+
+            // Created date: use start date (no dedicated created field in repo)
+            lblCreatedValue.Text = reservation.StartDate.ToString("yyyy-MM-dd");
+
+            LoadVehicleImage(vehicle.Id);
+
+            panelNoSelection.Visible = false;
+            panelDetailsContent.Visible = true;
+
+            // ACTION BUTTONS
+            // Cancel allowed when Pending or Confirmed
+            btnCancel.Enabled = reservation.Status == ReservationStatus.Pending
+                                || reservation.Status == ReservationStatus.Confirmed;
+
+            // Refund/view receipt: disabled for now (billing not implemented for reservations)
+            btnRefund.Enabled = false;
+            btnViewReceipt.Enabled = false;
+        }
+
 
         // =====================================================
         // VEHICLE IMAGE LOADER (FIXED)
@@ -263,6 +382,21 @@ namespace VRMS.UI.Controls.History
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
+        
+        private void TabControlHistory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControlHistory.SelectedTab == tabReservations)
+            {
+                LoadReservations();
+                ResetDetails();
+            }
+            else if (tabControlHistory.SelectedTab == tabRentals)
+            {
+                LoadRentals();
+                ResetDetails();
+            }
+        }
+
 
         // =====================================================
         // RESET

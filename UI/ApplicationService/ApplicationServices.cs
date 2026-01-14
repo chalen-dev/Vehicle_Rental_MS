@@ -109,7 +109,8 @@ public static class ApplicationServices
             _vehicleFeatureMapRepo,
             _vehicleImageRepo,
             _maintenanceRepo,
-            _rateConfigRepo
+            _rateConfigRepo,
+            _rentalRepo
         );
 
     public static RateService RateService { get; } =

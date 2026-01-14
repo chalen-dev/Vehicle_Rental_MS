@@ -35,11 +35,8 @@ public class RentalRepository
 
         return Convert.ToInt32(table.Rows[0]["rental_id"]);
     }
-
-
-
-
-
+    
+    
     public void MarkStarted(int rentalId)
     {
         DB.Execute(
@@ -155,6 +152,25 @@ public class RentalRepository
         }
 
         return result;
+    }
+    
+    public List<Rental> GetOverlappingRentals(
+        int vehicleId,
+        DateTime start,
+        DateTime end)
+    {
+        var table = DB.Query(
+            "CALL sp_rentals_get_overlapping(@vid,@start,@end);",
+            ("@vid", vehicleId),
+            ("@start", start),
+            ("@end", end)
+        );
+
+        var list = new List<Rental>();
+        foreach (DataRow row in table.Rows)
+            list.Add(Map(row));
+
+        return list;
     }
 
 

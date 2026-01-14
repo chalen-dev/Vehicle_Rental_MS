@@ -1,4 +1,5 @@
 ﻿using VRMS.Enums;
+using VRMS.Helpers;
 
 namespace VRMS.Models.Fleet;
 
@@ -28,6 +29,10 @@ public class Vehicle
     
     
     
-    public string DisplayName =>
-        $"{Make} {Model} {Year} ({LicensePlate})";
+    public string StatusDisplay =>
+        EnumComboHelper
+            .ToComboItems<VehicleStatus>()
+            .First(x => x.Value == Status)
+            .Display;
+
 }

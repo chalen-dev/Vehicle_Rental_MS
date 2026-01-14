@@ -1,110 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using VRMS.Enums;
+using VRMS.Models.Fleet;
+using VRMS.DTOs.Vehicle;
+using VRMS.Helpers;
+using VRMS.Services.Fleet;
+using VRMS.UI.Config.Support;
 
 namespace VRMS.UI.Forms.Maintenance
 {
     public partial class MaintenanceForm : Form
     {
-        // Enums
-        public enum VehicleStatus
-        {
-            Available = 0,
-            InUse = 1,
-            UnderMaintenance = 2,
-            OutOfService = 3
-        }
+        private VehicleDto? currentVehicle;
+        private readonly VehicleService _vehicleService;
 
-        public enum MaintenanceStatus
-        {
-            Scheduled = 0,
-            InProgress = 1,
-            Completed = 2,
-            Cancelled = 3
-        }
 
-        public enum MaintenanceType
-        {
-            RoutineService = 0,
-            Repair = 1,
-            Inspection = 2,
-            Emergency = 3,
-            Preventive = 4,
-            ScheduledMaintenance = 5,
-            TireReplacement = 6,
-            BrakeService = 7,
-            OilChange = 8,
-            BatteryReplacement = 9
-        }
-
-        // DTO classes
-        public class SimpleVehicleDto
-        {
-            public int Id { get; set; }
-            public string Make { get; set; }
-            public string Model { get; set; }
-            public string PlateNo { get; set; }
-            public VehicleStatus Status { get; set; }
-        }
-
-        public class MaintenanceRecord
-        {
-            public int Id { get; set; }
-            public int VehicleId { get; set; }
-            public string Title { get; set; }
-            public string Description { get; set; }
-            public MaintenanceType Type { get; set; }
-            public MaintenanceStatus Status { get; set; }
-            public DateTime StartDate { get; set; }
-            public DateTime? EndDate { get; set; }
-            public decimal Cost { get; set; }
-            public string PerformedBy { get; set; }
-            public DateTime CreatedAt { get; set; }
-            public DateTime UpdatedAt { get; set; }
-        }
-
-        // Properties
+        // Flags for parent form
         public bool RecordCreated { get; private set; } = false;
-        public bool VehicleStatusUpdated { get; private set; } = false;
-        private SimpleVehicleDto currentVehicle;
-        private List<MaintenanceRecord> maintenanceRecords = new List<MaintenanceRecord>();
-
-        // Constructor
-        public MaintenanceForm()
+        private bool VehicleStatusUpdated { get; set; } = false;
+        
+        public MaintenanceForm(VehicleService vehicleService, VehicleDto vehicleDto)
         {
+            _vehicleService = vehicleService;
+            currentVehicle = vehicleDto;
+
             InitializeComponent();
             InitializeForm();
-        }
 
-        // Overloaded constructor
-        public MaintenanceForm(SimpleVehicleDto vehicle) : this()
-        {
-            currentVehicle = vehicle;
             LoadVehicleInfo();
-            LoadComboBoxes();
             LoadHistory();
         }
+        
+        
 
         private void InitializeForm()
         {
-            // Set form properties
             this.Text = "Vehicle Maintenance Manager";
 
-            // Configure DateTimePicker
             dtpStart.Value = DateTime.Today;
             dtpEnd.Value = DateTime.Today;
 
-            // Set status strip
             lblStatusMessage.Text = "Ready";
             lblRecordCount.Text = "0 maintenance records";
 
-            // Update button visibility based on vehicle status
+            WireComboBoxes(); 
+
             UpdateMarkAvailableButtonVisibility();
         }
 
@@ -114,7 +52,7 @@ namespace VRMS.UI.Forms.Maintenance
             {
                 lblVehicleMake.Text = $"Make: {currentVehicle.Make}";
                 lblVehicleModel.Text = $"Model: {currentVehicle.Model}";
-                lblPlateNo.Text = currentVehicle.PlateNo;
+                lblPlateNo.Text = currentVehicle.LicensePlate;
                 lblFormTitle.Text = $"Maintenance - {currentVehicle.Make} {currentVehicle.Model}";
 
                 // Update button visibility
@@ -137,65 +75,17 @@ namespace VRMS.UI.Forms.Maintenance
             }
         }
 
-        private void LoadComboBoxes()
-        {
-            // Load Maintenance Types
-            cmbMaintenanceType.Items.Clear();
-            foreach (MaintenanceType type in Enum.GetValues(typeof(MaintenanceType)))
-            {
-                cmbMaintenanceType.Items.Add(new ComboBoxItem(type.ToString(), (int)type));
-            }
-            cmbMaintenanceType.SelectedIndex = 0;
-
-            // Load Status
-            cmbStatus.Items.Clear();
-            foreach (MaintenanceStatus status in Enum.GetValues(typeof(MaintenanceStatus)))
-            {
-                cmbStatus.Items.Add(new ComboBoxItem(status.ToString(), (int)status));
-            }
-            cmbStatus.SelectedIndex = 0;
-        }
-
         private void LoadHistory()
         {
-            // This would be replaced with actual data loading
-            maintenanceRecords.Clear();
+            if (currentVehicle == null)
+                return;
 
-            // Sample data for demonstration
-            if (currentVehicle != null)
-            {
-                maintenanceRecords.Add(new MaintenanceRecord
-                {
-                    Id = 1,
-                    VehicleId = currentVehicle.Id,
-                    Title = "Oil Change",
-                    Type = MaintenanceType.OilChange,
-                    Status = MaintenanceStatus.Completed,
-                    StartDate = DateTime.Today.AddDays(-30),
-                    EndDate = DateTime.Today.AddDays(-30),
-                    Cost = 89.99m,
-                    PerformedBy = "Auto Service Center",
-                    Description = "Regular oil change and filter replacement"
-                });
+            var records =
+                _vehicleService.GetMaintenanceByVehicle(
+                    currentVehicle.Id);
 
-                maintenanceRecords.Add(new MaintenanceRecord
-                {
-                    Id = 2,
-                    VehicleId = currentVehicle.Id,
-                    Title = "Brake Inspection",
-                    Type = MaintenanceType.Inspection,
-                    Status = MaintenanceStatus.Scheduled,
-                    StartDate = DateTime.Today.AddDays(7),
-                    EndDate = null,
-                    Cost = 0,
-                    PerformedBy = "TBD",
-                    Description = "Scheduled brake system inspection"
-                });
-            }
-
-            // Bind to DataGridView
             dgvHistory.DataSource = null;
-            dgvHistory.DataSource = maintenanceRecords.Select(r => new
+            dgvHistory.DataSource = records.Select(r => new
             {
                 r.Id,
                 r.Title,
@@ -203,55 +93,51 @@ namespace VRMS.UI.Forms.Maintenance
                 Status = r.Status.ToString(),
                 StartDate = r.StartDate.ToString("yyyy-MM-dd"),
                 EndDate = r.EndDate?.ToString("yyyy-MM-dd") ?? "N/A",
-                Cost = $"${r.Cost:F2}",
+                Cost = $"₱{r.Cost:N2}",
                 r.PerformedBy
             }).ToList();
 
-            // Update status strip
-            lblRecordCount.Text = $"{maintenanceRecords.Count} maintenance records";
-            lblStatusMessage.Text = $"Loaded history for {currentVehicle?.Make} {currentVehicle?.Model}";
-        }
+            lblRecordCount.Text =
+                $"{records.Count} maintenance records";
 
-        private void UpdateRecordDetails(MaintenanceRecord record)
+            lblStatusMessage.Text =
+                $"Loaded history for {currentVehicle.Make} {currentVehicle.Model}";
+        }
+        
+        private void WireComboBoxes()
         {
-            if (record == null)
-            {
-                lblDetailTitle.Text = "N/A";
-                lblDetailType.Text = "N/A";
-                lblDetailStatus.Text = "N/A";
-                lblDetailStartDate.Text = "N/A";
-                lblDetailEndDate.Text = "N/A";
-                lblDetailCost.Text = "$0.00";
-                txtDetailDescription.Text = "No record selected";
-                return;
-            }
+            // ============================
+            // Maintenance TYPE
+            // ============================
+            cmbMaintenanceType.DataSource =
+                EnumComboHelper.ToComboItems<MaintenanceType>();
 
-            lblDetailTitle.Text = record.Title;
-            lblDetailType.Text = record.Type.ToString();
-            lblDetailStatus.Text = record.Status.ToString();
-            lblDetailStartDate.Text = record.StartDate.ToString("yyyy-MM-dd");
-            lblDetailEndDate.Text = record.EndDate?.ToString("yyyy-MM-dd") ?? "N/A";
-            lblDetailCost.Text = $"${record.Cost:F2}";
-            txtDetailDescription.Text = record.Description;
+            cmbMaintenanceType.DisplayMember = "Display";
+            cmbMaintenanceType.ValueMember = "Value";
+            cmbMaintenanceType.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // ============================
+            // Maintenance STATUS
+            // ============================
+            var allowedStatuses = new[]
+            {
+                MaintenanceStatus.Scheduled,
+                MaintenanceStatus.InProgress
+            };
+
+            cmbStatus.DataSource =
+                EnumComboHelper
+                    .ToComboItems<MaintenanceStatus>()
+                    .Where(i => allowedStatuses.Contains(i.Value))
+                    .ToList();
+
+            cmbStatus.DisplayMember = "Display";
+            cmbStatus.ValueMember = "Value";
+            cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+
         }
 
-        // Helper class for ComboBox items
-        private class ComboBoxItem
-        {
-            public string Text { get; set; }
-            public int Value { get; set; }
 
-            public ComboBoxItem(string text, int value)
-            {
-                Text = text;
-                Value = value;
-            }
-
-            public override string ToString()
-            {
-                return Text;
-            }
-        }
 
         // ========== EVENT HANDLERS ==========
 
@@ -263,95 +149,88 @@ namespace VRMS.UI.Forms.Maintenance
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (currentVehicle == null)
+                return;
+
             if (string.IsNullOrWhiteSpace(txtTitle.Text))
             {
-                MessageBox.Show("Please enter a title for the maintenance record.",
-                    "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTitle.Focus();
+                MessageBox.Show(
+                    "Title is required.",
+                    "Validation",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
-            // Create new record
-            var newRecord = new MaintenanceRecord
+            var record = new MaintenanceRecord
             {
-                VehicleId = currentVehicle?.Id ?? 0,
+                VehicleId = currentVehicle.Id,
                 Title = txtTitle.Text.Trim(),
                 Description = txtDescription.Text.Trim(),
-                Type = (MaintenanceType)((ComboBoxItem)cmbMaintenanceType.SelectedItem).Value,
-                Status = (MaintenanceStatus)((ComboBoxItem)cmbStatus.SelectedItem).Value,
-                StartDate = dtpStart.Value,
-                EndDate = chkHasEndDate.Checked ? dtpEnd.Value : (DateTime?)null,
+                Type = ((EnumComboItem<MaintenanceType>)cmbMaintenanceType.SelectedItem!).Value,
+                Status = ((EnumComboItem<MaintenanceStatus>)cmbStatus.SelectedItem!).Value,
+                StartDate = dtpStart.Value.Date,
+                EndDate = chkHasEndDate.Checked
+                    ? dtpEnd.Value.Date
+                    : null,
                 Cost = nudCost.Value,
-               
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                PerformedBy = Session.CurrentUser?.Username ?? "SYSTEM"
             };
 
-            // Add to list (in real app, save to database)
-            newRecord.Id = maintenanceRecords.Count > 0 ? maintenanceRecords.Max(r => r.Id) + 1 : 1;
-            maintenanceRecords.Add(newRecord);
-
-            // Automatically set vehicle status to UnderMaintenance when creating a new maintenance record
-            if (currentVehicle != null)
+            try
             {
-                currentVehicle.Status = VehicleStatus.UnderMaintenance;
-                VehicleStatusUpdated = true;
-                UpdateMarkAvailableButtonVisibility();
+                _vehicleService.StartMaintenance(record);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Maintenance Conflict",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
             }
 
-            // Show success message
-            lblStatusMessage.Text = $"Maintenance record '{newRecord.Title}' saved successfully. Vehicle status updated to Under Maintenance.";
-            RecordCreated = true;
+            VehicleStatusUpdated = true;
+            currentVehicle.Status = VehicleStatus.UnderMaintenance;
 
-            // Refresh history
             LoadHistory();
+            UpdateMarkAvailableButtonVisibility();
+            ClearForm();
 
-            // Switch to history tab
             tabControlMain.SelectedTab = tabHistory;
 
-            // Clear form
-            ClearForm();
+            lblStatusMessage.Text =
+                $"Maintenance '{record.Title}' saved.";
         }
+
 
         private void btnMarkAvailable_Click(object sender, EventArgs e)
         {
-            if (currentVehicle == null)
-            {
-                MessageBox.Show("No vehicle selected.", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (dgvHistory.SelectedRows.Count == 0)
                 return;
-            }
 
-            var result = MessageBox.Show(
-                $"Are you sure you want to mark this vehicle as AVAILABLE?\n\n" +
-                $"Vehicle: {currentVehicle.Make} {currentVehicle.Model}\n" +
-                $"Plate: {currentVehicle.PlateNo}\n\n" +
-                $"This will change the vehicle status from Under Maintenance to Available.",
-                "Mark Vehicle Available",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            int maintenanceId =
+                Convert.ToInt32(
+                    dgvHistory.SelectedRows[0]
+                        .Cells["Id"].Value);
 
-            if (result == DialogResult.Yes)
-            {
-                // Update vehicle status
-                currentVehicle.Status = VehicleStatus.Available;
-                VehicleStatusUpdated = true;
+            _vehicleService.CloseMaintenance(
+                maintenanceId,
+                DateTime.Today,
+                MaintenanceStatus.Completed,
+                VehicleStatus.Available);
 
-                // Update button visibility
-                UpdateMarkAvailableButtonVisibility();
+            currentVehicle!.Status = VehicleStatus.Available;
+            VehicleStatusUpdated = true;
 
-                // Show success message
-                lblStatusMessage.Text = $"Vehicle '{currentVehicle.Make} {currentVehicle.Model}' marked as AVAILABLE.";
+            LoadHistory();
+            UpdateMarkAvailableButtonVisibility();
 
-                MessageBox.Show(
-                    $"Vehicle status updated successfully!\n\n" +
-                    $"Vehicle: {currentVehicle.Make} {currentVehicle.Model}\n" +
-                    $"New Status: Available",
-                    "Status Updated",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-            }
+            lblStatusMessage.Text =
+                "Vehicle marked AVAILABLE and maintenance closed.";
         }
+
 
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -458,16 +337,6 @@ namespace VRMS.UI.Forms.Maintenance
             }
         }
 
-        private void dgvHistory_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dgvHistory.SelectedRows.Count > 0)
-            {
-                int selectedId = Convert.ToInt32(dgvHistory.SelectedRows[0].Cells["Id"].Value);
-                var selectedRecord = maintenanceRecords.FirstOrDefault(r => r.Id == selectedId);
-                UpdateRecordDetails(selectedRecord);
-            }
-        }
-
         // Property to check if vehicle status was updated (for parent form)
         public bool IsVehicleStatusUpdated()
         {
@@ -479,11 +348,6 @@ namespace VRMS.UI.Forms.Maintenance
         {
             return currentVehicle?.Status ?? VehicleStatus.Available;
         }
-
-        // Method to get the vehicle ID
-        public int GetVehicleId()
-        {
-            return currentVehicle?.Id ?? 0;
-        }
+        
     }
 }

@@ -1,6 +1,6 @@
 ﻿using VRMS.Enums;
 
-namespace VRMS.Models.Rentals;
+namespace VRMS.Models.Damages;
 
 public class VehicleInspection
 {

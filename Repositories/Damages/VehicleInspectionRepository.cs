@@ -2,6 +2,7 @@
 using System.Data;
 using VRMS.Database;
 using VRMS.Enums;
+using VRMS.Models.Damages;
 using VRMS.Models.Rentals;
 
 namespace VRMS.Repositories.Inspections

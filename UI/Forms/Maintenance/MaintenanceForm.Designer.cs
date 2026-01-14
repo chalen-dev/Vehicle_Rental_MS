@@ -562,7 +562,6 @@
             dgvHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvHistory.Size = new Size(722, 596);
             dgvHistory.TabIndex = 0;
-            dgvHistory.SelectionChanged += dgvHistory_SelectionChanged;
             // 
             // panel6
             // 

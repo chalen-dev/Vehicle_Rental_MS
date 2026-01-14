@@ -1,4 +1,4 @@
-﻿namespace VRMS.Database.SPImplementations.Rentals.VehicleInspection;
+﻿namespace VRMS.Database.SPImplementations.Damages.VehicleInspection;
 
 public static class SP_VehicleInspections_GetById
 {
