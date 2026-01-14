@@ -221,7 +221,11 @@ namespace VRMS.UI.Controls.VehiclesView
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Plate No.", DataPropertyName = "LicensePlate" });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Transmission", DataPropertyName = "Transmission" });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Fuel", DataPropertyName = "FuelType" });
-            dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Status", DataPropertyName = "Status" });
+            dgvVehicles.Columns.Add(
+                new DataGridViewTextBoxColumn {
+                    HeaderText = "Status",
+                    DataPropertyName = "StatusDisplay"
+                });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Odometer", DataPropertyName = "Odometer" });
         }
 

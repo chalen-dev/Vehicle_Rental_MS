@@ -177,7 +177,19 @@ namespace VRMS.UI.Forms.Maintenance
                 PerformedBy = Session.CurrentUser?.Username ?? "SYSTEM"
             };
 
-            _vehicleService.StartMaintenance(record);
+            try
+            {
+                _vehicleService.StartMaintenance(record);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Maintenance Conflict",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return;
+            }
 
             VehicleStatusUpdated = true;
             currentVehicle.Status = VehicleStatus.UnderMaintenance;

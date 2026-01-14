@@ -14,6 +14,7 @@ public static class M_1009_CreateRentalProcedures
                                        {SP_Rentals_GetAll.Sql()}
                                        {SP_Rentals_GetByCustomer.Sql()}
                                        {SP_Rentals_Delete.Sql()}
+                                       {SP_Rentals_GetOverlapping.Sql()}
                                        """;
     public static string Drop() => """
                                    DROP PROCEDURE IF EXISTS sp_rentals_create;
@@ -25,5 +26,6 @@ public static class M_1009_CreateRentalProcedures
                                    DROP PROCEDURE IF EXISTS sp_rentals_get_all;
                                    DROP PROCEDURE IF EXISTS sp_rentals_get_by_customer;
                                    DROP PROCEDURE IF EXISTS sp_rentals_delete;
+                                   DROP PROCEDURE IF EXISTS sp_rentals_get_overlapping;
                                    """;
 }
