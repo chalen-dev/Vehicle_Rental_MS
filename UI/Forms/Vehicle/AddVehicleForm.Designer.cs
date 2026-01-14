@@ -48,7 +48,6 @@
             txtPlate = new TextBox();
             lblCategory = new Label();
             cbCategory = new ComboBox();
-            btnAddCategory = new Button();
             lblVehicleCode = new Label();
             tabSpecifications = new TabPage();
             panelSpecs = new Panel();
@@ -203,8 +202,8 @@
             // 
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.7671242F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 41.36986F));
             tableLayoutPanel1.Controls.Add(lblMake, 0, 0);
             tableLayoutPanel1.Controls.Add(txtMake, 1, 0);
             tableLayoutPanel1.Controls.Add(lblModel, 0, 1);
@@ -217,7 +216,6 @@
             tableLayoutPanel1.Controls.Add(txtPlate, 1, 4);
             tableLayoutPanel1.Controls.Add(lblCategory, 0, 5);
             tableLayoutPanel1.Controls.Add(cbCategory, 1, 5);
-            tableLayoutPanel1.Controls.Add(btnAddCategory, 2, 5);
             tableLayoutPanel1.Controls.Add(lblVehicleCode, 0, 6);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(3, 25);
@@ -242,7 +240,7 @@
             lblMake.ForeColor = Color.FromArgb(30, 60, 90);
             lblMake.Location = new Point(23, 10);
             lblMake.Name = "lblMake";
-            lblMake.Size = new Size(213, 44);
+            lblMake.Size = new Size(212, 44);
             lblMake.TabIndex = 0;
             lblMake.Text = "Make:";
             lblMake.TextAlign = ContentAlignment.MiddleLeft;
@@ -253,9 +251,9 @@
             tableLayoutPanel1.SetColumnSpan(txtMake, 2);
             txtMake.Dock = DockStyle.Fill;
             txtMake.Font = new Font("Segoe UI", 9.75F);
-            txtMake.Location = new Point(242, 13);
+            txtMake.Location = new Point(241, 13);
             txtMake.Name = "txtMake";
-            txtMake.Size = new Size(505, 29);
+            txtMake.Size = new Size(506, 29);
             txtMake.TabIndex = 1;
             // 
             // lblModel
@@ -266,7 +264,7 @@
             lblModel.ForeColor = Color.FromArgb(30, 60, 90);
             lblModel.Location = new Point(23, 54);
             lblModel.Name = "lblModel";
-            lblModel.Size = new Size(213, 44);
+            lblModel.Size = new Size(212, 44);
             lblModel.TabIndex = 2;
             lblModel.Text = "Model:";
             lblModel.TextAlign = ContentAlignment.MiddleLeft;
@@ -277,9 +275,9 @@
             tableLayoutPanel1.SetColumnSpan(txtModel, 2);
             txtModel.Dock = DockStyle.Fill;
             txtModel.Font = new Font("Segoe UI", 9.75F);
-            txtModel.Location = new Point(242, 57);
+            txtModel.Location = new Point(241, 57);
             txtModel.Name = "txtModel";
-            txtModel.Size = new Size(505, 29);
+            txtModel.Size = new Size(506, 29);
             txtModel.TabIndex = 3;
             // 
             // lblYear
@@ -290,7 +288,7 @@
             lblYear.ForeColor = Color.FromArgb(30, 60, 90);
             lblYear.Location = new Point(23, 98);
             lblYear.Name = "lblYear";
-            lblYear.Size = new Size(213, 44);
+            lblYear.Size = new Size(212, 44);
             lblYear.TabIndex = 4;
             lblYear.Text = "Year:";
             lblYear.TextAlign = ContentAlignment.MiddleLeft;
@@ -301,11 +299,11 @@
             tableLayoutPanel1.SetColumnSpan(numYear, 2);
             numYear.Dock = DockStyle.Fill;
             numYear.Font = new Font("Segoe UI", 9.75F);
-            numYear.Location = new Point(242, 101);
+            numYear.Location = new Point(241, 101);
             numYear.Maximum = new decimal(new int[] { 2100, 0, 0, 0 });
             numYear.Minimum = new decimal(new int[] { 1990, 0, 0, 0 });
             numYear.Name = "numYear";
-            numYear.Size = new Size(505, 29);
+            numYear.Size = new Size(506, 29);
             numYear.TabIndex = 5;
             numYear.Value = new decimal(new int[] { 2024, 0, 0, 0 });
             // 
@@ -317,7 +315,7 @@
             lblColor.ForeColor = Color.FromArgb(30, 60, 90);
             lblColor.Location = new Point(23, 142);
             lblColor.Name = "lblColor";
-            lblColor.Size = new Size(213, 44);
+            lblColor.Size = new Size(212, 44);
             lblColor.TabIndex = 6;
             lblColor.Text = "Color:";
             lblColor.TextAlign = ContentAlignment.MiddleLeft;
@@ -328,9 +326,9 @@
             tableLayoutPanel1.SetColumnSpan(txtColor, 2);
             txtColor.Dock = DockStyle.Fill;
             txtColor.Font = new Font("Segoe UI", 9.75F);
-            txtColor.Location = new Point(242, 145);
+            txtColor.Location = new Point(241, 145);
             txtColor.Name = "txtColor";
-            txtColor.Size = new Size(505, 29);
+            txtColor.Size = new Size(506, 29);
             txtColor.TabIndex = 7;
             // 
             // lblPlate
@@ -341,7 +339,7 @@
             lblPlate.ForeColor = Color.FromArgb(30, 60, 90);
             lblPlate.Location = new Point(23, 186);
             lblPlate.Name = "lblPlate";
-            lblPlate.Size = new Size(213, 44);
+            lblPlate.Size = new Size(212, 44);
             lblPlate.TabIndex = 8;
             lblPlate.Text = "License Plate:";
             lblPlate.TextAlign = ContentAlignment.MiddleLeft;
@@ -352,9 +350,9 @@
             tableLayoutPanel1.SetColumnSpan(txtPlate, 2);
             txtPlate.Dock = DockStyle.Fill;
             txtPlate.Font = new Font("Segoe UI", 9.75F);
-            txtPlate.Location = new Point(242, 189);
+            txtPlate.Location = new Point(241, 189);
             txtPlate.Name = "txtPlate";
-            txtPlate.Size = new Size(505, 29);
+            txtPlate.Size = new Size(506, 29);
             txtPlate.TabIndex = 9;
             // 
             // lblCategory
@@ -365,7 +363,7 @@
             lblCategory.ForeColor = Color.FromArgb(30, 60, 90);
             lblCategory.Location = new Point(23, 230);
             lblCategory.Name = "lblCategory";
-            lblCategory.Size = new Size(213, 44);
+            lblCategory.Size = new Size(212, 44);
             lblCategory.TabIndex = 10;
             lblCategory.Text = "Category:";
             lblCategory.TextAlign = ContentAlignment.MiddleLeft;
@@ -377,26 +375,10 @@
             cbCategory.Font = new Font("Segoe UI", 9.75F);
             cbCategory.FormattingEnabled = true;
             cbCategory.Items.AddRange(new object[] { "Hatchback", "Sedan", "SUV", "Pick-up", "Van/Minibus" });
-            cbCategory.Location = new Point(242, 233);
+            cbCategory.Location = new Point(241, 233);
             cbCategory.Name = "cbCategory";
-            cbCategory.Size = new Size(432, 29);
+            cbCategory.Size = new Size(203, 29);
             cbCategory.TabIndex = 11;
-            // 
-            // btnAddCategory
-            // 
-            btnAddCategory.BackColor = Color.FromArgb(52, 152, 219);
-            btnAddCategory.Dock = DockStyle.Fill;
-            btnAddCategory.FlatAppearance.BorderSize = 0;
-            btnAddCategory.FlatStyle = FlatStyle.Flat;
-            btnAddCategory.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnAddCategory.ForeColor = Color.White;
-            btnAddCategory.Location = new Point(680, 233);
-            btnAddCategory.Name = "btnAddCategory";
-            btnAddCategory.Size = new Size(67, 38);
-            btnAddCategory.TabIndex = 14;
-            btnAddCategory.Text = "+ Add";
-            btnAddCategory.UseVisualStyleBackColor = false;
-            btnAddCategory.Click += BtnAddCategory_Click;
             // 
             // lblVehicleCode
             // 
@@ -991,21 +973,6 @@
         private TabPage tabBasicInfo;
         private Panel panelBasicInfo;
         private GroupBox grpBasicInfo;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Label lblMake;
-        private TextBox txtMake;
-        private Label lblModel;
-        private TextBox txtModel;
-        private Label lblYear;
-        private NumericUpDown numYear;
-        private Label lblColor;
-        private TextBox txtColor;
-        private Label lblPlate;
-        private TextBox txtPlate;
-        private Label lblCategory;
-        private ComboBox cbCategory;
-        private Button btnAddCategory;
-        private Label lblVehicleCode;
         private TabPage tabSpecifications;
         private Panel panelSpecs;
         private GroupBox grpSpecifications;
@@ -1043,5 +1010,19 @@
         private ListBox lstImages;
         private Button btnAddImage;
         private Button btnRemoveImage;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label lblMake;
+        private TextBox txtMake;
+        private Label lblModel;
+        private TextBox txtModel;
+        private Label lblYear;
+        private NumericUpDown numYear;
+        private Label lblColor;
+        private TextBox txtColor;
+        private Label lblPlate;
+        private TextBox txtPlate;
+        private Label lblCategory;
+        private ComboBox cbCategory;
+        private Label lblVehicleCode;
     }
 }

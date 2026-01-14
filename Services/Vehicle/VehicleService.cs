@@ -1,4 +1,5 @@
 ﻿using VRMS.Enums;
+using VRMS.Models.Billing;
 using VRMS.Models.Fleet;
 using VRMS.Repositories.Billing;
 using VRMS.Repositories.Fleet;
@@ -45,7 +46,7 @@ public class VehicleService
 
     /// <summary>Maintenance record repository</summary>
     private readonly MaintenanceRepository _maintenanceRepo;
-    
+
     /// <summary>Rate configuration repository</summary>
     private readonly RateConfigurationRepository _rateRepo;
 
@@ -188,7 +189,7 @@ public class VehicleService
     {
         return _vehicleRepo.GetFullById(vehicleId);
     }
-    
+
     public List<Vehicle> SearchVehicles(
         VehicleStatus? status,
         string? search)
@@ -308,7 +309,7 @@ public class VehicleService
     public VehicleCategory GetCategoryById(
         int categoryId)
         => _categoryRepo.GetById(categoryId);
-    
+
     /// <summary>
     /// Updates only the security deposit of a vehicle category.
     /// </summary>
@@ -328,7 +329,23 @@ public class VehicleService
             category.Description,
             securityDeposit);
     }
-    
+
+    // -------------------------------------------------
+    // CATEGORY RATES
+    // -------------------------------------------------
+
+    public RateConfiguration? GetCategoryRates(int categoryId)
+    {
+        try
+        {
+            return _rateRepo.GetByCategory(categoryId);
+        }
+        catch (InvalidOperationException)
+        {
+            return null; // No rates configured yet
+        }
+    }
+
     public void UpsertCategoryRates(
         int categoryId,
         decimal daily,

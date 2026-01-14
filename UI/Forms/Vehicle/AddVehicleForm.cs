@@ -48,7 +48,7 @@ namespace VRMS.Forms
             btnCancel.Click += (_, __) => Close();
             btnAddImage.Click += BtnSelectImage_Click;
             btnRemoveImage.Click += BtnRemoveImage_Click;
-            btnAddCategory.Click += BtnAddCategory_Click;
+            
 
             lstImages.SelectedIndexChanged += LstImages_SelectedIndexChanged;
 
