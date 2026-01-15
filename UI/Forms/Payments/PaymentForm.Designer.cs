@@ -17,284 +17,296 @@
 
         private void InitializeComponent()
         {
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblHeader = new System.Windows.Forms.Label();
-            this.grpSummary = new System.Windows.Forms.GroupBox();
-            this.lblRentalDuration = new System.Windows.Forms.Label();
-            this.lblVehicleDetails = new System.Windows.Forms.Label();
-            this.lblCustomerName = new System.Windows.Forms.Label();
-            this.grpBreakdown = new System.Windows.Forms.GroupBox();
-            this.lblGrandTotal = new System.Windows.Forms.Label();
-            this.lblFuelCharge = new System.Windows.Forms.Label();
-            this.lblDamageFee = new System.Windows.Forms.Label();
-            this.lblLateFee = new System.Windows.Forms.Label();
-            this.lblBaseRental = new System.Windows.Forms.Label();
-            this.grpPayment = new System.Windows.Forms.GroupBox();
-            this.lblChange = new System.Windows.Forms.Label();
-            this.txtAmountPaid = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.cbPaymentMethod = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.btnProcess = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.pnlHeader.SuspendLayout();
-            this.grpSummary.SuspendLayout();
-            this.grpBreakdown.SuspendLayout();
-            this.grpPayment.SuspendLayout();
-            this.SuspendLayout();
+            pnlHeader = new Panel();
+            lblHeader = new Label();
+            grpSummary = new GroupBox();
+            lblRentalDuration = new Label();
+            lblVehicleDetails = new Label();
+            lblCustomerName = new Label();
+            grpBreakdown = new GroupBox();
+            lblGrandTotal = new Label();
+            lblFuelCharge = new Label();
+            lblDamageFee = new Label();
+            lblLateFee = new Label();
+            lblBaseRental = new Label();
+            grpPayment = new GroupBox();
+            lblChange = new Label();
+            txtAmountPaid = new TextBox();
+            label9 = new Label();
+            cbPaymentMethod = new ComboBox();
+            label8 = new Label();
+            btnProcess = new Button();
+            btnCancel = new Button();
+            pnlHeader.SuspendLayout();
+            grpSummary.SuspendLayout();
+            grpBreakdown.SuspendLayout();
+            grpPayment.SuspendLayout();
+            SuspendLayout();
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(73)))), ((int)(((byte)(94)))));
-            this.pnlHeader.Controls.Add(this.lblHeader);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(480, 60);
-            this.pnlHeader.TabIndex = 0;
+            pnlHeader.BackColor = Color.FromArgb(52, 73, 94);
+            pnlHeader.Controls.Add(lblHeader);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Margin = new Padding(3, 4, 3, 4);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(480, 75);
+            pnlHeader.TabIndex = 0;
             // 
             // lblHeader
             // 
-            this.lblHeader.AutoSize = true;
-            this.lblHeader.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblHeader.ForeColor = System.Drawing.Color.White;
-            this.lblHeader.Location = new System.Drawing.Point(15, 15);
-            this.lblHeader.Name = "lblHeader";
-            this.lblHeader.Size = new System.Drawing.Size(223, 37);
-            this.lblHeader.TabIndex = 0;
-            this.lblHeader.Text = "Billing & Payment";
+            lblHeader.AutoSize = true;
+            lblHeader.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblHeader.ForeColor = Color.White;
+            lblHeader.Location = new Point(15, 19);
+            lblHeader.Name = "lblHeader";
+            lblHeader.Size = new Size(226, 37);
+            lblHeader.TabIndex = 0;
+            lblHeader.Text = "Billing & Payment";
             // 
             // grpSummary
             // 
-            this.grpSummary.Controls.Add(this.lblRentalDuration);
-            this.grpSummary.Controls.Add(this.lblVehicleDetails);
-            this.grpSummary.Controls.Add(this.lblCustomerName);
-            this.grpSummary.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpSummary.Location = new System.Drawing.Point(20, 75);
-            this.grpSummary.Name = "grpSummary";
-            this.grpSummary.Size = new System.Drawing.Size(440, 110);
-            this.grpSummary.TabIndex = 1;
-            this.grpSummary.TabStop = false;
-            this.grpSummary.Text = "Rental Summary";
+            grpSummary.Controls.Add(lblRentalDuration);
+            grpSummary.Controls.Add(lblVehicleDetails);
+            grpSummary.Controls.Add(lblCustomerName);
+            grpSummary.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpSummary.Location = new Point(20, 94);
+            grpSummary.Margin = new Padding(3, 4, 3, 4);
+            grpSummary.Name = "grpSummary";
+            grpSummary.Padding = new Padding(3, 4, 3, 4);
+            grpSummary.Size = new Size(440, 138);
+            grpSummary.TabIndex = 1;
+            grpSummary.TabStop = false;
+            grpSummary.Text = "Rental Summary";
             // 
             // lblRentalDuration
             // 
-            this.lblRentalDuration.AutoSize = true;
-            this.lblRentalDuration.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblRentalDuration.ForeColor = System.Drawing.Color.DimGray;
-            this.lblRentalDuration.Location = new System.Drawing.Point(15, 80);
-            this.lblRentalDuration.Name = "lblRentalDuration";
-            this.lblRentalDuration.Size = new System.Drawing.Size(126, 20);
-            this.lblRentalDuration.TabIndex = 2;
-            this.lblRentalDuration.Text = "Duration: -- Days";
+            lblRentalDuration.AutoSize = true;
+            lblRentalDuration.Font = new Font("Segoe UI", 9F);
+            lblRentalDuration.ForeColor = Color.DimGray;
+            lblRentalDuration.Location = new Point(15, 100);
+            lblRentalDuration.Name = "lblRentalDuration";
+            lblRentalDuration.Size = new Size(122, 20);
+            lblRentalDuration.TabIndex = 2;
+            lblRentalDuration.Text = "Duration: -- Days";
             // 
             // lblVehicleDetails
             // 
-            this.lblVehicleDetails.AutoSize = true;
-            this.lblVehicleDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblVehicleDetails.Location = new System.Drawing.Point(15, 55);
-            this.lblVehicleDetails.Name = "lblVehicleDetails";
-            this.lblVehicleDetails.Size = new System.Drawing.Size(73, 20);
-            this.lblVehicleDetails.TabIndex = 1;
-            this.lblVehicleDetails.Text = "Vehicle: --";
+            lblVehicleDetails.AutoSize = true;
+            lblVehicleDetails.Font = new Font("Segoe UI", 9F);
+            lblVehicleDetails.Location = new Point(15, 69);
+            lblVehicleDetails.Name = "lblVehicleDetails";
+            lblVehicleDetails.Size = new Size(75, 20);
+            lblVehicleDetails.TabIndex = 1;
+            lblVehicleDetails.Text = "Vehicle: --";
             // 
             // lblCustomerName
             // 
-            this.lblCustomerName.AutoSize = true;
-            this.lblCustomerName.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
-            this.lblCustomerName.Location = new System.Drawing.Point(15, 25);
-            this.lblCustomerName.Name = "lblCustomerName";
-            this.lblCustomerName.Size = new System.Drawing.Size(127, 25);
-            this.lblCustomerName.TabIndex = 0;
-            this.lblCustomerName.Text = "Customer: --";
+            lblCustomerName.AutoSize = true;
+            lblCustomerName.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            lblCustomerName.Location = new Point(15, 31);
+            lblCustomerName.Name = "lblCustomerName";
+            lblCustomerName.Size = new Size(122, 25);
+            lblCustomerName.TabIndex = 0;
+            lblCustomerName.Text = "Customer: --";
             // 
             // grpBreakdown
             // 
-            this.grpBreakdown.Controls.Add(this.lblGrandTotal);
-            this.grpBreakdown.Controls.Add(this.lblFuelCharge);
-            this.grpBreakdown.Controls.Add(this.lblDamageFee);
-            this.grpBreakdown.Controls.Add(this.lblLateFee);
-            this.grpBreakdown.Controls.Add(this.lblBaseRental);
-            this.grpBreakdown.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpBreakdown.Location = new System.Drawing.Point(20, 195);
-            this.grpBreakdown.Name = "grpBreakdown";
-            this.grpBreakdown.Size = new System.Drawing.Size(440, 185);
-            this.grpBreakdown.TabIndex = 2;
-            this.grpBreakdown.TabStop = false;
-            this.grpBreakdown.Text = "Billing Breakdown";
+            grpBreakdown.Controls.Add(lblGrandTotal);
+            grpBreakdown.Controls.Add(lblFuelCharge);
+            grpBreakdown.Controls.Add(lblDamageFee);
+            grpBreakdown.Controls.Add(lblLateFee);
+            grpBreakdown.Controls.Add(lblBaseRental);
+            grpBreakdown.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpBreakdown.Location = new Point(20, 244);
+            grpBreakdown.Margin = new Padding(3, 4, 3, 4);
+            grpBreakdown.Name = "grpBreakdown";
+            grpBreakdown.Padding = new Padding(3, 4, 3, 4);
+            grpBreakdown.Size = new Size(440, 231);
+            grpBreakdown.TabIndex = 2;
+            grpBreakdown.TabStop = false;
+            grpBreakdown.Text = "Billing Breakdown";
             // 
             // lblGrandTotal
             // 
-            this.lblGrandTotal.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblGrandTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.lblGrandTotal.Location = new System.Drawing.Point(6, 135);
-            this.lblGrandTotal.Name = "lblGrandTotal";
-            this.lblGrandTotal.Size = new System.Drawing.Size(428, 40);
-            this.lblGrandTotal.TabIndex = 4;
-            this.lblGrandTotal.Text = "TOTAL DUE: ₱0.00";
-            this.lblGrandTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            lblGrandTotal.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblGrandTotal.ForeColor = Color.FromArgb(46, 204, 113);
+            lblGrandTotal.Location = new Point(6, 169);
+            lblGrandTotal.Name = "lblGrandTotal";
+            lblGrandTotal.Size = new Size(428, 50);
+            lblGrandTotal.TabIndex = 4;
+            lblGrandTotal.Text = "TOTAL DUE: ₱0.00";
+            lblGrandTotal.TextAlign = ContentAlignment.MiddleRight;
             // 
             // lblFuelCharge
             // 
-            this.lblFuelCharge.AutoSize = true;
-            this.lblFuelCharge.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblFuelCharge.Location = new System.Drawing.Point(15, 110);
-            this.lblFuelCharge.Name = "lblFuelCharge";
-            this.lblFuelCharge.Size = new System.Drawing.Size(124, 23);
-            this.lblFuelCharge.TabIndex = 3;
-            this.lblFuelCharge.Text = "Fuel Surcharge:";
+            lblFuelCharge.AutoSize = true;
+            lblFuelCharge.Font = new Font("Segoe UI", 10F);
+            lblFuelCharge.Location = new Point(15, 138);
+            lblFuelCharge.Name = "lblFuelCharge";
+            lblFuelCharge.Size = new Size(181, 23);
+            lblFuelCharge.TabIndex = 3;
+            lblFuelCharge.Text = "Mileage Overage Fees:";
             // 
             // lblDamageFee
             // 
-            this.lblDamageFee.AutoSize = true;
-            this.lblDamageFee.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblDamageFee.Location = new System.Drawing.Point(15, 85);
-            this.lblDamageFee.Name = "lblDamageFee";
-            this.lblDamageFee.Size = new System.Drawing.Size(117, 23);
-            this.lblDamageFee.TabIndex = 2;
-            this.lblDamageFee.Text = "Damage Fees:";
+            lblDamageFee.AutoSize = true;
+            lblDamageFee.Font = new Font("Segoe UI", 10F);
+            lblDamageFee.Location = new Point(15, 106);
+            lblDamageFee.Name = "lblDamageFee";
+            lblDamageFee.Size = new Size(116, 23);
+            lblDamageFee.TabIndex = 2;
+            lblDamageFee.Text = "Damage Fees:";
             // 
             // lblLateFee
             // 
-            this.lblLateFee.AutoSize = true;
-            this.lblLateFee.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblLateFee.Location = new System.Drawing.Point(15, 60);
-            this.lblLateFee.Name = "lblLateFee";
-            this.lblLateFee.Size = new System.Drawing.Size(83, 23);
-            this.lblLateFee.TabIndex = 1;
-            this.lblLateFee.Text = "Late Fees:";
+            lblLateFee.AutoSize = true;
+            lblLateFee.Font = new Font("Segoe UI", 10F);
+            lblLateFee.Location = new Point(15, 75);
+            lblLateFee.Name = "lblLateFee";
+            lblLateFee.Size = new Size(84, 23);
+            lblLateFee.TabIndex = 1;
+            lblLateFee.Text = "Late Fees:";
             // 
             // lblBaseRental
             // 
-            this.lblBaseRental.AutoSize = true;
-            this.lblBaseRental.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblBaseRental.Location = new System.Drawing.Point(15, 35);
-            this.lblBaseRental.Name = "lblBaseRental";
-            this.lblBaseRental.Size = new System.Drawing.Size(126, 23);
-            this.lblBaseRental.TabIndex = 0;
-            this.lblBaseRental.Text = "Rental Charges:";
+            lblBaseRental.AutoSize = true;
+            lblBaseRental.Font = new Font("Segoe UI", 10F);
+            lblBaseRental.Location = new Point(15, 44);
+            lblBaseRental.Name = "lblBaseRental";
+            lblBaseRental.Size = new Size(129, 23);
+            lblBaseRental.TabIndex = 0;
+            lblBaseRental.Text = "Rental Charges:";
             // 
             // grpPayment
             // 
-            this.grpPayment.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.grpPayment.Controls.Add(this.lblChange);
-            this.grpPayment.Controls.Add(this.txtAmountPaid);
-            this.grpPayment.Controls.Add(this.label9);
-            this.grpPayment.Controls.Add(this.cbPaymentMethod);
-            this.grpPayment.Controls.Add(this.label8);
-            this.grpPayment.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.grpPayment.Location = new System.Drawing.Point(20, 395);
-            this.grpPayment.Name = "grpPayment";
-            this.grpPayment.Size = new System.Drawing.Size(440, 140);
-            this.grpPayment.TabIndex = 3;
-            this.grpPayment.TabStop = false;
-            this.grpPayment.Text = "Payment Processing";
+            grpPayment.BackColor = Color.WhiteSmoke;
+            grpPayment.Controls.Add(lblChange);
+            grpPayment.Controls.Add(txtAmountPaid);
+            grpPayment.Controls.Add(label9);
+            grpPayment.Controls.Add(cbPaymentMethod);
+            grpPayment.Controls.Add(label8);
+            grpPayment.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpPayment.Location = new Point(20, 494);
+            grpPayment.Margin = new Padding(3, 4, 3, 4);
+            grpPayment.Name = "grpPayment";
+            grpPayment.Padding = new Padding(3, 4, 3, 4);
+            grpPayment.Size = new Size(440, 175);
+            grpPayment.TabIndex = 3;
+            grpPayment.TabStop = false;
+            grpPayment.Text = "Payment Processing";
             // 
             // lblChange
             // 
-            this.lblChange.AutoSize = true;
-            this.lblChange.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.lblChange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.lblChange.Location = new System.Drawing.Point(220, 93);
-            this.lblChange.Name = "lblChange";
-            this.lblChange.Size = new System.Drawing.Size(121, 28);
-            this.lblChange.TabIndex = 4;
-            this.lblChange.Text = "Change: ₱ --";
+            lblChange.AutoSize = true;
+            lblChange.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            lblChange.ForeColor = Color.FromArgb(41, 128, 185);
+            lblChange.Location = new Point(220, 116);
+            lblChange.Name = "lblChange";
+            lblChange.Size = new Size(126, 28);
+            lblChange.TabIndex = 4;
+            lblChange.Text = "Change: ₱ --";
             // 
             // txtAmountPaid
             // 
-            this.txtAmountPaid.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.txtAmountPaid.Location = new System.Drawing.Point(225, 55);
-            this.txtAmountPaid.Name = "txtAmountPaid";
-            this.txtAmountPaid.Size = new System.Drawing.Size(185, 32);
-            this.txtAmountPaid.TabIndex = 3;
+            txtAmountPaid.Font = new Font("Segoe UI", 11F);
+            txtAmountPaid.Location = new Point(225, 69);
+            txtAmountPaid.Margin = new Padding(3, 4, 3, 4);
+            txtAmountPaid.Name = "txtAmountPaid";
+            txtAmountPaid.Size = new Size(185, 32);
+            txtAmountPaid.TabIndex = 3;
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label9.Location = new System.Drawing.Point(221, 35);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(97, 20);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Amount Paid:";
+            label9.AutoSize = true;
+            label9.Font = new Font("Segoe UI", 9F);
+            label9.Location = new Point(221, 44);
+            label9.Name = "label9";
+            label9.Size = new Size(97, 20);
+            label9.TabIndex = 2;
+            label9.Text = "Amount Paid:";
             // 
             // cbPaymentMethod
             // 
-            this.cbPaymentMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPaymentMethod.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbPaymentMethod.FormattingEnabled = true;
-            this.cbPaymentMethod.Items.AddRange(new object[] { "Cash", "Credit Card", "Debit Card", "E-Wallet" });
-            this.cbPaymentMethod.Location = new System.Drawing.Point(19, 55);
-            this.cbPaymentMethod.Name = "cbPaymentMethod";
-            this.cbPaymentMethod.Size = new System.Drawing.Size(185, 31);
-            this.cbPaymentMethod.TabIndex = 1;
+            cbPaymentMethod.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbPaymentMethod.Font = new Font("Segoe UI", 10F);
+            cbPaymentMethod.FormattingEnabled = true;
+            cbPaymentMethod.Items.AddRange(new object[] { "Cash", "Credit Card", "Debit Card", "E-Wallet" });
+            cbPaymentMethod.Location = new Point(19, 69);
+            cbPaymentMethod.Margin = new Padding(3, 4, 3, 4);
+            cbPaymentMethod.Name = "cbPaymentMethod";
+            cbPaymentMethod.Size = new Size(185, 31);
+            cbPaymentMethod.TabIndex = 1;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label8.Location = new System.Drawing.Point(15, 35);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(124, 20);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Payment Method:";
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 9F);
+            label8.Location = new Point(15, 44);
+            label8.Name = "label8";
+            label8.Size = new Size(124, 20);
+            label8.TabIndex = 0;
+            label8.Text = "Payment Method:";
             // 
             // btnProcess
             // 
-            this.btnProcess.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnProcess.FlatAppearance.BorderSize = 0;
-            this.btnProcess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProcess.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnProcess.ForeColor = System.Drawing.Color.White;
-            this.btnProcess.Location = new System.Drawing.Point(240, 550);
-            this.btnProcess.Name = "btnProcess";
-            this.btnProcess.Size = new System.Drawing.Size(220, 50);
-            this.btnProcess.TabIndex = 4;
-            this.btnProcess.Text = "Complete Payment";
-            this.btnProcess.UseVisualStyleBackColor = false;
+            btnProcess.BackColor = Color.FromArgb(46, 204, 113);
+            btnProcess.FlatAppearance.BorderSize = 0;
+            btnProcess.FlatStyle = FlatStyle.Flat;
+            btnProcess.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnProcess.ForeColor = Color.White;
+            btnProcess.Location = new Point(240, 688);
+            btnProcess.Margin = new Padding(3, 4, 3, 4);
+            btnProcess.Name = "btnProcess";
+            btnProcess.Size = new Size(220, 62);
+            btnProcess.TabIndex = 4;
+            btnProcess.Text = "Complete Payment";
+            btnProcess.UseVisualStyleBackColor = false;
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(189)))), ((int)(((byte)(195)))), ((int)(((byte)(199)))));
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.btnCancel.Location = new System.Drawing.Point(20, 550);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(200, 50);
-            this.btnCancel.TabIndex = 5;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.BackColor = Color.FromArgb(189, 195, 199);
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnCancel.ForeColor = Color.FromArgb(44, 62, 80);
+            btnCancel.Location = new Point(20, 688);
+            btnCancel.Margin = new Padding(3, 4, 3, 4);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(200, 62);
+            btnCancel.TabIndex = 5;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = false;
             // 
             // PaymentForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(480, 620);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnProcess);
-            this.Controls.Add(this.grpPayment);
-            this.Controls.Add(this.grpBreakdown);
-            this.Controls.Add(this.grpSummary);
-            this.Controls.Add(this.pnlHeader);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PaymentForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Invoice & Payment";
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
-            this.grpSummary.ResumeLayout(false);
-            this.grpSummary.PerformLayout();
-            this.grpBreakdown.ResumeLayout(false);
-            this.grpBreakdown.PerformLayout();
-            this.grpPayment.ResumeLayout(false);
-            this.grpPayment.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            ClientSize = new Size(480, 775);
+            Controls.Add(btnCancel);
+            Controls.Add(btnProcess);
+            Controls.Add(grpPayment);
+            Controls.Add(grpBreakdown);
+            Controls.Add(grpSummary);
+            Controls.Add(pnlHeader);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(3, 4, 3, 4);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "PaymentForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Invoice & Payment";
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            grpSummary.ResumeLayout(false);
+            grpSummary.PerformLayout();
+            grpBreakdown.ResumeLayout(false);
+            grpBreakdown.PerformLayout();
+            grpPayment.ResumeLayout(false);
+            grpPayment.PerformLayout();
+            ResumeLayout(false);
 
         }
 

@@ -70,7 +70,7 @@ namespace VRMS.Repositories.Damages
         // ----------------------------
         // READ-ONLY VEHICLE INFO (VIA RENTAL)
         // ----------------------------
-        public InspectionVehicleInfoDto GetVehicleInfoByDamage(int damageId)
+        public RentalVehicleInfoDto GetVehicleInfoByDamage(int damageId)
         {
             var table = DB.Query(
                 """
@@ -92,7 +92,36 @@ namespace VRMS.Repositories.Damages
 
             var row = table.Rows[0];
 
-            return new InspectionVehicleInfoDto
+            return new RentalVehicleInfoDto
+            {
+                RentalNumber = Convert.ToInt32(row["rental_number"]),
+                VehicleModel = row["vehicle_model"].ToString()!,
+                PlateNumber  = row["plate_number"].ToString()!
+            };
+        }
+        
+        public RentalVehicleInfoDto GetVehicleInfoByRental(int rentalId)
+        {
+            var table = DB.Query(
+                """
+                SELECT
+                    r.id AS rental_number,
+                    CONCAT(v.make, ' ', v.model) AS vehicle_model,
+                    v.license_plate AS plate_number
+                FROM rentals r
+                JOIN vehicles v ON v.id = r.vehicle_id
+                WHERE r.id = @rentalId;
+                """,
+                ("@rentalId", rentalId)
+            );
+
+            if (table.Rows.Count == 0)
+                throw new InvalidOperationException(
+                    "Vehicle information not found for this rental.");
+
+            var row = table.Rows[0];
+
+            return new RentalVehicleInfoDto
             {
                 RentalNumber = Convert.ToInt32(row["rental_number"]),
                 VehicleModel = row["vehicle_model"].ToString()!,
@@ -100,10 +129,35 @@ namespace VRMS.Repositories.Damages
             };
         }
 
+
         public List<Damage> GetAll()
         {
             var table = DB.Query(
                 "CALL sp_damages_get_all();"
+            );
+
+            var list = new List<Damage>();
+            foreach (DataRow row in table.Rows)
+                list.Add(Map(row));
+
+            return list;
+        }
+        
+        public List<Damage> GetByRental(int rentalId)
+        {
+            var table = DB.Query(
+                """
+                SELECT
+                    id,
+                    rental_id,
+                    damage_type,
+                    description,
+                    estimated_cost
+                FROM damages
+                WHERE rental_id = @rid
+                ORDER BY id;
+                """,
+                ("@rid", rentalId)
             );
 
             var list = new List<Damage>();

@@ -38,6 +38,11 @@ namespace VRMS.UI.Forms.Select
                 // Get all customers
                 var allCustomers = _customerService.GetAllCustomers();
 
+                // Exclude blacklisted customers
+                allCustomers = allCustomers
+                    .Where(c => !c.IsBlacklisted)
+                    .ToList();
+
                 // Apply search filter if provided
                 if (!string.IsNullOrWhiteSpace(searchTerm))
                 {
@@ -55,10 +60,8 @@ namespace VRMS.UI.Forms.Select
                     _customers = allCustomers;
                 }
 
-                // Bind to DataGridView with only name column
                 dgvCustomers.DataSource = null;
 
-                // Create a simple list with just the ID and FullName for display
                 var displayList = _customers.Select(c => new
                 {
                     c.Id,
@@ -67,7 +70,6 @@ namespace VRMS.UI.Forms.Select
 
                 dgvCustomers.DataSource = displayList;
 
-                // Clear selection
                 dgvCustomers.ClearSelection();
                 _selectedCustomer = null;
                 UpdateSelectButtonState();
@@ -78,6 +80,7 @@ namespace VRMS.UI.Forms.Select
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {

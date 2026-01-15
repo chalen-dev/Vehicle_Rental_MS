@@ -140,9 +140,32 @@ namespace VRMS.Services.Damage
             return report;
         }
         
-        public InspectionVehicleInfoDto GetVehicleInfoByDamage(int damageId)
+        public RentalVehicleInfoDto GetVehicleInfoByDamage(int damageId)
         {
             return _damageRepo.GetVehicleInfoByDamage(damageId);
+        }
+        public RentalVehicleInfoDto GetVehicleInfoByRental(int rentalId)
+        {
+            if (rentalId <= 0)
+                throw new InvalidOperationException("Invalid rental.");
+
+            return _damageRepo.GetVehicleInfoByRental(rentalId);
+        }
+        
+        public List<Models.Damages.Damage> GetDamagesByRental(int rentalId)
+        {
+            if (rentalId <= 0)
+                throw new InvalidOperationException("Invalid rental.");
+
+            return _damageRepo.GetByRental(rentalId);
+        }
+        
+        public List<DamageReport> GetReportsByDamage(int damageId)
+        {
+            if (damageId <= 0)
+                throw new InvalidOperationException("Invalid damage.");
+
+            return _reportRepo.GetByDamage(damageId);
         }
         // ----------------------------
         // DAMAGE REPORT PHOTOS
@@ -153,22 +176,24 @@ namespace VRMS.Services.Damage
             Stream photoStream,
             string originalFileName)
         {
+            var report =
+                _reportRepo.GetById(damageReportId);
+
             var relativePath =
-                FileStorageHelper.SaveSingleFile(
+                FileStorageHelper.SaveWithGeneratedName(
                     photoStream,
                     originalFileName,
                     Path.Combine(
                         DamagePhotoFolder,
-                        damageReportId.ToString()
-                    ),
-                    DamagePhotoFileName,
-                    clearDirectoryFirst: true
+                        report.DamageId.ToString()
+                    )
                 );
 
             _reportRepo.SetPhoto(
                 damageReportId,
                 relativePath);
         }
+
 
         public void DeleteDamageReportPhoto(int damageReportId)
         {

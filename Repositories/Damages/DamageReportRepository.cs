@@ -105,4 +105,27 @@ public class DamageReportRepository
 
         return list;
     }
+    
+    public List<DamageReport> GetByDamage(int damageId)
+    {
+        var table = DB.Query(
+            """
+            SELECT
+                id,
+                damage_id,
+                photo_path,
+                approved
+            FROM damage_reports
+            WHERE damage_id = @did
+            ORDER BY id;
+            """,
+            ("@did", damageId)
+        );
+    
+        var list = new List<DamageReport>();
+        foreach (DataRow row in table.Rows)
+            list.Add(Map(row));
+    
+        return list;
+    }
 }

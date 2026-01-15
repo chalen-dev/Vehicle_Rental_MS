@@ -84,9 +84,8 @@ namespace VRMS.Forms
         {
             try
             {
-                InspectionVehicleInfoDto info =
-                    _damageService.GetVehicleInfoByDamage(
-                        _rentalId);
+                RentalVehicleInfoDto info =
+                    _damageService.GetVehicleInfoByRental(_rentalId);
 
                 txtVehicleModel.Text = info.VehicleModel;
                 txtPlateNumber.Text = info.PlateNumber;
@@ -201,28 +200,22 @@ namespace VRMS.Forms
                         numEstimatedCost.Value
                     );
 
-                // ----------------------------
-                // CREATE DAMAGE REPORT
-                // ----------------------------
-
-                int reportId =
-                    _damageService.CreateDamageReport(
-                        damageId
-                    );
 
                 // ----------------------------
-                // SAVE FIRST PHOTO (TEMP)
+                // SAVE ALL PHOTOS (ONE REPORT PER PHOTO)
                 // ----------------------------
-
-                if (_selectedPhotos.Count > 0)
+                foreach (var photoPath in _selectedPhotos)
                 {
+                    int photoReportId =
+                        _damageService.CreateDamageReport(damageId);
+
                     using var stream =
-                        File.OpenRead(_selectedPhotos[0]);
+                        File.OpenRead(photoPath);
 
                     _damageService.SetDamageReportPhoto(
-                        reportId,
+                        photoReportId,
                         stream,
-                        Path.GetFileName(_selectedPhotos[0])
+                        Path.GetFileName(photoPath)
                     );
                 }
 

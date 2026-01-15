@@ -13,7 +13,7 @@ namespace VRMS.UI.Forms.Damages
         // STATE
         // =====================================================
 
-        private readonly int _damageReportId;
+        private readonly int _damageId;
         private readonly DamageService _damageService;
 
         private DamageReport _report = null!;
@@ -26,12 +26,12 @@ namespace VRMS.UI.Forms.Damages
         // =====================================================
 
         public DamageReportDetails(
-            int damageReportId,
+            int damageId,
             DamageService damageService)
         {
             InitializeComponent();
 
-            _damageReportId = damageReportId;
+            _damageId = damageId;
             _damageService = damageService;
 
             Load += DamageReportDetails_Load;
@@ -59,18 +59,24 @@ namespace VRMS.UI.Forms.Damages
             try
             {
                 // ----------------------------
-                // DAMAGE REPORT
-                // ----------------------------
-                _report =
-                    _damageService.GetDamageReportById(
-                        _damageReportId);
-
-                // ----------------------------
                 // DAMAGE
                 // ----------------------------
                 _damage =
-                    _damageService.GetDamageById(
-                        _report.DamageId);
+                    _damageService.GetDamageById(_damageId);
+
+                // ----------------------------
+                // DAMAGE REPORTS (PHOTOS)
+                // ----------------------------
+                var reports =
+                    _damageService.GetReportsByDamage(_damageId);
+
+                if (reports.Count == 0)
+                    throw new InvalidOperationException(
+                        "No damage reports found for this damage.");
+
+                // TEMPORARY: use the FIRST report
+                _report = reports[0];
+
 
                 // ----------------------------
                 // REPORT INFO (PLACEHOLDERS)
@@ -117,10 +123,7 @@ namespace VRMS.UI.Forms.Damages
                 cbStatus.SelectedIndex =
                     _report.Approved ? 1 : 0;
 
-                // ----------------------------
-                // PHOTO
-                // ----------------------------
-                LoadPhoto(_report.PhotoPath);
+                LoadAllPhotos(reports);
             }
             catch (Exception ex)
             {
@@ -137,29 +140,75 @@ namespace VRMS.UI.Forms.Damages
         // =====================================================
         // PHOTO LOADING (SAFE)
         // =====================================================
-
-        private void LoadPhoto(string relativePath)
+        
+        private void LoadAllPhotos(List<DamageReport> reports)
         {
-            pbDamageImage1.Image?.Dispose();
-            pbDamageImage1.Image = null;
+            // 1. Clear existing images
+            foreach (Control c in flowLayoutPanelImages.Controls)
+            {
+                if (c is PictureBox pb && pb.Image != null)
+                {
+                    pb.Image.Dispose();
+                }
+            }
 
-            if (string.IsNullOrWhiteSpace(relativePath))
-                return;
+            flowLayoutPanelImages.Controls.Clear();
 
-            // MUST match FileStorageHelper.StorageRoot
-            string fullPath =
-                Path.Combine(
-                    AppContext.BaseDirectory,
-                    "Storage",
-                    relativePath
-                );
+            // 2. Add one PictureBox per valid photo
+            foreach (var report in reports)
+            {
+                if (string.IsNullOrWhiteSpace(report.PhotoPath))
+                    continue; // IMPORTANT: skips the empty one
 
-            if (!File.Exists(fullPath))
-                return;
+                string fullPath =
+                    Path.Combine(
+                        AppContext.BaseDirectory,
+                        "Storage",
+                        report.PhotoPath
+                    );
 
-            // Load safely without locking the file
-            using var temp = Image.FromFile(fullPath);
-            pbDamageImage1.Image = new Bitmap(temp);
+                if (!File.Exists(fullPath))
+                    continue;
+
+                var pb = new PictureBox
+                {
+                    Width = 240,
+                    Height = 180,
+                    SizeMode = PictureBoxSizeMode.Zoom,
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Margin = new Padding(5),
+                    Cursor = Cursors.Hand
+                };
+
+                // Safe image loading (NO FILE LOCK)
+                using (var temp = Image.FromFile(fullPath))
+                {
+                    pb.Image = new Bitmap(temp);
+                }
+
+                // Optional: click to open full image
+                pb.Click += (_, __) =>
+                {
+                    using var viewer = new Form
+                    {
+                        Text = "Damage Photo",
+                        Width = 800,
+                        Height = 600
+                    };
+
+                    var img = new PictureBox
+                    {
+                        Dock = DockStyle.Fill,
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        Image = new Bitmap(pb.Image)
+                    };
+
+                    viewer.Controls.Add(img);
+                    viewer.ShowDialog();
+                };
+
+                flowLayoutPanelImages.Controls.Add(pb);
+            }
         }
 
 

@@ -15,12 +15,15 @@ public static class M_0012_CreateDamagesTable
                                           damage_type {Tbl.ToEnum<DamageType>()} NOT NULL,
                                           description TEXT NOT NULL,
 
+                                          estimated_cost DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+
                                           CONSTRAINT fk_damages_rental
                                               FOREIGN KEY (rental_id)
                                               REFERENCES rentals(id)
                                               ON DELETE CASCADE
                                       ) ENGINE=InnoDB;
                                       """;
+
 
     public static string Drop() => """
                                    DROP TABLE IF EXISTS damages;

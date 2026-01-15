@@ -121,7 +121,7 @@ namespace VRMS.UI.Forms.Rentals
             // HIDDEN: DamageReportId (CRITICAL FOR BUTTON TO WORK)
             dgvDamages.Columns.Add(new DataGridViewTextBoxColumn
             {
-                Name = "DamageReportId",
+                Name = "DamageId",
                 Visible = false
             });
 
@@ -181,12 +181,19 @@ namespace VRMS.UI.Forms.Rentals
         // =====================================================
         private void BtnAddDamage_Click(object? sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Damage entry is being updated to the new rental-based system.",
-                "Not Available",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            using (var form = new AddDamageForm(
+                       _rentalId,
+                       _rentalService,
+                       _vehicleService,
+                       ApplicationServices.DamageService))
+            {
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    LoadDamages(); // refresh grid after adding
+                }
+            }
         }
+
 
 
         // =====================================================
@@ -249,8 +256,25 @@ namespace VRMS.UI.Forms.Rentals
         {
             dgvDamages.Rows.Clear();
             _damageFees = 0m;
+
+            var damages =
+                ApplicationServices.DamageService
+                    .GetDamagesByRental(_rentalId);
+
+            foreach (var damage in damages)
+            {
+                dgvDamages.Rows.Add(
+                    damage.Id,                 // Hidden DamageId
+                    damage.Description,
+                    damage.EstimatedCost
+                );
+
+                _damageFees += damage.EstimatedCost;
+            }
+
             UpdateBillingUI();
         }
+
 
 
       
@@ -291,13 +315,13 @@ namespace VRMS.UI.Forms.Rentals
                 return;
             }
 
-            int damageReportId =
+            int damageId =
                 Convert.ToInt32(
-                    dgvDamages.CurrentRow.Cells["DamageReportId"].Value);
+                    dgvDamages.CurrentRow.Cells["DamageId"].Value);
 
             using (var form =
                    new VRMS.UI.Forms.Damages.DamageReportDetails(
-                       damageReportId,
+                       damageId,
                        ApplicationServices.DamageService))
             {
                 form.ShowDialog(this);
