@@ -11,12 +11,12 @@ public static class SP_DamageReports_GetById
                                   BEGIN
                                       SELECT
                                           id,
-                                          vehicle_inspection_id,
                                           damage_id,
                                           photo_path,
                                           approved
                                       FROM damage_reports
                                       WHERE id = p_damage_report_id;
+                                  
                                   END;
                                   """;
 }

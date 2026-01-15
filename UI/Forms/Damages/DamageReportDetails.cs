@@ -79,19 +79,24 @@ namespace VRMS.UI.Forms.Damages
                 txtReportedBy.Text = "System";
                 dtpReportDate.Value = DateTime.Now;
                 txtLocation.Text = "N/A";
+                
 
                 // ----------------------------
-                // VEHICLE INFO
+                // VEHICLE INFO (VIA DAMAGE → RENTAL)
                 // ----------------------------
                 var vehicle =
-                    _damageService.GetVehicleInfoByInspection(
-                        _report.VehicleInspectionId);
+                    _damageService.GetVehicleInfoByDamage(
+                        _damage.Id);
 
                 txtVIN.Text = "N/A";
                 txtLicensePlate.Text = vehicle.PlateNumber;
+
+                // vehicle_model already contains "Make Model"
                 txtVehicleMake.Text = vehicle.VehicleModel;
                 txtVehicleModel.Text = vehicle.VehicleModel;
+
                 txtVehicleColor.Text = "N/A";
+
 
                 // ----------------------------
                 // DAMAGE DETAILS

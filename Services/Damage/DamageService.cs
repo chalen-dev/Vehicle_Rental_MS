@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿
 using VRMS.DTOs.Damage;
 using VRMS.Enums;
 using VRMS.Helpers;
@@ -43,10 +41,14 @@ namespace VRMS.Services.Damage
         // ----------------------------
 
         public int CreateDamage(
+            int rentalId,
             DamageType damageType,
             string description,
             decimal estimatedCost)
         {
+            if (rentalId <= 0)
+                throw new InvalidOperationException("Invalid rental.");
+
             if (!Enum.IsDefined(typeof(DamageType), damageType))
                 throw new InvalidOperationException("Invalid damage type.");
 
@@ -59,10 +61,12 @@ namespace VRMS.Services.Damage
                     "Estimated cost cannot be negative.");
 
             return _damageRepo.Create(
+                rentalId,
                 damageType,
                 description,
                 estimatedCost);
         }
+
 
         public void UpdateDamage(
             int damageId,
@@ -105,15 +109,11 @@ namespace VRMS.Services.Damage
         // DAMAGE REPORTS
         // ----------------------------
 
-        public int CreateDamageReport(
-            int vehicleInspectionId,
-            int damageId)
+        public int CreateDamageReport(int damageId)
         {
             _damageRepo.GetById(damageId);
 
-            return _reportRepo.Create(
-                vehicleInspectionId,
-                damageId);
+            return _reportRepo.Create(damageId);
         }
 
         public void ApproveDamageReport(int damageReportId)
@@ -139,32 +139,11 @@ namespace VRMS.Services.Damage
 
             return report;
         }
-
-        public List<DamageReport> GetDamageReportsByInspection(
-            int vehicleInspectionId)
+        
+        public InspectionVehicleInfoDto GetVehicleInfoByDamage(int damageId)
         {
-            var list =
-                _reportRepo.GetByInspection(
-                    vehicleInspectionId);
-
-            foreach (var r in list)
-                r.PhotoPath =
-                    ResolvePhoto(r.PhotoPath);
-
-            return list;
+            return _damageRepo.GetVehicleInfoByDamage(damageId);
         }
-
-        // ----------------------------
-        // READ-ONLY VEHICLE INFO (NEW)
-        // ----------------------------
-
-        public InspectionVehicleInfoDto
-            GetVehicleInfoByInspection(int inspectionId)
-        {
-            return _damageRepo.GetVehicleInfoByInspection(
-                inspectionId);
-        }
-
         // ----------------------------
         // DAMAGE REPORT PHOTOS
         // ----------------------------

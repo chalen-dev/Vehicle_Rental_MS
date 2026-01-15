@@ -16,12 +16,11 @@ public static class SP_DamageReports_GetApprovedByRental
                                       FROM damage_reports dr
                                       INNER JOIN damages d
                                           ON d.id = dr.damage_id
-                                      INNER JOIN vehicle_inspections vi
-                                          ON vi.id = dr.vehicle_inspection_id
                                       WHERE
-                                          vi.rental_id = p_rental_id
+                                          d.rental_id = p_rental_id
                                           AND dr.approved = TRUE
                                       ORDER BY dr.id;
                                   END;
                                   """;
+
 }

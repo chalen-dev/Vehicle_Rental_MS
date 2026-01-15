@@ -13,11 +13,10 @@ public class DamageReportRepository
     // DAMAGE REPORTS
     // ----------------------------
 
-    public int Create(int vehicleInspectionId, int damageId)
+    public int Create(int damageId)
     {
         var table = DB.Query(
-            "CALL sp_damage_reports_create(@inspectionId, @damageId);",
-            ("@inspectionId", vehicleInspectionId),
+            "CALL sp_damage_reports_create(@damageId);",
             ("@damageId", damageId)
         );
 
@@ -44,20 +43,6 @@ public class DamageReportRepository
             throw new InvalidOperationException("Damage report not found.");
 
         return Map(table.Rows[0]);
-    }
-
-    public List<DamageReport> GetByInspection(int vehicleInspectionId)
-    {
-        var table = DB.Query(
-            "CALL sp_damage_reports_get_by_inspection(@inspectionId);",
-            ("@inspectionId", vehicleInspectionId)
-        );
-
-        var list = new List<DamageReport>();
-        foreach (DataRow row in table.Rows)
-            list.Add(Map(row));
-
-        return list;
     }
 
     public void SetPhoto(int damageReportId, string photoPath)
@@ -87,7 +72,6 @@ public class DamageReportRepository
         return new DamageReport
         {
             Id = Convert.ToInt32(row["id"]),
-            VehicleInspectionId = Convert.ToInt32(row["vehicle_inspection_id"]),
             DamageId = Convert.ToInt32(row["damage_id"]),
             PhotoPath = photoPath ?? string.Empty,
             Approved = Convert.ToBoolean(row["approved"])
@@ -113,7 +97,7 @@ public class DamageReportRepository
         foreach (DataRow row in table.Rows)
         {
             list.Add((
-                Convert.ToInt32(row["damage_report_id"]),
+                Convert.ToInt32(row["id"]),
                 row["description"].ToString()!,
                 Convert.ToDecimal(row["estimated_cost"])
             ));

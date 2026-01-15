@@ -247,16 +247,7 @@ namespace VRMS.UI.Controls.RentalsView
                             rental.ExpectedReturnDate,
                             vehicle.VehicleCategoryId);
 
-                    var category =
-                        _vehicleService.GetCategoryById(vehicle.VehicleCategoryId);
-
-                    decimal securityDeposit =
-                        category?.SecurityDeposit ?? 0m;
-
-                    decimal estimatedTotal =
-                        baseRental + securityDeposit;
-
-                    lblDetailAmount.Text = $"Total: ₱ {estimatedTotal:N2}";
+                    lblDetailAmount.Text = $"Total: ₱ {baseRental:N2}";
                 }
             }
             catch

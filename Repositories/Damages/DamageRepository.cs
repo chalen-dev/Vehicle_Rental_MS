@@ -15,12 +15,14 @@ namespace VRMS.Repositories.Damages
         // ----------------------------
 
         public int Create(
+            int rentalId,
             DamageType damageType,
             string description,
             decimal estimatedCost)
         {
             var table = DB.Query(
-                "CALL sp_damages_create(@type, @desc, @cost);",
+                "CALL sp_damages_create(@rentalId, @type, @desc, @cost);",
+                ("@rentalId", rentalId),
                 ("@type", damageType.ToString()),
                 ("@desc", description),
                 ("@cost", estimatedCost)
@@ -64,6 +66,39 @@ namespace VRMS.Repositories.Damages
 
             return Map(table.Rows[0]);
         }
+        
+        // ----------------------------
+        // READ-ONLY VEHICLE INFO (VIA RENTAL)
+        // ----------------------------
+        public InspectionVehicleInfoDto GetVehicleInfoByDamage(int damageId)
+        {
+            var table = DB.Query(
+                """
+                SELECT
+                    r.id            AS rental_number,
+                    CONCAT(v.make, ' ', v.model) AS vehicle_model,
+                    v.license_plate AS plate_number
+                FROM damages d
+                JOIN rentals r  ON r.id = d.rental_id
+                JOIN vehicles v ON v.id = r.vehicle_id
+                WHERE d.id = @damageId;
+                """,
+                ("@damageId", damageId)
+            );
+
+            if (table.Rows.Count == 0)
+                throw new InvalidOperationException(
+                    "Vehicle information not found for this damage.");
+
+            var row = table.Rows[0];
+
+            return new InspectionVehicleInfoDto
+            {
+                RentalNumber = Convert.ToInt32(row["rental_number"]),
+                VehicleModel = row["vehicle_model"].ToString()!,
+                PlateNumber  = row["plate_number"].ToString()!
+            };
+        }
 
         public List<Damage> GetAll()
         {
@@ -77,41 +112,7 @@ namespace VRMS.Repositories.Damages
 
             return list;
         }
-
-        // ----------------------------
-        // READ-ONLY VEHICLE INFO (NEW)
-        // ----------------------------
-
-        public InspectionVehicleInfoDto
-            GetVehicleInfoByInspection(int inspectionId)
-        {
-            var table = DB.Query(
-                @"
-                SELECT
-                    r.id            AS rental_number,
-                    CONCAT(v.make, ' ', v.model) AS vehicle_model,
-                    v.license_plate AS plate_number
-                FROM vehicle_inspections vi
-                JOIN rentals r   ON r.id = vi.rental_id
-                JOIN vehicles v  ON v.id = r.vehicle_id
-                WHERE vi.id = @inspectionId;
-                ",
-                ("@inspectionId", inspectionId)
-            );
-
-            if (table.Rows.Count == 0)
-                throw new InvalidOperationException(
-                    "Vehicle information not found for this inspection.");
-
-            var row = table.Rows[0];
-
-            return new InspectionVehicleInfoDto
-            {
-                RentalNumber = Convert.ToInt32(row["rental_number"]),
-                VehicleModel = row["vehicle_model"].ToString()!,
-                PlateNumber = row["plate_number"].ToString()!
-            };
-        }
+        
 
         // ----------------------------
         // MAPPING
@@ -122,6 +123,7 @@ namespace VRMS.Repositories.Damages
             return new Damage
             {
                 Id = Convert.ToInt32(row["id"]),
+                RentalId = Convert.ToInt32(row["rental_id"]), // ✅ THIS WAS MISSING
                 DamageType = Enum.Parse<DamageType>(
                     row["damage_type"].ToString()!,
                     ignoreCase: true),
