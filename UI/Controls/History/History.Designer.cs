@@ -6,10 +6,6 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
-        // ===== HEADER =====
-        private Panel panelHeader;
-        private Label lblTitle;
         private Label lblSummary;
 
         // ===== MAIN SPLIT CONTAINER =====
@@ -73,12 +69,10 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            panelHeader = new Panel();
-            lblTitle = new Label();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             lblSummary = new Label();
             splitContainerMain = new SplitContainer();
             panelHistoryList = new Panel();
@@ -126,7 +120,7 @@
             panelNoSelection = new Panel();
             lblNoSelection = new Label();
             toolTip = new ToolTip(components);
-            panelHeader.SuspendLayout();
+            panelHeader = new Panel();
             ((System.ComponentModel.ISupportInitialize)splitContainerMain).BeginInit();
             splitContainerMain.Panel1.SuspendLayout();
             splitContainerMain.Panel2.SuspendLayout();
@@ -145,36 +139,15 @@
             ((System.ComponentModel.ISupportInitialize)picVehicle).BeginInit();
             panelDetailsHeader.SuspendLayout();
             panelNoSelection.SuspendLayout();
+            panelHeader.SuspendLayout();
             SuspendLayout();
-            // 
-            // panelHeader
-            // 
-            panelHeader.BackColor = Color.FromArgb(30, 60, 90);
-            panelHeader.Controls.Add(lblTitle);
-            panelHeader.Controls.Add(lblSummary);
-            panelHeader.Dock = DockStyle.Top;
-            panelHeader.Location = new Point(0, 0);
-            panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(1200, 70);
-            panelHeader.TabIndex = 0;
-            // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.White;
-            lblTitle.Location = new Point(20, 15);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(291, 41);
-            lblTitle.TabIndex = 0;
-            lblTitle.Text = "📋 History & Records";
             // 
             // lblSummary
             // 
             lblSummary.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblSummary.Font = new Font("Segoe UI", 10F);
-            lblSummary.ForeColor = Color.FromArgb(200, 200, 200);
-            lblSummary.Location = new Point(900, 15);
+            lblSummary.ForeColor = Color.Black;
+            lblSummary.Location = new Point(900, 13);
             lblSummary.Name = "lblSummary";
             lblSummary.Size = new Size(280, 40);
             lblSummary.TabIndex = 1;
@@ -245,27 +218,27 @@
             dgvReservations.BorderStyle = BorderStyle.None;
             dgvReservations.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvReservations.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvReservations.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle5.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = Color.White;
+            dataGridViewCellStyle5.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvReservations.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvReservations.ColumnHeadersHeight = 40;
             dgvReservations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvReservations.Columns.AddRange(new DataGridViewColumn[] { colResId, colResVehicle, colResDates, colResStatus, colResAmount });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle2.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(236, 240, 241);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvReservations.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle6.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(236, 240, 241);
+            dataGridViewCellStyle6.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvReservations.DefaultCellStyle = dataGridViewCellStyle6;
             dgvReservations.Dock = DockStyle.Fill;
             dgvReservations.EnableHeadersVisualStyles = false;
             dgvReservations.GridColor = Color.WhiteSmoke;
@@ -336,27 +309,27 @@
             dgvRentals.BorderStyle = BorderStyle.None;
             dgvRentals.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvRentals.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle3.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvRentals.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle7.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            dataGridViewCellStyle7.ForeColor = Color.White;
+            dataGridViewCellStyle7.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dgvRentals.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             dgvRentals.ColumnHeadersHeight = 40;
             dgvRentals.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvRentals.Columns.AddRange(new DataGridViewColumn[] { colRentalId, colRentalVehicle, colRentalDates, colRentalStatus, colRentalAmount, colRentalOdo });
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = SystemColors.Window;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle4.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(236, 240, 241);
-            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dgvRentals.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = SystemColors.Window;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle8.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle8.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(236, 240, 241);
+            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            dgvRentals.DefaultCellStyle = dataGridViewCellStyle8;
             dgvRentals.Dock = DockStyle.Fill;
             dgvRentals.EnableHeadersVisualStyles = false;
             dgvRentals.GridColor = Color.WhiteSmoke;
@@ -738,6 +711,16 @@
             lblNoSelection.Text = "Select a record to view details";
             lblNoSelection.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // panelHeader
+            // 
+            panelHeader.BackColor = Color.White;
+            panelHeader.Controls.Add(lblSummary);
+            panelHeader.Dock = DockStyle.Top;
+            panelHeader.Location = new Point(0, 0);
+            panelHeader.Name = "panelHeader";
+            panelHeader.Size = new Size(1200, 70);
+            panelHeader.TabIndex = 0;
+            // 
             // History
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -747,8 +730,6 @@
             Controls.Add(panelHeader);
             Name = "History";
             Size = new Size(1200, 800);
-            panelHeader.ResumeLayout(false);
-            panelHeader.PerformLayout();
             splitContainerMain.Panel1.ResumeLayout(false);
             splitContainerMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainerMain).EndInit();
@@ -768,6 +749,7 @@
             ((System.ComponentModel.ISupportInitialize)picVehicle).EndInit();
             panelDetailsHeader.ResumeLayout(false);
             panelNoSelection.ResumeLayout(false);
+            panelHeader.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -789,5 +771,6 @@
         private DataGridViewTextBoxColumn colRentalStatus;
         private DataGridViewTextBoxColumn colRentalAmount;
         private DataGridViewTextBoxColumn colRentalOdo;
+        private Panel panelHeader;
     }
 }
