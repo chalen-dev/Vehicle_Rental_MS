@@ -17,272 +17,276 @@
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.dtpMonthYear = new System.Windows.Forms.DateTimePicker();
-            this.btnNextMonth = new System.Windows.Forms.Button();
-            this.btnPrevMonth = new System.Windows.Forms.Button();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.cmbFilter = new System.Windows.Forms.ComboBox();
-            this.cmbSort = new System.Windows.Forms.ComboBox();
-            this.btnList = new System.Windows.Forms.Button();
-            this.btnNewRental = new System.Windows.Forms.Button();
-            this.pnlMain = new System.Windows.Forms.Panel();
-            this.splitContainer = new System.Windows.Forms.SplitContainer();
-            this.pnlVehicleList = new System.Windows.Forms.Panel();
-            this.dgvVehicles = new System.Windows.Forms.DataGridView();
-            this.colYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLicense = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colModel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pnlCalendarCanvas = new System.Windows.Forms.Panel();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.pnlHeader.SuspendLayout();
-            this.pnlMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
-            this.splitContainer.Panel1.SuspendLayout();
-            this.splitContainer.Panel2.SuspendLayout();
-            this.splitContainer.SuspendLayout();
-            this.pnlVehicleList.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvVehicles)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            pnlHeader = new Panel();
+            dtpMonthYear = new DateTimePicker();
+            btnNextMonth = new Button();
+            btnPrevMonth = new Button();
+            lblTitle = new Label();
+            cmbFilter = new ComboBox();
+            cmbSort = new ComboBox();
+            btnList = new Button();
+            btnNewRental = new Button();
+            pnlMain = new Panel();
+            splitContainer = new SplitContainer();
+            pnlVehicleList = new Panel();
+            dgvVehicles = new DataGridView();
+            colYear = new DataGridViewTextBoxColumn();
+            colLicense = new DataGridViewTextBoxColumn();
+            colModel = new DataGridViewTextBoxColumn();
+            pnlCalendarCanvas = new Panel();
+            toolTip = new ToolTip(components);
+            pnlHeader.SuspendLayout();
+            pnlMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+            splitContainer.Panel1.SuspendLayout();
+            splitContainer.Panel2.SuspendLayout();
+            splitContainer.SuspendLayout();
+            pnlVehicleList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvVehicles).BeginInit();
+            SuspendLayout();
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = System.Drawing.Color.White;
-            this.pnlHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlHeader.Controls.Add(this.dtpMonthYear);
-            this.pnlHeader.Controls.Add(this.btnNextMonth);
-            this.pnlHeader.Controls.Add(this.btnPrevMonth);
-            this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Controls.Add(this.cmbFilter);
-            this.pnlHeader.Controls.Add(this.cmbSort);
-            this.pnlHeader.Controls.Add(this.btnList);
-            this.pnlHeader.Controls.Add(this.btnNewRental);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1200, 50);
-            this.pnlHeader.TabIndex = 0;
+            pnlHeader.BackColor = Color.White;
+            pnlHeader.BorderStyle = BorderStyle.FixedSingle;
+            pnlHeader.Controls.Add(dtpMonthYear);
+            pnlHeader.Controls.Add(btnNextMonth);
+            pnlHeader.Controls.Add(btnPrevMonth);
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Controls.Add(cmbFilter);
+            pnlHeader.Controls.Add(cmbSort);
+            pnlHeader.Controls.Add(btnList);
+            pnlHeader.Controls.Add(btnNewRental);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Margin = new Padding(3, 4, 3, 4);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1371, 66);
+            pnlHeader.TabIndex = 0;
             // 
             // dtpMonthYear
             // 
-            this.dtpMonthYear.CustomFormat = "MMMM yyyy";
-            this.dtpMonthYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpMonthYear.Location = new System.Drawing.Point(150, 13);
-            this.dtpMonthYear.Name = "dtpMonthYear";
-            this.dtpMonthYear.ShowUpDown = true;
-            this.dtpMonthYear.Size = new System.Drawing.Size(150, 23);
-            this.dtpMonthYear.TabIndex = 7;
+            dtpMonthYear.CustomFormat = "MMMM yyyy";
+            dtpMonthYear.Format = DateTimePickerFormat.Custom;
+            dtpMonthYear.Location = new Point(171, 17);
+            dtpMonthYear.Margin = new Padding(3, 4, 3, 4);
+            dtpMonthYear.Name = "dtpMonthYear";
+            dtpMonthYear.ShowUpDown = true;
+            dtpMonthYear.Size = new Size(171, 27);
+            dtpMonthYear.TabIndex = 7;
             // 
             // btnNextMonth
             // 
-            this.btnNextMonth.Location = new System.Drawing.Point(306, 13);
-            this.btnNextMonth.Name = "btnNextMonth";
-            this.btnNextMonth.Size = new System.Drawing.Size(30, 23);
-            this.btnNextMonth.TabIndex = 6;
-            this.btnNextMonth.Text = ">";
-            this.btnNextMonth.UseVisualStyleBackColor = true;
+            btnNextMonth.Location = new Point(350, 17);
+            btnNextMonth.Margin = new Padding(3, 4, 3, 4);
+            btnNextMonth.Name = "btnNextMonth";
+            btnNextMonth.Size = new Size(34, 31);
+            btnNextMonth.TabIndex = 6;
+            btnNextMonth.Text = ">";
+            btnNextMonth.UseVisualStyleBackColor = true;
             // 
             // btnPrevMonth
             // 
-            this.btnPrevMonth.Location = new System.Drawing.Point(114, 13);
-            this.btnPrevMonth.Name = "btnPrevMonth";
-            this.btnPrevMonth.Size = new System.Drawing.Size(30, 23);
-            this.btnPrevMonth.TabIndex = 5;
-            this.btnPrevMonth.Text = "<";
-            this.btnPrevMonth.UseVisualStyleBackColor = true;
+            btnPrevMonth.Location = new Point(130, 17);
+            btnPrevMonth.Margin = new Padding(3, 4, 3, 4);
+            btnPrevMonth.Name = "btnPrevMonth";
+            btnPrevMonth.Size = new Size(34, 31);
+            btnPrevMonth.TabIndex = 5;
+            btnPrevMonth.Text = "<";
+            btnPrevMonth.UseVisualStyleBackColor = true;
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(10, 10);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(98, 25);
-            this.lblTitle.TabIndex = 4;
-            this.lblTitle.Text = "Rentals s";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitle.Location = new Point(11, 13);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(104, 32);
+            lblTitle.TabIndex = 4;
+            lblTitle.Text = "Rentals ";
             // 
             // cmbFilter
             // 
-            this.cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFilter.FormattingEnabled = true;
-            this.cmbFilter.Items.AddRange(new object[] {
-            "Small Category",
-            "Medium Category",
-            "Large Category",
-            "All Categories"});
-            this.cmbFilter.Location = new System.Drawing.Point(350, 13);
-            this.cmbFilter.Name = "cmbFilter";
-            this.cmbFilter.Size = new System.Drawing.Size(120, 23);
-            this.cmbFilter.TabIndex = 3;
-            this.cmbFilter.Text = "Small Category";
+            cmbFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFilter.FormattingEnabled = true;
+            cmbFilter.Items.AddRange(new object[] { "Small Category", "Medium Category", "Large Category", "All Categories" });
+            cmbFilter.Location = new Point(400, 17);
+            cmbFilter.Margin = new Padding(3, 4, 3, 4);
+            cmbFilter.Name = "cmbFilter";
+            cmbFilter.Size = new Size(137, 28);
+            cmbFilter.TabIndex = 3;
             // 
             // cmbSort
             // 
-            this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSort.FormattingEnabled = true;
-            this.cmbSort.Items.AddRange(new object[] {
-            "Category",
-            "License Plate",
-            "Year",
-            "Model"});
-            this.cmbSort.Location = new System.Drawing.Point(480, 13);
-            this.cmbSort.Name = "cmbSort";
-            this.cmbSort.Size = new System.Drawing.Size(120, 23);
-            this.cmbSort.TabIndex = 2;
-            this.cmbSort.Text = "Category";
+            cmbSort.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSort.FormattingEnabled = true;
+            cmbSort.Items.AddRange(new object[] { "Category", "License Plate", "Year", "Model" });
+            cmbSort.Location = new Point(549, 17);
+            cmbSort.Margin = new Padding(3, 4, 3, 4);
+            cmbSort.Name = "cmbSort";
+            cmbSort.Size = new Size(137, 28);
+            cmbSort.TabIndex = 2;
             // 
             // btnList
             // 
-            this.btnList.Location = new System.Drawing.Point(610, 12);
-            this.btnList.Name = "btnList";
-            this.btnList.Size = new System.Drawing.Size(75, 23);
-            this.btnList.TabIndex = 1;
-            this.btnList.Text = "List View";
-            this.btnList.UseVisualStyleBackColor = true;
+            btnList.Location = new Point(697, 16);
+            btnList.Margin = new Padding(3, 4, 3, 4);
+            btnList.Name = "btnList";
+            btnList.Size = new Size(86, 31);
+            btnList.TabIndex = 1;
+            btnList.Text = "List View";
+            btnList.UseVisualStyleBackColor = true;
             // 
             // btnNewRental
             // 
-            this.btnNewRental.BackColor = System.Drawing.Color.SteelBlue;
-            this.btnNewRental.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNewRental.ForeColor = System.Drawing.Color.White;
-            this.btnNewRental.Location = new System.Drawing.Point(700, 12);
-            this.btnNewRental.Name = "btnNewRental";
-            this.btnNewRental.Size = new System.Drawing.Size(100, 23);
-            this.btnNewRental.TabIndex = 0;
-            this.btnNewRental.Text = "New Rental";
-            this.btnNewRental.UseVisualStyleBackColor = false;
+            btnNewRental.BackColor = Color.SteelBlue;
+            btnNewRental.FlatStyle = FlatStyle.Flat;
+            btnNewRental.ForeColor = Color.White;
+            btnNewRental.Location = new Point(800, 16);
+            btnNewRental.Margin = new Padding(3, 4, 3, 4);
+            btnNewRental.Name = "btnNewRental";
+            btnNewRental.Size = new Size(114, 31);
+            btnNewRental.TabIndex = 0;
+            btnNewRental.Text = "New Rental";
+            btnNewRental.UseVisualStyleBackColor = false;
             // 
             // pnlMain
             // 
-            this.pnlMain.Controls.Add(this.splitContainer);
-            this.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMain.Location = new System.Drawing.Point(0, 50);
-            this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(1200, 550);
-            this.pnlMain.TabIndex = 1;
+            pnlMain.Controls.Add(splitContainer);
+            pnlMain.Dock = DockStyle.Fill;
+            pnlMain.Location = new Point(0, 66);
+            pnlMain.Margin = new Padding(3, 4, 3, 4);
+            pnlMain.Name = "pnlMain";
+            pnlMain.Size = new Size(1371, 734);
+            pnlMain.TabIndex = 1;
             // 
             // splitContainer
             // 
-            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer.Name = "splitContainer";
+            splitContainer.Dock = DockStyle.Fill;
+            splitContainer.FixedPanel = FixedPanel.Panel1;
+            splitContainer.Location = new Point(0, 0);
+            splitContainer.Margin = new Padding(3, 4, 3, 4);
+            splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.pnlVehicleList);
-            this.splitContainer.Panel1MinSize = 250;
+            splitContainer.Panel1.Controls.Add(pnlVehicleList);
+            splitContainer.Panel1MinSize = 250;
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.Controls.Add(this.pnlCalendarCanvas);
-            this.splitContainer.Size = new System.Drawing.Size(1200, 550);
-            this.splitContainer.SplitterDistance = 250;
-            this.splitContainer.TabIndex = 0;
+            splitContainer.Panel2.Controls.Add(pnlCalendarCanvas);
+            splitContainer.Size = new Size(1371, 734);
+            splitContainer.SplitterDistance = 286;
+            splitContainer.SplitterWidth = 5;
+            splitContainer.TabIndex = 0;
             // 
             // pnlVehicleList
             // 
-            this.pnlVehicleList.Controls.Add(this.dgvVehicles);
-            this.pnlVehicleList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlVehicleList.Location = new System.Drawing.Point(0, 0);
-            this.pnlVehicleList.Name = "pnlVehicleList";
-            this.pnlVehicleList.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlVehicleList.Size = new System.Drawing.Size(250, 550);
-            this.pnlVehicleList.TabIndex = 0;
+            pnlVehicleList.Controls.Add(dgvVehicles);
+            pnlVehicleList.Dock = DockStyle.Fill;
+            pnlVehicleList.Location = new Point(0, 0);
+            pnlVehicleList.Margin = new Padding(3, 4, 3, 4);
+            pnlVehicleList.Name = "pnlVehicleList";
+            pnlVehicleList.Padding = new Padding(6, 7, 6, 7);
+            pnlVehicleList.Size = new Size(286, 734);
+            pnlVehicleList.TabIndex = 0;
             // 
             // dgvVehicles
             // 
-            this.dgvVehicles.AllowUserToAddRows = false;
-            this.dgvVehicles.AllowUserToDeleteRows = false;
-            this.dgvVehicles.AllowUserToResizeRows = false;
-            this.dgvVehicles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvVehicles.BackgroundColor = System.Drawing.Color.White;
-            this.dgvVehicles.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvVehicles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvVehicles.ColumnHeadersVisible = false;
-            this.dgvVehicles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colYear,
-            this.colLicense,
-            this.colModel});
-            this.dgvVehicles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvVehicles.Location = new System.Drawing.Point(5, 5);
-            this.dgvVehicles.MultiSelect = false;
-            this.dgvVehicles.Name = "dgvVehicles";
-            this.dgvVehicles.ReadOnly = true;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvVehicles.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvVehicles.RowHeadersVisible = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.dgvVehicles.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvVehicles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvVehicles.Size = new System.Drawing.Size(240, 540);
-            this.dgvVehicles.TabIndex = 0;
+            dgvVehicles.AllowUserToAddRows = false;
+            dgvVehicles.AllowUserToDeleteRows = false;
+            dgvVehicles.AllowUserToResizeRows = false;
+            dgvVehicles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvVehicles.BackgroundColor = Color.White;
+            dgvVehicles.BorderStyle = BorderStyle.None;
+            dgvVehicles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvVehicles.ColumnHeadersVisible = false;
+            dgvVehicles.Columns.AddRange(new DataGridViewColumn[] { colYear, colLicense, colModel });
+            dgvVehicles.Dock = DockStyle.Fill;
+            dgvVehicles.Location = new Point(6, 7);
+            dgvVehicles.Margin = new Padding(3, 4, 3, 4);
+            dgvVehicles.MultiSelect = false;
+            dgvVehicles.Name = "dgvVehicles";
+            dgvVehicles.ReadOnly = true;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvVehicles.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvVehicles.RowHeadersVisible = false;
+            dgvVehicles.RowHeadersWidth = 51;
+            dataGridViewCellStyle2.BackColor = Color.WhiteSmoke;
+            dgvVehicles.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dgvVehicles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvVehicles.Size = new Size(274, 720);
+            dgvVehicles.TabIndex = 0;
             // 
             // colYear
             // 
-            this.colYear.DataPropertyName = "Year";
-            this.colYear.FillWeight = 30F;
-            this.colYear.HeaderText = "Year";
-            this.colYear.Name = "colYear";
-            this.colYear.ReadOnly = true;
+            colYear.DataPropertyName = "Year";
+            colYear.FillWeight = 30F;
+            colYear.HeaderText = "Year";
+            colYear.MinimumWidth = 6;
+            colYear.Name = "colYear";
+            colYear.ReadOnly = true;
             // 
             // colLicense
             // 
-            this.colLicense.DataPropertyName = "LicensePlate";
-            this.colLicense.FillWeight = 40F;
-            this.colLicense.HeaderText = "License";
-            this.colLicense.Name = "colLicense";
-            this.colLicense.ReadOnly = true;
+            colLicense.DataPropertyName = "LicensePlate";
+            colLicense.FillWeight = 40F;
+            colLicense.HeaderText = "License";
+            colLicense.MinimumWidth = 6;
+            colLicense.Name = "colLicense";
+            colLicense.ReadOnly = true;
             // 
             // colModel
             // 
-            this.colModel.DataPropertyName = "Model";
-            this.colModel.FillWeight = 60F;
-            this.colModel.HeaderText = "Model";
-            this.colModel.Name = "colModel";
-            this.colModel.ReadOnly = true;
+            colModel.DataPropertyName = "Model";
+            colModel.FillWeight = 60F;
+            colModel.HeaderText = "Model";
+            colModel.MinimumWidth = 6;
+            colModel.Name = "colModel";
+            colModel.ReadOnly = true;
             // 
             // pnlCalendarCanvas
             // 
-            this.pnlCalendarCanvas.BackColor = System.Drawing.Color.White;
-            this.pnlCalendarCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlCalendarCanvas.Location = new System.Drawing.Point(0, 0);
-            this.pnlCalendarCanvas.Name = "pnlCalendarCanvas";
-            this.pnlCalendarCanvas.Size = new System.Drawing.Size(946, 550);
-            this.pnlCalendarCanvas.TabIndex = 0;
-            this.pnlCalendarCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlCalendarCanvas_Paint);
-            this.pnlCalendarCanvas.Resize += new System.EventHandler(this.pnlCalendarCanvas_Resize);
+            pnlCalendarCanvas.BackColor = Color.White;
+            pnlCalendarCanvas.Dock = DockStyle.Fill;
+            pnlCalendarCanvas.Location = new Point(0, 0);
+            pnlCalendarCanvas.Margin = new Padding(3, 4, 3, 4);
+            pnlCalendarCanvas.Name = "pnlCalendarCanvas";
+            pnlCalendarCanvas.Size = new Size(1080, 734);
+            pnlCalendarCanvas.TabIndex = 0;
+            pnlCalendarCanvas.Paint += pnlCalendarCanvas_Paint;
+            pnlCalendarCanvas.Resize += pnlCalendarCanvas_Resize;
             // 
             // CalendarView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.pnlMain);
-            this.Controls.Add(this.pnlHeader);
-            this.Name = "CalendarView";
-            this.Size = new System.Drawing.Size(1200, 600);
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
-            this.pnlMain.ResumeLayout(false);
-            this.splitContainer.Panel1.ResumeLayout(false);
-            this.splitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
-            this.splitContainer.ResumeLayout(false);
-            this.pnlVehicleList.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvVehicles)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            Controls.Add(pnlMain);
+            Controls.Add(pnlHeader);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "CalendarView";
+            Size = new Size(1371, 800);
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            pnlMain.ResumeLayout(false);
+            splitContainer.Panel1.ResumeLayout(false);
+            splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+            splitContainer.ResumeLayout(false);
+            pnlVehicleList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvVehicles).EndInit();
+            ResumeLayout(false);
 
         }
 

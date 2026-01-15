@@ -35,7 +35,6 @@
             pnlHeader = new Panel();
             dateRangePicker = new DateTimePicker();
             btnRefresh = new Button();
-            lblDashboardTitle = new Label();
             mainContainer = new Panel();
             rightPanel = new Panel();
             splitRight = new SplitContainer();
@@ -95,7 +94,6 @@
             pnlHeader.BackColor = Color.White;
             pnlHeader.Controls.Add(dateRangePicker);
             pnlHeader.Controls.Add(btnRefresh);
-            pnlHeader.Controls.Add(lblDashboardTitle);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
@@ -129,17 +127,6 @@
             btnRefresh.TabIndex = 1;
             btnRefresh.Text = "Refresh";
             btnRefresh.UseVisualStyleBackColor = false;
-            // 
-            // lblDashboardTitle
-            // 
-            lblDashboardTitle.AutoSize = true;
-            lblDashboardTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblDashboardTitle.ForeColor = Color.FromArgb(44, 62, 80);
-            lblDashboardTitle.Location = new Point(14, 16);
-            lblDashboardTitle.Name = "lblDashboardTitle";
-            lblDashboardTitle.Size = new Size(265, 41);
-            lblDashboardTitle.TabIndex = 0;
-            lblDashboardTitle.Text = "VRMS Dashboard";
             // 
             // mainContainer
             // 
@@ -589,7 +576,6 @@
             Name = "DashboardView";
             Size = new Size(1200, 907);
             pnlHeader.ResumeLayout(false);
-            pnlHeader.PerformLayout();
             mainContainer.ResumeLayout(false);
             rightPanel.ResumeLayout(false);
             splitRight.Panel1.ResumeLayout(false);
@@ -626,7 +612,6 @@
         private Panel pnlHeader;
         private DateTimePicker dateRangePicker;
         private Button btnRefresh;
-        private Label lblDashboardTitle;
         private Panel mainContainer;
         private Panel rightPanel;
         private SplitContainer splitRight;
