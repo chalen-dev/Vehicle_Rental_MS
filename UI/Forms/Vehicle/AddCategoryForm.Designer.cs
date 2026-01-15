@@ -28,556 +28,601 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panelHeader = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.panelContent = new System.Windows.Forms.Panel();
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabCategoryInfo = new System.Windows.Forms.TabPage();
-            this.grpCategoryInfo = new System.Windows.Forms.GroupBox();
-            this.txtDescription = new System.Windows.Forms.TextBox();
-            this.lblDescription = new System.Windows.Forms.Label();
-            this.txtCategoryName = new System.Windows.Forms.TextBox();
-            this.lblCategoryName = new System.Windows.Forms.Label();
-            this.tabRates = new System.Windows.Forms.TabPage();
-            this.panelRates = new System.Windows.Forms.Panel();
-            this.grpSecurityDeposit = new System.Windows.Forms.GroupBox();
-            this.nudSecurityDeposit = new System.Windows.Forms.NumericUpDown();
-            this.lblSecurityDeposit = new System.Windows.Forms.Label();
-            this.chkSecurityDepositEnabled = new System.Windows.Forms.CheckBox();
-            this.grpMonthly = new System.Windows.Forms.GroupBox();
-            this.nudMonthlyRate = new System.Windows.Forms.NumericUpDown();
-            this.lblMonthly = new System.Windows.Forms.Label();
-            this.chkMonthlyEnabled = new System.Windows.Forms.CheckBox();
-            this.grpWeekly = new System.Windows.Forms.GroupBox();
-            this.nudWeeklyRate = new System.Windows.Forms.NumericUpDown();
-            this.lblWeekly = new System.Windows.Forms.Label();
-            this.chkWeeklyEnabled = new System.Windows.Forms.CheckBox();
-            this.grpDaily = new System.Windows.Forms.GroupBox();
-            this.nudDailyRate = new System.Windows.Forms.NumericUpDown();
-            this.lblDaily = new System.Windows.Forms.Label();
-            this.chkDailyEnabled = new System.Windows.Forms.CheckBox();
-            this.grpExistingCategories = new System.Windows.Forms.GroupBox();
-            this.panelListButtons = new System.Windows.Forms.Panel();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.lstCategories = new System.Windows.Forms.ListBox();
-            this.panelFooter = new System.Windows.Forms.Panel();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.panelHeader.SuspendLayout();
-            this.panelContent.SuspendLayout();
-            this.tabControl.SuspendLayout();
-            this.tabCategoryInfo.SuspendLayout();
-            this.grpCategoryInfo.SuspendLayout();
-            this.tabRates.SuspendLayout();
-            this.panelRates.SuspendLayout();
-            this.grpSecurityDeposit.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSecurityDeposit)).BeginInit();
-            this.grpMonthly.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMonthlyRate)).BeginInit();
-            this.grpWeekly.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWeeklyRate)).BeginInit();
-            this.grpDaily.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDailyRate)).BeginInit();
-            this.grpExistingCategories.SuspendLayout();
-            this.panelListButtons.SuspendLayout();
-            this.panelFooter.SuspendLayout();
-            this.SuspendLayout();
+            panelHeader = new Panel();
+            lblTitle = new Label();
+            panelContent = new Panel();
+            tabControl = new TabControl();
+            tabCategoryInfo = new TabPage();
+            grpCategoryInfo = new GroupBox();
+            txtDescription = new TextBox();
+            lblDescription = new Label();
+            txtCategoryName = new TextBox();
+            lblCategoryName = new Label();
+            tabRates = new TabPage();
+            panelRates = new Panel();
+            grpSecurityDeposit = new GroupBox();
+            numMileageOverage = new NumericUpDown();
+            lblSecurityDeposit = new Label();
+            chkMileageOverage = new CheckBox();
+            grpMonthly = new GroupBox();
+            nudMonthlyRate = new NumericUpDown();
+            lblMonthly = new Label();
+            chkMonthlyEnabled = new CheckBox();
+            grpWeekly = new GroupBox();
+            nudWeeklyRate = new NumericUpDown();
+            lblWeekly = new Label();
+            chkWeeklyEnabled = new CheckBox();
+            grpDaily = new GroupBox();
+            nudDailyRate = new NumericUpDown();
+            lblDaily = new Label();
+            chkDailyEnabled = new CheckBox();
+            grpExistingCategories = new GroupBox();
+            panelListButtons = new Panel();
+            btnDelete = new Button();
+            lstCategories = new ListBox();
+            panelFooter = new Panel();
+            btnCancel = new Button();
+            btnSave = new Button();
+            groupBox1 = new GroupBox();
+            numericUpDown1 = new NumericUpDown();
+            label1 = new Label();
+            checkBox1 = new CheckBox();
+            panelHeader.SuspendLayout();
+            panelContent.SuspendLayout();
+            tabControl.SuspendLayout();
+            tabCategoryInfo.SuspendLayout();
+            grpCategoryInfo.SuspendLayout();
+            tabRates.SuspendLayout();
+            panelRates.SuspendLayout();
+            grpSecurityDeposit.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numMileageOverage).BeginInit();
+            grpMonthly.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudMonthlyRate).BeginInit();
+            grpWeekly.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudWeeklyRate).BeginInit();
+            grpDaily.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nudDailyRate).BeginInit();
+            grpExistingCategories.SuspendLayout();
+            panelListButtons.SuspendLayout();
+            panelFooter.SuspendLayout();
+            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            SuspendLayout();
             // 
             // panelHeader
             // 
-            this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.panelHeader.Controls.Add(this.lblTitle);
-            this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelHeader.Location = new System.Drawing.Point(0, 0);
-            this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(800, 80);
-            this.panelHeader.TabIndex = 0;
+            panelHeader.BackColor = Color.FromArgb(30, 60, 90);
+            panelHeader.Controls.Add(lblTitle);
+            panelHeader.Dock = DockStyle.Top;
+            panelHeader.Location = new Point(0, 0);
+            panelHeader.Name = "panelHeader";
+            panelHeader.Size = new Size(955, 80);
+            panelHeader.TabIndex = 0;
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(25, 20);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(256, 46);
-            this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "Vehicle Category";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Location = new Point(25, 20);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(279, 46);
+            lblTitle.TabIndex = 1;
+            lblTitle.Text = "Vehicle Category";
             // 
             // panelContent
             // 
-            this.panelContent.BackColor = System.Drawing.Color.White;
-            this.panelContent.Controls.Add(this.tabControl);
-            this.panelContent.Controls.Add(this.grpExistingCategories);
-            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContent.Location = new System.Drawing.Point(0, 80);
-            this.panelContent.Name = "panelContent";
-            this.panelContent.Padding = new System.Windows.Forms.Padding(25);
-            this.panelContent.Size = new System.Drawing.Size(800, 650);
-            this.panelContent.TabIndex = 1;
+            panelContent.BackColor = Color.White;
+            panelContent.Controls.Add(tabControl);
+            panelContent.Controls.Add(grpExistingCategories);
+            panelContent.Dock = DockStyle.Fill;
+            panelContent.Location = new Point(0, 80);
+            panelContent.Name = "panelContent";
+            panelContent.Padding = new Padding(25);
+            panelContent.Size = new Size(955, 650);
+            panelContent.TabIndex = 1;
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabCategoryInfo);
-            this.tabControl.Controls.Add(this.tabRates);
-            this.tabControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tabControl.Location = new System.Drawing.Point(25, 25);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(750, 320);
-            this.tabControl.TabIndex = 2;
+            tabControl.Controls.Add(tabCategoryInfo);
+            tabControl.Controls.Add(tabRates);
+            tabControl.Dock = DockStyle.Top;
+            tabControl.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            tabControl.Location = new Point(25, 25);
+            tabControl.Name = "tabControl";
+            tabControl.SelectedIndex = 0;
+            tabControl.Size = new Size(905, 320);
+            tabControl.TabIndex = 2;
             // 
             // tabCategoryInfo
             // 
-            this.tabCategoryInfo.BackColor = System.Drawing.Color.White;
-            this.tabCategoryInfo.Controls.Add(this.grpCategoryInfo);
-            this.tabCategoryInfo.Location = new System.Drawing.Point(4, 31);
-            this.tabCategoryInfo.Name = "tabCategoryInfo";
-            this.tabCategoryInfo.Padding = new System.Windows.Forms.Padding(15);
-            this.tabCategoryInfo.Size = new System.Drawing.Size(742, 285);
-            this.tabCategoryInfo.TabIndex = 0;
-            this.tabCategoryInfo.Text = "Category Information";
+            tabCategoryInfo.BackColor = Color.White;
+            tabCategoryInfo.Controls.Add(grpCategoryInfo);
+            tabCategoryInfo.Location = new Point(4, 32);
+            tabCategoryInfo.Name = "tabCategoryInfo";
+            tabCategoryInfo.Padding = new Padding(15);
+            tabCategoryInfo.Size = new Size(742, 284);
+            tabCategoryInfo.TabIndex = 0;
+            tabCategoryInfo.Text = "Category Information";
             // 
             // grpCategoryInfo
             // 
-            this.grpCategoryInfo.BackColor = System.Drawing.Color.White;
-            this.grpCategoryInfo.Controls.Add(this.txtDescription);
-            this.grpCategoryInfo.Controls.Add(this.lblDescription);
-            this.grpCategoryInfo.Controls.Add(this.txtCategoryName);
-            this.grpCategoryInfo.Controls.Add(this.lblCategoryName);
-            this.grpCategoryInfo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpCategoryInfo.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.grpCategoryInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.grpCategoryInfo.Location = new System.Drawing.Point(15, 15);
-            this.grpCategoryInfo.Name = "grpCategoryInfo";
-            this.grpCategoryInfo.Size = new System.Drawing.Size(712, 255);
-            this.grpCategoryInfo.TabIndex = 0;
-            this.grpCategoryInfo.TabStop = false;
-            this.grpCategoryInfo.Text = "Basic Information";
+            grpCategoryInfo.BackColor = Color.White;
+            grpCategoryInfo.Controls.Add(txtDescription);
+            grpCategoryInfo.Controls.Add(lblDescription);
+            grpCategoryInfo.Controls.Add(txtCategoryName);
+            grpCategoryInfo.Controls.Add(lblCategoryName);
+            grpCategoryInfo.Dock = DockStyle.Fill;
+            grpCategoryInfo.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpCategoryInfo.ForeColor = Color.FromArgb(30, 60, 90);
+            grpCategoryInfo.Location = new Point(15, 15);
+            grpCategoryInfo.Name = "grpCategoryInfo";
+            grpCategoryInfo.Size = new Size(712, 254);
+            grpCategoryInfo.TabIndex = 0;
+            grpCategoryInfo.TabStop = false;
+            grpCategoryInfo.Text = "Basic Information";
             // 
             // txtDescription
             // 
-            this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtDescription.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtDescription.Location = new System.Drawing.Point(25, 135);
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(660, 32);
-            this.txtDescription.TabIndex = 3;
+            txtDescription.BorderStyle = BorderStyle.FixedSingle;
+            txtDescription.Font = new Font("Segoe UI", 11F);
+            txtDescription.Location = new Point(25, 135);
+            txtDescription.Name = "txtDescription";
+            txtDescription.Size = new Size(660, 32);
+            txtDescription.TabIndex = 3;
             // 
             // lblDescription
             // 
-            this.lblDescription.AutoSize = true;
-            this.lblDescription.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.lblDescription.Location = new System.Drawing.Point(25, 105);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(110, 25);
-            this.lblDescription.TabIndex = 2;
-            this.lblDescription.Text = "Description:";
+            lblDescription.AutoSize = true;
+            lblDescription.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            lblDescription.ForeColor = Color.FromArgb(30, 60, 90);
+            lblDescription.Location = new Point(25, 105);
+            lblDescription.Name = "lblDescription";
+            lblDescription.Size = new Size(115, 25);
+            lblDescription.TabIndex = 2;
+            lblDescription.Text = "Description:";
             // 
             // txtCategoryName
             // 
-            this.txtCategoryName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtCategoryName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtCategoryName.Location = new System.Drawing.Point(25, 65);
-            this.txtCategoryName.Name = "txtCategoryName";
-            this.txtCategoryName.Size = new System.Drawing.Size(660, 32);
-            this.txtCategoryName.TabIndex = 1;
+            txtCategoryName.BorderStyle = BorderStyle.FixedSingle;
+            txtCategoryName.Font = new Font("Segoe UI", 11F);
+            txtCategoryName.Location = new Point(25, 65);
+            txtCategoryName.Name = "txtCategoryName";
+            txtCategoryName.Size = new Size(660, 32);
+            txtCategoryName.TabIndex = 1;
             // 
             // lblCategoryName
             // 
-            this.lblCategoryName.AutoSize = true;
-            this.lblCategoryName.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblCategoryName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.lblCategoryName.Location = new System.Drawing.Point(25, 35);
-            this.lblCategoryName.Name = "lblCategoryName";
-            this.lblCategoryName.Size = new System.Drawing.Size(147, 25);
-            this.lblCategoryName.TabIndex = 0;
-            this.lblCategoryName.Text = "Category Name:";
+            lblCategoryName.AutoSize = true;
+            lblCategoryName.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            lblCategoryName.ForeColor = Color.FromArgb(30, 60, 90);
+            lblCategoryName.Location = new Point(25, 35);
+            lblCategoryName.Name = "lblCategoryName";
+            lblCategoryName.Size = new Size(153, 25);
+            lblCategoryName.TabIndex = 0;
+            lblCategoryName.Text = "Category Name:";
             // 
             // tabRates
             // 
-            this.tabRates.BackColor = System.Drawing.Color.White;
-            this.tabRates.Controls.Add(this.panelRates);
-            this.tabRates.Location = new System.Drawing.Point(4, 31);
-            this.tabRates.Name = "tabRates";
-            this.tabRates.Padding = new System.Windows.Forms.Padding(15);
-            this.tabRates.Size = new System.Drawing.Size(742, 285);
-            this.tabRates.TabIndex = 1;
-            this.tabRates.Text = "Rental Rates & Deposit";
+            tabRates.BackColor = Color.White;
+            tabRates.Controls.Add(panelRates);
+            tabRates.Location = new Point(4, 32);
+            tabRates.Name = "tabRates";
+            tabRates.Padding = new Padding(15);
+            tabRates.Size = new Size(897, 284);
+            tabRates.TabIndex = 1;
+            tabRates.Text = "Rental Rates & Deposit";
             // 
             // panelRates
             // 
-            this.panelRates.BackColor = System.Drawing.Color.White;
-            this.panelRates.Controls.Add(this.grpSecurityDeposit);
-            this.panelRates.Controls.Add(this.grpMonthly);
-            this.panelRates.Controls.Add(this.grpWeekly);
-            this.panelRates.Controls.Add(this.grpDaily);
-            this.panelRates.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelRates.Location = new System.Drawing.Point(15, 15);
-            this.panelRates.Name = "panelRates";
-            this.panelRates.Size = new System.Drawing.Size(712, 255);
-            this.panelRates.TabIndex = 0;
+            panelRates.BackColor = Color.White;
+            panelRates.Controls.Add(groupBox1);
+            panelRates.Controls.Add(grpSecurityDeposit);
+            panelRates.Controls.Add(grpMonthly);
+            panelRates.Controls.Add(grpWeekly);
+            panelRates.Controls.Add(grpDaily);
+            panelRates.Dock = DockStyle.Fill;
+            panelRates.Location = new Point(15, 15);
+            panelRates.Name = "panelRates";
+            panelRates.Size = new Size(867, 254);
+            panelRates.TabIndex = 0;
             // 
             // grpSecurityDeposit
             // 
-            this.grpSecurityDeposit.BackColor = System.Drawing.Color.White;
-            this.grpSecurityDeposit.Controls.Add(this.nudSecurityDeposit);
-            this.grpSecurityDeposit.Controls.Add(this.lblSecurityDeposit);
-            this.grpSecurityDeposit.Controls.Add(this.chkSecurityDepositEnabled);
-            this.grpSecurityDeposit.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.grpSecurityDeposit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.grpSecurityDeposit.Location = new System.Drawing.Point(470, 10);
-            this.grpSecurityDeposit.Name = "grpSecurityDeposit";
-            this.grpSecurityDeposit.Size = new System.Drawing.Size(220, 230);
-            this.grpSecurityDeposit.TabIndex = 3;
-            this.grpSecurityDeposit.TabStop = false;
-            this.grpSecurityDeposit.Text = "Security Deposit";
+            grpSecurityDeposit.BackColor = Color.White;
+            grpSecurityDeposit.Controls.Add(numMileageOverage);
+            grpSecurityDeposit.Controls.Add(lblSecurityDeposit);
+            grpSecurityDeposit.Controls.Add(chkMileageOverage);
+            grpSecurityDeposit.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpSecurityDeposit.ForeColor = Color.FromArgb(30, 60, 90);
+            grpSecurityDeposit.Location = new Point(663, 10);
+            grpSecurityDeposit.Name = "grpSecurityDeposit";
+            grpSecurityDeposit.Size = new Size(181, 230);
+            grpSecurityDeposit.TabIndex = 3;
+            grpSecurityDeposit.TabStop = false;
+            grpSecurityDeposit.Text = "Mileage/day(km)";
             // 
-            // nudSecurityDeposit
+            // numMileageOverage
             // 
-            this.nudSecurityDeposit.DecimalPlaces = 2;
-            this.nudSecurityDeposit.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nudSecurityDeposit.Location = new System.Drawing.Point(25, 120);
-            this.nudSecurityDeposit.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.nudSecurityDeposit.Name = "nudSecurityDeposit";
-            this.nudSecurityDeposit.Size = new System.Drawing.Size(170, 32);
-            this.nudSecurityDeposit.TabIndex = 2;
-            this.nudSecurityDeposit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudSecurityDeposit.ThousandsSeparator = true;
+            numMileageOverage.DecimalPlaces = 2;
+            numMileageOverage.Font = new Font("Segoe UI", 11F);
+            numMileageOverage.Location = new Point(11, 120);
+            numMileageOverage.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numMileageOverage.Name = "numMileageOverage";
+            numMileageOverage.Size = new Size(156, 32);
+            numMileageOverage.TabIndex = 2;
+            numMileageOverage.TextAlign = HorizontalAlignment.Right;
+            numMileageOverage.ThousandsSeparator = true;
             // 
             // lblSecurityDeposit
             // 
-            this.lblSecurityDeposit.AutoSize = true;
-            this.lblSecurityDeposit.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblSecurityDeposit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblSecurityDeposit.Location = new System.Drawing.Point(25, 90);
-            this.lblSecurityDeposit.Name = "lblSecurityDeposit";
-            this.lblSecurityDeposit.Size = new System.Drawing.Size(57, 25);
-            this.lblSecurityDeposit.TabIndex = 1;
-            this.lblSecurityDeposit.Text = "Rate:";
+            lblSecurityDeposit.AutoSize = true;
+            lblSecurityDeposit.Font = new Font("Segoe UI", 11F);
+            lblSecurityDeposit.ForeColor = Color.FromArgb(64, 64, 64);
+            lblSecurityDeposit.Location = new Point(25, 90);
+            lblSecurityDeposit.Name = "lblSecurityDeposit";
+            lblSecurityDeposit.Size = new Size(53, 25);
+            lblSecurityDeposit.TabIndex = 1;
+            lblSecurityDeposit.Text = "Rate:";
             // 
-            // chkSecurityDepositEnabled
+            // chkMileageOverage
             // 
-            this.chkSecurityDepositEnabled.AutoSize = true;
-            this.chkSecurityDepositEnabled.Checked = true;
-            this.chkSecurityDepositEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSecurityDepositEnabled.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.chkSecurityDepositEnabled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chkSecurityDepositEnabled.Location = new System.Drawing.Point(25, 50);
-            this.chkSecurityDepositEnabled.Name = "chkSecurityDepositEnabled";
-            this.chkSecurityDepositEnabled.Size = new System.Drawing.Size(95, 29);
-            this.chkSecurityDepositEnabled.TabIndex = 0;
-            this.chkSecurityDepositEnabled.Text = "Enabled";
-            this.chkSecurityDepositEnabled.UseVisualStyleBackColor = true;
+            chkMileageOverage.AutoSize = true;
+            chkMileageOverage.Checked = true;
+            chkMileageOverage.CheckState = CheckState.Checked;
+            chkMileageOverage.Font = new Font("Segoe UI", 11F);
+            chkMileageOverage.ForeColor = Color.FromArgb(64, 64, 64);
+            chkMileageOverage.Location = new Point(25, 50);
+            chkMileageOverage.Name = "chkMileageOverage";
+            chkMileageOverage.Size = new Size(102, 29);
+            chkMileageOverage.TabIndex = 0;
+            chkMileageOverage.Text = "Enabled";
+            chkMileageOverage.UseVisualStyleBackColor = true;
             // 
             // grpMonthly
             // 
-            this.grpMonthly.BackColor = System.Drawing.Color.White;
-            this.grpMonthly.Controls.Add(this.nudMonthlyRate);
-            this.grpMonthly.Controls.Add(this.lblMonthly);
-            this.grpMonthly.Controls.Add(this.chkMonthlyEnabled);
-            this.grpMonthly.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.grpMonthly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.grpMonthly.Location = new System.Drawing.Point(320, 10);
-            this.grpMonthly.Name = "grpMonthly";
-            this.grpMonthly.Size = new System.Drawing.Size(140, 230);
-            this.grpMonthly.TabIndex = 2;
-            this.grpMonthly.TabStop = false;
-            this.grpMonthly.Text = "Monthly Rate";
+            grpMonthly.BackColor = Color.White;
+            grpMonthly.Controls.Add(nudMonthlyRate);
+            grpMonthly.Controls.Add(lblMonthly);
+            grpMonthly.Controls.Add(chkMonthlyEnabled);
+            grpMonthly.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpMonthly.ForeColor = Color.FromArgb(30, 60, 90);
+            grpMonthly.Location = new Point(320, 10);
+            grpMonthly.Name = "grpMonthly";
+            grpMonthly.Size = new Size(140, 230);
+            grpMonthly.TabIndex = 2;
+            grpMonthly.TabStop = false;
+            grpMonthly.Text = "Monthly Rate";
             // 
             // nudMonthlyRate
             // 
-            this.nudMonthlyRate.DecimalPlaces = 2;
-            this.nudMonthlyRate.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nudMonthlyRate.Location = new System.Drawing.Point(15, 120);
-            this.nudMonthlyRate.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.nudMonthlyRate.Name = "nudMonthlyRate";
-            this.nudMonthlyRate.Size = new System.Drawing.Size(110, 32);
-            this.nudMonthlyRate.TabIndex = 2;
-            this.nudMonthlyRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudMonthlyRate.ThousandsSeparator = true;
+            nudMonthlyRate.DecimalPlaces = 2;
+            nudMonthlyRate.Font = new Font("Segoe UI", 11F);
+            nudMonthlyRate.Location = new Point(15, 120);
+            nudMonthlyRate.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            nudMonthlyRate.Name = "nudMonthlyRate";
+            nudMonthlyRate.Size = new Size(110, 32);
+            nudMonthlyRate.TabIndex = 2;
+            nudMonthlyRate.TextAlign = HorizontalAlignment.Right;
+            nudMonthlyRate.ThousandsSeparator = true;
             // 
             // lblMonthly
             // 
-            this.lblMonthly.AutoSize = true;
-            this.lblMonthly.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblMonthly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblMonthly.Location = new System.Drawing.Point(15, 90);
-            this.lblMonthly.Name = "lblMonthly";
-            this.lblMonthly.Size = new System.Drawing.Size(57, 25);
-            this.lblMonthly.TabIndex = 1;
-            this.lblMonthly.Text = "Rate:";
+            lblMonthly.AutoSize = true;
+            lblMonthly.Font = new Font("Segoe UI", 11F);
+            lblMonthly.ForeColor = Color.FromArgb(64, 64, 64);
+            lblMonthly.Location = new Point(15, 90);
+            lblMonthly.Name = "lblMonthly";
+            lblMonthly.Size = new Size(53, 25);
+            lblMonthly.TabIndex = 1;
+            lblMonthly.Text = "Rate:";
             // 
             // chkMonthlyEnabled
             // 
-            this.chkMonthlyEnabled.AutoSize = true;
-            this.chkMonthlyEnabled.Checked = true;
-            this.chkMonthlyEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkMonthlyEnabled.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.chkMonthlyEnabled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chkMonthlyEnabled.Location = new System.Drawing.Point(15, 50);
-            this.chkMonthlyEnabled.Name = "chkMonthlyEnabled";
-            this.chkMonthlyEnabled.Size = new System.Drawing.Size(95, 29);
-            this.chkMonthlyEnabled.TabIndex = 0;
-            this.chkMonthlyEnabled.Text = "Enabled";
-            this.chkMonthlyEnabled.UseVisualStyleBackColor = true;
+            chkMonthlyEnabled.AutoSize = true;
+            chkMonthlyEnabled.Checked = true;
+            chkMonthlyEnabled.CheckState = CheckState.Checked;
+            chkMonthlyEnabled.Font = new Font("Segoe UI", 11F);
+            chkMonthlyEnabled.ForeColor = Color.FromArgb(64, 64, 64);
+            chkMonthlyEnabled.Location = new Point(15, 50);
+            chkMonthlyEnabled.Name = "chkMonthlyEnabled";
+            chkMonthlyEnabled.Size = new Size(102, 29);
+            chkMonthlyEnabled.TabIndex = 0;
+            chkMonthlyEnabled.Text = "Enabled";
+            chkMonthlyEnabled.UseVisualStyleBackColor = true;
             // 
             // grpWeekly
             // 
-            this.grpWeekly.BackColor = System.Drawing.Color.White;
-            this.grpWeekly.Controls.Add(this.nudWeeklyRate);
-            this.grpWeekly.Controls.Add(this.lblWeekly);
-            this.grpWeekly.Controls.Add(this.chkWeeklyEnabled);
-            this.grpWeekly.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.grpWeekly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.grpWeekly.Location = new System.Drawing.Point(170, 10);
-            this.grpWeekly.Name = "grpWeekly";
-            this.grpWeekly.Size = new System.Drawing.Size(140, 230);
-            this.grpWeekly.TabIndex = 1;
-            this.grpWeekly.TabStop = false;
-            this.grpWeekly.Text = "Weekly Rate";
+            grpWeekly.BackColor = Color.White;
+            grpWeekly.Controls.Add(nudWeeklyRate);
+            grpWeekly.Controls.Add(lblWeekly);
+            grpWeekly.Controls.Add(chkWeeklyEnabled);
+            grpWeekly.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpWeekly.ForeColor = Color.FromArgb(30, 60, 90);
+            grpWeekly.Location = new Point(170, 10);
+            grpWeekly.Name = "grpWeekly";
+            grpWeekly.Size = new Size(140, 230);
+            grpWeekly.TabIndex = 1;
+            grpWeekly.TabStop = false;
+            grpWeekly.Text = "Weekly Rate";
             // 
             // nudWeeklyRate
             // 
-            this.nudWeeklyRate.DecimalPlaces = 2;
-            this.nudWeeklyRate.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nudWeeklyRate.Location = new System.Drawing.Point(15, 120);
-            this.nudWeeklyRate.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.nudWeeklyRate.Name = "nudWeeklyRate";
-            this.nudWeeklyRate.Size = new System.Drawing.Size(110, 32);
-            this.nudWeeklyRate.TabIndex = 2;
-            this.nudWeeklyRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudWeeklyRate.ThousandsSeparator = true;
+            nudWeeklyRate.DecimalPlaces = 2;
+            nudWeeklyRate.Font = new Font("Segoe UI", 11F);
+            nudWeeklyRate.Location = new Point(15, 120);
+            nudWeeklyRate.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            nudWeeklyRate.Name = "nudWeeklyRate";
+            nudWeeklyRate.Size = new Size(110, 32);
+            nudWeeklyRate.TabIndex = 2;
+            nudWeeklyRate.TextAlign = HorizontalAlignment.Right;
+            nudWeeklyRate.ThousandsSeparator = true;
             // 
             // lblWeekly
             // 
-            this.lblWeekly.AutoSize = true;
-            this.lblWeekly.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblWeekly.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblWeekly.Location = new System.Drawing.Point(15, 90);
-            this.lblWeekly.Name = "lblWeekly";
-            this.lblWeekly.Size = new System.Drawing.Size(57, 25);
-            this.lblWeekly.TabIndex = 1;
-            this.lblWeekly.Text = "Rate:";
+            lblWeekly.AutoSize = true;
+            lblWeekly.Font = new Font("Segoe UI", 11F);
+            lblWeekly.ForeColor = Color.FromArgb(64, 64, 64);
+            lblWeekly.Location = new Point(15, 90);
+            lblWeekly.Name = "lblWeekly";
+            lblWeekly.Size = new Size(53, 25);
+            lblWeekly.TabIndex = 1;
+            lblWeekly.Text = "Rate:";
             // 
             // chkWeeklyEnabled
             // 
-            this.chkWeeklyEnabled.AutoSize = true;
-            this.chkWeeklyEnabled.Checked = true;
-            this.chkWeeklyEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkWeeklyEnabled.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.chkWeeklyEnabled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chkWeeklyEnabled.Location = new System.Drawing.Point(15, 50);
-            this.chkWeeklyEnabled.Name = "chkWeeklyEnabled";
-            this.chkWeeklyEnabled.Size = new System.Drawing.Size(95, 29);
-            this.chkWeeklyEnabled.TabIndex = 0;
-            this.chkWeeklyEnabled.Text = "Enabled";
-            this.chkWeeklyEnabled.UseVisualStyleBackColor = true;
+            chkWeeklyEnabled.AutoSize = true;
+            chkWeeklyEnabled.Checked = true;
+            chkWeeklyEnabled.CheckState = CheckState.Checked;
+            chkWeeklyEnabled.Font = new Font("Segoe UI", 11F);
+            chkWeeklyEnabled.ForeColor = Color.FromArgb(64, 64, 64);
+            chkWeeklyEnabled.Location = new Point(15, 50);
+            chkWeeklyEnabled.Name = "chkWeeklyEnabled";
+            chkWeeklyEnabled.Size = new Size(102, 29);
+            chkWeeklyEnabled.TabIndex = 0;
+            chkWeeklyEnabled.Text = "Enabled";
+            chkWeeklyEnabled.UseVisualStyleBackColor = true;
             // 
             // grpDaily
             // 
-            this.grpDaily.BackColor = System.Drawing.Color.White;
-            this.grpDaily.Controls.Add(this.nudDailyRate);
-            this.grpDaily.Controls.Add(this.lblDaily);
-            this.grpDaily.Controls.Add(this.chkDailyEnabled);
-            this.grpDaily.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.grpDaily.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.grpDaily.Location = new System.Drawing.Point(20, 10);
-            this.grpDaily.Name = "grpDaily";
-            this.grpDaily.Size = new System.Drawing.Size(140, 230);
-            this.grpDaily.TabIndex = 0;
-            this.grpDaily.TabStop = false;
-            this.grpDaily.Text = "Daily Rate";
+            grpDaily.BackColor = Color.White;
+            grpDaily.Controls.Add(nudDailyRate);
+            grpDaily.Controls.Add(lblDaily);
+            grpDaily.Controls.Add(chkDailyEnabled);
+            grpDaily.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpDaily.ForeColor = Color.FromArgb(30, 60, 90);
+            grpDaily.Location = new Point(20, 10);
+            grpDaily.Name = "grpDaily";
+            grpDaily.Size = new Size(140, 230);
+            grpDaily.TabIndex = 0;
+            grpDaily.TabStop = false;
+            grpDaily.Text = "Daily Rate";
             // 
             // nudDailyRate
             // 
-            this.nudDailyRate.DecimalPlaces = 2;
-            this.nudDailyRate.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.nudDailyRate.Location = new System.Drawing.Point(15, 120);
-            this.nudDailyRate.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.nudDailyRate.Name = "nudDailyRate";
-            this.nudDailyRate.Size = new System.Drawing.Size(110, 32);
-            this.nudDailyRate.TabIndex = 2;
-            this.nudDailyRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nudDailyRate.ThousandsSeparator = true;
+            nudDailyRate.DecimalPlaces = 2;
+            nudDailyRate.Font = new Font("Segoe UI", 11F);
+            nudDailyRate.Location = new Point(15, 120);
+            nudDailyRate.Maximum = new decimal(new int[] { 100000, 0, 0, 0 });
+            nudDailyRate.Name = "nudDailyRate";
+            nudDailyRate.Size = new Size(110, 32);
+            nudDailyRate.TabIndex = 2;
+            nudDailyRate.TextAlign = HorizontalAlignment.Right;
+            nudDailyRate.ThousandsSeparator = true;
             // 
             // lblDaily
             // 
-            this.lblDaily.AutoSize = true;
-            this.lblDaily.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lblDaily.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblDaily.Location = new System.Drawing.Point(15, 90);
-            this.lblDaily.Name = "lblDaily";
-            this.lblDaily.Size = new System.Drawing.Size(57, 25);
-            this.lblDaily.TabIndex = 1;
-            this.lblDaily.Text = "Rate:";
+            lblDaily.AutoSize = true;
+            lblDaily.Font = new Font("Segoe UI", 11F);
+            lblDaily.ForeColor = Color.FromArgb(64, 64, 64);
+            lblDaily.Location = new Point(15, 90);
+            lblDaily.Name = "lblDaily";
+            lblDaily.Size = new Size(53, 25);
+            lblDaily.TabIndex = 1;
+            lblDaily.Text = "Rate:";
             // 
             // chkDailyEnabled
             // 
-            this.chkDailyEnabled.AutoSize = true;
-            this.chkDailyEnabled.Checked = true;
-            this.chkDailyEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDailyEnabled.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.chkDailyEnabled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chkDailyEnabled.Location = new System.Drawing.Point(15, 50);
-            this.chkDailyEnabled.Name = "chkDailyEnabled";
-            this.chkDailyEnabled.Size = new System.Drawing.Size(95, 29);
-            this.chkDailyEnabled.TabIndex = 0;
-            this.chkDailyEnabled.Text = "Enabled";
-            this.chkDailyEnabled.UseVisualStyleBackColor = true;
+            chkDailyEnabled.AutoSize = true;
+            chkDailyEnabled.Checked = true;
+            chkDailyEnabled.CheckState = CheckState.Checked;
+            chkDailyEnabled.Font = new Font("Segoe UI", 11F);
+            chkDailyEnabled.ForeColor = Color.FromArgb(64, 64, 64);
+            chkDailyEnabled.Location = new Point(15, 50);
+            chkDailyEnabled.Name = "chkDailyEnabled";
+            chkDailyEnabled.Size = new Size(102, 29);
+            chkDailyEnabled.TabIndex = 0;
+            chkDailyEnabled.Text = "Enabled";
+            chkDailyEnabled.UseVisualStyleBackColor = true;
             // 
             // grpExistingCategories
             // 
-            this.grpExistingCategories.BackColor = System.Drawing.Color.White;
-            this.grpExistingCategories.Controls.Add(this.panelListButtons);
-            this.grpExistingCategories.Controls.Add(this.lstCategories);
-            this.grpExistingCategories.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.grpExistingCategories.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.grpExistingCategories.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(60)))), ((int)(((byte)(90)))));
-            this.grpExistingCategories.Location = new System.Drawing.Point(25, 360);
-            this.grpExistingCategories.Name = "grpExistingCategories";
-            this.grpExistingCategories.Size = new System.Drawing.Size(750, 265);
-            this.grpExistingCategories.TabIndex = 1;
-            this.grpExistingCategories.TabStop = false;
-            this.grpExistingCategories.Text = "Existing Categories";
+            grpExistingCategories.BackColor = Color.White;
+            grpExistingCategories.Controls.Add(panelListButtons);
+            grpExistingCategories.Controls.Add(lstCategories);
+            grpExistingCategories.Dock = DockStyle.Bottom;
+            grpExistingCategories.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            grpExistingCategories.ForeColor = Color.FromArgb(30, 60, 90);
+            grpExistingCategories.Location = new Point(25, 360);
+            grpExistingCategories.Name = "grpExistingCategories";
+            grpExistingCategories.Size = new Size(905, 265);
+            grpExistingCategories.TabIndex = 1;
+            grpExistingCategories.TabStop = false;
+            grpExistingCategories.Text = "Existing Categories";
             // 
             // panelListButtons
             // 
-            this.panelListButtons.Controls.Add(this.btnDelete);
-            this.panelListButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelListButtons.Location = new System.Drawing.Point(3, 227);
-            this.panelListButtons.Name = "panelListButtons";
-            this.panelListButtons.Padding = new System.Windows.Forms.Padding(10);
-            this.panelListButtons.Size = new System.Drawing.Size(744, 35);
-            this.panelListButtons.TabIndex = 1;
+            panelListButtons.Controls.Add(btnDelete);
+            panelListButtons.Dock = DockStyle.Bottom;
+            panelListButtons.Location = new Point(3, 227);
+            panelListButtons.Name = "panelListButtons";
+            panelListButtons.Padding = new Padding(10);
+            panelListButtons.Size = new Size(899, 35);
+            panelListButtons.TabIndex = 1;
             // 
             // btnDelete
             // 
-            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.btnDelete.FlatAppearance.BorderSize = 0;
-            this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDelete.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(10, 5);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(120, 30);
-            this.btnDelete.TabIndex = 0;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.BackColor = Color.FromArgb(231, 76, 60);
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(10, 5);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(120, 30);
+            btnDelete.TabIndex = 0;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = false;
             // 
             // lstCategories
             // 
-            this.lstCategories.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lstCategories.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstCategories.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.lstCategories.FormattingEnabled = true;
-            this.lstCategories.ItemHeight = 25;
-            this.lstCategories.Location = new System.Drawing.Point(3, 25);
-            this.lstCategories.Name = "lstCategories";
-            this.lstCategories.Size = new System.Drawing.Size(744, 237);
-            this.lstCategories.TabIndex = 0;
+            lstCategories.BorderStyle = BorderStyle.FixedSingle;
+            lstCategories.Dock = DockStyle.Fill;
+            lstCategories.Font = new Font("Segoe UI", 11F);
+            lstCategories.FormattingEnabled = true;
+            lstCategories.Location = new Point(3, 26);
+            lstCategories.Name = "lstCategories";
+            lstCategories.Size = new Size(899, 236);
+            lstCategories.TabIndex = 0;
             // 
             // panelFooter
             // 
-            this.panelFooter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panelFooter.Controls.Add(this.btnCancel);
-            this.panelFooter.Controls.Add(this.btnSave);
-            this.panelFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelFooter.Location = new System.Drawing.Point(0, 730);
-            this.panelFooter.Name = "panelFooter";
-            this.panelFooter.Padding = new System.Windows.Forms.Padding(25, 15, 25, 15);
-            this.panelFooter.Size = new System.Drawing.Size(800, 100);
-            this.panelFooter.TabIndex = 2;
+            panelFooter.BackColor = Color.FromArgb(248, 249, 250);
+            panelFooter.Controls.Add(btnCancel);
+            panelFooter.Controls.Add(btnSave);
+            panelFooter.Dock = DockStyle.Bottom;
+            panelFooter.Location = new Point(0, 730);
+            panelFooter.Name = "panelFooter";
+            panelFooter.Padding = new Padding(25, 15, 25, 15);
+            panelFooter.Size = new Size(955, 100);
+            panelFooter.TabIndex = 2;
             // 
             // btnCancel
             // 
-            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(122)))), ((int)(((byte)(137)))));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.FlatAppearance.BorderSize = 0;
-            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnCancel.ForeColor = System.Drawing.Color.White;
-            this.btnCancel.Location = new System.Drawing.Point(385, 15);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(140, 55);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = false;
+            btnCancel.BackColor = Color.FromArgb(108, 122, 137);
+            btnCancel.DialogResult = DialogResult.Cancel;
+            btnCancel.FlatAppearance.BorderSize = 0;
+            btnCancel.FlatStyle = FlatStyle.Flat;
+            btnCancel.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnCancel.ForeColor = Color.White;
+            btnCancel.Location = new Point(385, 15);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(140, 55);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "Cancel";
+            btnCancel.UseVisualStyleBackColor = false;
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(535, 15);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(200, 55);
-            this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "Save Category";
-            this.btnSave.UseVisualStyleBackColor = false;
+            btnSave.BackColor = Color.FromArgb(46, 204, 113);
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnSave.ForeColor = Color.White;
+            btnSave.Location = new Point(535, 15);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(200, 55);
+            btnSave.TabIndex = 0;
+            btnSave.Text = "Save Category";
+            btnSave.UseVisualStyleBackColor = false;
+            // 
+            // groupBox1
+            // 
+            groupBox1.BackColor = Color.White;
+            groupBox1.Controls.Add(numericUpDown1);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(checkBox1);
+            groupBox1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox1.ForeColor = Color.FromArgb(30, 60, 90);
+            groupBox1.Location = new Point(471, 10);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(177, 230);
+            groupBox1.TabIndex = 4;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Security Deposit";
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.DecimalPlaces = 2;
+            numericUpDown1.Font = new Font("Segoe UI", 11F);
+            numericUpDown1.Location = new Point(16, 118);
+            numericUpDown1.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(145, 32);
+            numericUpDown1.TabIndex = 2;
+            numericUpDown1.TextAlign = HorizontalAlignment.Right;
+            numericUpDown1.ThousandsSeparator = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 11F);
+            label1.ForeColor = Color.FromArgb(64, 64, 64);
+            label1.Location = new Point(25, 90);
+            label1.Name = "label1";
+            label1.Size = new Size(53, 25);
+            label1.TabIndex = 1;
+            label1.Text = "Rate:";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Checked = true;
+            checkBox1.CheckState = CheckState.Checked;
+            checkBox1.Font = new Font("Segoe UI", 11F);
+            checkBox1.ForeColor = Color.FromArgb(64, 64, 64);
+            checkBox1.Location = new Point(25, 50);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(102, 29);
+            checkBox1.TabIndex = 0;
+            checkBox1.Text = "Enabled";
+            checkBox1.UseVisualStyleBackColor = true;
             // 
             // AddCategoryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(800, 830);
-            this.Controls.Add(this.panelContent);
-            this.Controls.Add(this.panelFooter);
-            this.Controls.Add(this.panelHeader);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "AddCategoryForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Vehicle Category Management - VRMS";
-            this.panelHeader.ResumeLayout(false);
-            this.panelHeader.PerformLayout();
-            this.panelContent.ResumeLayout(false);
-            this.tabControl.ResumeLayout(false);
-            this.tabCategoryInfo.ResumeLayout(false);
-            this.grpCategoryInfo.ResumeLayout(false);
-            this.grpCategoryInfo.PerformLayout();
-            this.tabRates.ResumeLayout(false);
-            this.panelRates.ResumeLayout(false);
-            this.grpSecurityDeposit.ResumeLayout(false);
-            this.grpSecurityDeposit.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudSecurityDeposit)).EndInit();
-            this.grpMonthly.ResumeLayout(false);
-            this.grpMonthly.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudMonthlyRate)).EndInit();
-            this.grpWeekly.ResumeLayout(false);
-            this.grpWeekly.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudWeeklyRate)).EndInit();
-            this.grpDaily.ResumeLayout(false);
-            this.grpDaily.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDailyRate)).EndInit();
-            this.grpExistingCategories.ResumeLayout(false);
-            this.panelListButtons.ResumeLayout(false);
-            this.panelFooter.ResumeLayout(false);
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            CancelButton = btnCancel;
+            ClientSize = new Size(955, 830);
+            Controls.Add(panelContent);
+            Controls.Add(panelFooter);
+            Controls.Add(panelHeader);
+            Font = new Font("Segoe UI", 9F);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "AddCategoryForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Vehicle Category Management - VRMS";
+            panelHeader.ResumeLayout(false);
+            panelHeader.PerformLayout();
+            panelContent.ResumeLayout(false);
+            tabControl.ResumeLayout(false);
+            tabCategoryInfo.ResumeLayout(false);
+            grpCategoryInfo.ResumeLayout(false);
+            grpCategoryInfo.PerformLayout();
+            tabRates.ResumeLayout(false);
+            panelRates.ResumeLayout(false);
+            grpSecurityDeposit.ResumeLayout(false);
+            grpSecurityDeposit.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numMileageOverage).EndInit();
+            grpMonthly.ResumeLayout(false);
+            grpMonthly.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudMonthlyRate).EndInit();
+            grpWeekly.ResumeLayout(false);
+            grpWeekly.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudWeeklyRate).EndInit();
+            grpDaily.ResumeLayout(false);
+            grpDaily.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nudDailyRate).EndInit();
+            grpExistingCategories.ResumeLayout(false);
+            panelListButtons.ResumeLayout(false);
+            panelFooter.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ResumeLayout(false);
 
         }
 
@@ -615,8 +660,12 @@
         private System.Windows.Forms.Label lblMonthly;
         private System.Windows.Forms.CheckBox chkMonthlyEnabled;
         private System.Windows.Forms.GroupBox grpSecurityDeposit;
-        private System.Windows.Forms.NumericUpDown nudSecurityDeposit;
+        private System.Windows.Forms.NumericUpDown numMileageOverage;
         private System.Windows.Forms.Label lblSecurityDeposit;
-        private System.Windows.Forms.CheckBox chkSecurityDepositEnabled;
+        private System.Windows.Forms.CheckBox chkMileageOverage;
+        private GroupBox groupBox1;
+        private NumericUpDown numericUpDown1;
+        private Label label1;
+        private CheckBox checkBox1;
     }
 }

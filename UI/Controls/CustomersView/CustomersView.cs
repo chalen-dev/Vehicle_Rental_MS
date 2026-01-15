@@ -87,6 +87,12 @@ namespace VRMS.UI.Controls.CustomersView
 
             dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+            // Set column header style
+            dgvCustomers.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 191, 158);
+            dgvCustomers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvCustomers.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvCustomers.EnableHeadersVisualStyles = false;
+
             dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "First Name",
@@ -100,7 +106,7 @@ namespace VRMS.UI.Controls.CustomersView
                 DataPropertyName = "LastName",
                 FillWeight = 30
             });
-            
+
             dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Email",
@@ -121,8 +127,6 @@ namespace VRMS.UI.Controls.CustomersView
                 DataPropertyName = "Phone",
                 FillWeight = 20
             });
-            
-            
         }
 
         private void TxtSearch_TextChanged(object? sender, EventArgs e)
@@ -177,13 +181,13 @@ namespace VRMS.UI.Controls.CustomersView
                 return;
 
             PopulateForm(_state.SelectedCustomer);
-            
+
             btnEmergencyContacts.Enabled = true;
             UpdateDeleteButtonState();
         }
 
 
-        
+
 
 
 
@@ -505,7 +509,7 @@ namespace VRMS.UI.Controls.CustomersView
             lblAgeCheck.Text = $"Age: {age}";
             lblAgeCheck.ForeColor = age >= 21 ? Color.Green : Color.Red;
         }
-        
+
         private void UpdateDeleteButtonState()
         {
             if (_state.SelectedCustomer == null)
@@ -520,6 +524,5 @@ namespace VRMS.UI.Controls.CustomersView
             btnDelete.BackColor = Color.FromArgb(231, 76, 60); // red
             btnDelete.ForeColor = Color.White;
         }
-        
     }
 }

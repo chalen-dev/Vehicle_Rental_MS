@@ -17,26 +17,28 @@
 
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlHeader = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
             this.btnExportPDF = new System.Windows.Forms.Button();
             this.btnExportExcel = new System.Windows.Forms.Button();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.tcReports = new System.Windows.Forms.TabControl();
             this.tpFleet = new System.Windows.Forms.TabPage();
+            this.dgvReportData = new System.Windows.Forms.DataGridView();
             this.tpRevenue = new System.Windows.Forms.TabPage();
             this.tpPerformance = new System.Windows.Forms.TabPage();
             this.pnlFilters = new System.Windows.Forms.Panel();
+            this.btnApplyFilter = new System.Windows.Forms.Button();
             this.dtpEnd = new System.Windows.Forms.DateTimePicker();
             this.dtpStart = new System.Windows.Forms.DateTimePicker();
             this.lblDateTo = new System.Windows.Forms.Label();
             this.lblDateFrom = new System.Windows.Forms.Label();
-            this.btnApplyFilter = new System.Windows.Forms.Button();
-            this.dgvReportData = new System.Windows.Forms.DataGridView();
             this.pnlHeader.SuspendLayout();
             this.tcReports.SuspendLayout();
             this.tpFleet.SuspendLayout();
-            this.pnlFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvReportData)).BeginInit();
+            this.pnlFilters.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlHeader
@@ -50,17 +52,6 @@
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(1000, 80);
             this.pnlHeader.TabIndex = 0;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this.lblTitle.Location = new System.Drawing.Point(20, 15);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(384, 50);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Analytics & Reporting";
             // 
             // btnExportPDF
             // 
@@ -92,69 +83,16 @@
             this.btnExportExcel.Text = "📊 Export Excel";
             this.btnExportExcel.UseVisualStyleBackColor = false;
             // 
-            // pnlFilters
+            // lblTitle
             // 
-            this.pnlFilters.BackColor = System.Drawing.Color.White;
-            this.pnlFilters.Controls.Add(this.btnApplyFilter);
-            this.pnlFilters.Controls.Add(this.dtpEnd);
-            this.pnlFilters.Controls.Add(this.dtpStart);
-            this.pnlFilters.Controls.Add(this.lblDateTo);
-            this.pnlFilters.Controls.Add(this.lblDateFrom);
-            this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlFilters.Location = new System.Drawing.Point(0, 80);
-            this.pnlFilters.Name = "pnlFilters";
-            this.pnlFilters.Size = new System.Drawing.Size(1000, 60);
-            this.pnlFilters.TabIndex = 1;
-            // 
-            // lblDateFrom
-            // 
-            this.lblDateFrom.AutoSize = true;
-            this.lblDateFrom.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblDateFrom.Location = new System.Drawing.Point(25, 20);
-            this.lblDateFrom.Name = "lblDateFrom";
-            this.lblDateFrom.Size = new System.Drawing.Size(48, 20);
-            this.lblDateFrom.TabIndex = 0;
-            this.lblDateFrom.Text = "From:";
-            // 
-            // dtpStart
-            // 
-            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStart.Location = new System.Drawing.Point(75, 18);
-            this.dtpStart.Name = "dtpStart";
-            this.dtpStart.Size = new System.Drawing.Size(150, 22);
-            this.dtpStart.TabIndex = 1;
-            // 
-            // lblDateTo
-            // 
-            this.lblDateTo.AutoSize = true;
-            this.lblDateTo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblDateTo.Location = new System.Drawing.Point(250, 20);
-            this.lblDateTo.Name = "lblDateTo";
-            this.lblDateTo.Size = new System.Drawing.Size(29, 20);
-            this.lblDateTo.TabIndex = 2;
-            this.lblDateTo.Text = "To:";
-            // 
-            // dtpEnd
-            // 
-            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEnd.Location = new System.Drawing.Point(285, 18);
-            this.dtpEnd.Name = "dtpEnd";
-            this.dtpEnd.Size = new System.Drawing.Size(150, 22);
-            this.dtpEnd.TabIndex = 3;
-            // 
-            // btnApplyFilter
-            // 
-            this.btnApplyFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
-            this.btnApplyFilter.FlatAppearance.BorderSize = 0;
-            this.btnApplyFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnApplyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.btnApplyFilter.ForeColor = System.Drawing.Color.White;
-            this.btnApplyFilter.Location = new System.Drawing.Point(460, 14);
-            this.btnApplyFilter.Name = "btnApplyFilter";
-            this.btnApplyFilter.Size = new System.Drawing.Size(120, 32);
-            this.btnApplyFilter.TabIndex = 4;
-            this.btnApplyFilter.Text = "Generate";
-            this.btnApplyFilter.UseVisualStyleBackColor = false;
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.lblTitle.Location = new System.Drawing.Point(20, 15);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(384, 50);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Analytics & Reporting";
             // 
             // tcReports
             // 
@@ -185,13 +123,43 @@
             // dgvReportData
             // 
             this.dgvReportData.AllowUserToAddRows = false;
+            this.dgvReportData.AllowUserToDeleteRows = false;
+            this.dgvReportData.AllowUserToResizeRows = false;
+            this.dgvReportData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvReportData.BackgroundColor = System.Drawing.Color.White;
             this.dgvReportData.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dgvReportData.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvReportData.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(158)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(158)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvReportData.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvReportData.ColumnHeadersHeight = 40;
+            this.dgvReportData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvReportData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvReportData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvReportData.EnableHeadersVisualStyles = false;
+            this.dgvReportData.GridColor = System.Drawing.Color.WhiteSmoke;
             this.dgvReportData.Location = new System.Drawing.Point(10, 10);
+            this.dgvReportData.MultiSelect = false;
             this.dgvReportData.Name = "dgvReportData";
+            this.dgvReportData.ReadOnly = true;
             this.dgvReportData.RowHeadersVisible = false;
+            this.dgvReportData.RowHeadersWidth = 51;
+            this.dgvReportData.RowTemplate.Height = 35;
             this.dgvReportData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvReportData.Size = new System.Drawing.Size(972, 492);
             this.dgvReportData.TabIndex = 0;
@@ -214,6 +182,70 @@
             this.tpPerformance.Text = "KPIs & Metrics";
             this.tpPerformance.UseVisualStyleBackColor = true;
             // 
+            // pnlFilters
+            // 
+            this.pnlFilters.BackColor = System.Drawing.Color.White;
+            this.pnlFilters.Controls.Add(this.btnApplyFilter);
+            this.pnlFilters.Controls.Add(this.dtpEnd);
+            this.pnlFilters.Controls.Add(this.dtpStart);
+            this.pnlFilters.Controls.Add(this.lblDateTo);
+            this.pnlFilters.Controls.Add(this.lblDateFrom);
+            this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlFilters.Location = new System.Drawing.Point(0, 80);
+            this.pnlFilters.Name = "pnlFilters";
+            this.pnlFilters.Size = new System.Drawing.Size(1000, 60);
+            this.pnlFilters.TabIndex = 1;
+            // 
+            // btnApplyFilter
+            // 
+            this.btnApplyFilter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnApplyFilter.FlatAppearance.BorderSize = 0;
+            this.btnApplyFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnApplyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnApplyFilter.ForeColor = System.Drawing.Color.White;
+            this.btnApplyFilter.Location = new System.Drawing.Point(460, 14);
+            this.btnApplyFilter.Name = "btnApplyFilter";
+            this.btnApplyFilter.Size = new System.Drawing.Size(120, 32);
+            this.btnApplyFilter.TabIndex = 4;
+            this.btnApplyFilter.Text = "Generate";
+            this.btnApplyFilter.UseVisualStyleBackColor = false;
+            // 
+            // dtpEnd
+            // 
+            this.dtpEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpEnd.Location = new System.Drawing.Point(285, 18);
+            this.dtpEnd.Name = "dtpEnd";
+            this.dtpEnd.Size = new System.Drawing.Size(150, 22);
+            this.dtpEnd.TabIndex = 3;
+            // 
+            // dtpStart
+            // 
+            this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpStart.Location = new System.Drawing.Point(75, 18);
+            this.dtpStart.Name = "dtpStart";
+            this.dtpStart.Size = new System.Drawing.Size(150, 22);
+            this.dtpStart.TabIndex = 1;
+            // 
+            // lblDateTo
+            // 
+            this.lblDateTo.AutoSize = true;
+            this.lblDateTo.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblDateTo.Location = new System.Drawing.Point(250, 20);
+            this.lblDateTo.Name = "lblDateTo";
+            this.lblDateTo.Size = new System.Drawing.Size(29, 20);
+            this.lblDateTo.TabIndex = 2;
+            this.lblDateTo.Text = "To:";
+            // 
+            // lblDateFrom
+            // 
+            this.lblDateFrom.AutoSize = true;
+            this.lblDateFrom.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblDateFrom.Location = new System.Drawing.Point(25, 20);
+            this.lblDateFrom.Name = "lblDateFrom";
+            this.lblDateFrom.Size = new System.Drawing.Size(48, 20);
+            this.lblDateFrom.TabIndex = 0;
+            this.lblDateFrom.Text = "From:";
+            // 
             // ReportsView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -228,9 +260,9 @@
             this.pnlHeader.PerformLayout();
             this.tcReports.ResumeLayout(false);
             this.tpFleet.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvReportData)).EndInit();
             this.pnlFilters.ResumeLayout(false);
             this.pnlFilters.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvReportData)).EndInit();
             this.ResumeLayout(false);
 
         }

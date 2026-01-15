@@ -40,7 +40,7 @@ namespace VRMS.UI.Controls.Reports
                 Color.FromArgb(245, 245, 245);
 
             dgvReportData.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(52, 73, 94);
+                Color.FromArgb(32, 191, 158); // Changed to teal color
 
             dgvReportData.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvReportData.ColumnHeadersDefaultCellStyle.Font =

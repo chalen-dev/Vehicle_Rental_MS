@@ -47,9 +47,9 @@ namespace VRMS.UI.Forms
             chkMonthlyEnabled.CheckedChanged += (_, __) =>
                 nudMonthlyRate.Enabled = chkMonthlyEnabled.Checked;
 
-            chkSecurityDepositEnabled.CheckedChanged += (_, __) =>
-                nudSecurityDeposit.Enabled =
-                    chkSecurityDepositEnabled.Checked;
+            chkMileageOverage.CheckedChanged += (_, __) =>
+                numMileageOverage.Enabled =
+                    chkMileageOverage.Checked;
         }
 
         // =====================================================
@@ -104,10 +104,10 @@ namespace VRMS.UI.Forms
             txtDescription.Text = category.Description ?? "";
 
             // ---------- SECURITY DEPOSIT ----------
-            chkSecurityDepositEnabled.Checked =
+            chkMileageOverage.Checked =
                 category.SecurityDeposit > 0;
 
-            nudSecurityDeposit.Value =
+            numMileageOverage.Value =
                 category.SecurityDeposit;
 
             // ---------- RATES ----------
@@ -166,8 +166,8 @@ namespace VRMS.UI.Forms
             try
             {
                 var deposit =
-                    chkSecurityDepositEnabled.Checked
-                        ? nudSecurityDeposit.Value
+                    chkMileageOverage.Checked
+                        ? numMileageOverage.Value
                         : 0m;
 
                 if (_currentCategory == null)
@@ -260,12 +260,12 @@ namespace VRMS.UI.Forms
             chkDailyEnabled.Checked = true;
             chkWeeklyEnabled.Checked = true;
             chkMonthlyEnabled.Checked = true;
-            chkSecurityDepositEnabled.Checked = true;
+            chkMileageOverage.Checked = true;
 
             nudDailyRate.Value = 0;
             nudWeeklyRate.Value = 0;
             nudMonthlyRate.Value = 0;
-            nudSecurityDeposit.Value = 0;
+            numMileageOverage.Value = 0;
 
             lblTitle.Text = "Vehicle Category";
             btnSave.Text = "Save Category";

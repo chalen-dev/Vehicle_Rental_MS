@@ -275,11 +275,11 @@
             dgvVehicles.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvVehicles.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvVehicles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
