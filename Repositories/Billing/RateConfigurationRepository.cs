@@ -13,17 +13,15 @@ public class RateConfigurationRepository
         decimal daily,
         decimal weekly,
         decimal monthly,
-        decimal hourly,
         decimal includedMileagePerDay,
         decimal excessMileageRate)
     {
         var table = DB.Query(
-            "CALL sp_rate_configurations_create(@cat,@daily,@weekly,@monthly,@hourly,@included,@excess);",
+            "CALL sp_rate_configurations_create(@cat,@daily,@weekly,@monthly,@included,@excess);",
             ("@cat", vehicleCategoryId),
             ("@daily", daily),
             ("@weekly", weekly),
             ("@monthly", monthly),
-            ("@hourly", hourly),
             ("@included", includedMileagePerDay),
             ("@excess", excessMileageRate)
         );
@@ -55,17 +53,15 @@ public class RateConfigurationRepository
         decimal daily,
         decimal weekly,
         decimal monthly,
-        decimal hourly,
         decimal includedMileagePerDay,
         decimal excessMileageRate)
     {
         DB.Execute(
-            "CALL sp_rate_configurations_update(@id,@daily,@weekly,@monthly,@hourly,@included,@excess);",
+            "CALL sp_rate_configurations_update(@id,@daily,@weekly,@monthly,@included,@excess);",
             ("@id", id),
             ("@daily", daily),
             ("@weekly", weekly),
             ("@monthly", monthly),
-            ("@hourly", hourly),
             ("@included", includedMileagePerDay),
             ("@excess", excessMileageRate)
         );
@@ -84,8 +80,6 @@ public class RateConfigurationRepository
             DailyRate = Convert.ToDecimal(row["daily_rate"]),
             WeeklyRate = Convert.ToDecimal(row["weekly_rate"]),
             MonthlyRate = Convert.ToDecimal(row["monthly_rate"]),
-            HourlyRate = Convert.ToDecimal(row["hourly_rate"]),
-
             IncludedMileagePerDay =
                 Convert.ToDecimal(row["included_mileage_per_day"]),
             ExcessMileageRate =

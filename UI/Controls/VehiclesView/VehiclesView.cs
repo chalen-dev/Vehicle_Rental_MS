@@ -61,26 +61,26 @@ namespace VRMS.UI.Controls.VehiclesView
             // Implement advanced filtering based on the selected filter
             switch (filter)
             {
-                case "⚙ Advanced Filters":
+                case "Advanced Filters":
                     // Reset to all vehicles
                     ApplyFilters();
                     break;
-                case "📍 By Location":
+                case "By Location":
                     ShowLocationFilterDialog();
                     break;
-                case "📅 By Year":
+                case "By Year":
                     ShowYearFilterDialog();
                     break;
-                case "💰 By Price Range":
+                case "By Price Range":
                     ShowPriceRangeFilterDialog();
                     break;
-                case "📊 By Category":
+                case "By Category":
                     ShowCategoryFilterDialog();
                     break;
-                case "⛽ By Fuel Type":
+                case "By Fuel Type":
                     ShowFuelTypeFilterDialog();
                     break;
-                case "⚙ By Transmission":
+                case "By Transmission":
                     ShowTransmissionFilterDialog();
                     break;
             }

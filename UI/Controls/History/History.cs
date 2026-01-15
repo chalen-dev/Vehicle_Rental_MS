@@ -34,9 +34,6 @@ namespace VRMS.UI.Controls.History
             // GRID EVENTS
             dgvRentals.SelectionChanged += DgvRentals_SelectionChanged;
 
-            // TAB CHANGE
-            tabControlHistory.SelectedIndexChanged += TabControlHistory_SelectedIndexChanged;
-
             // BUTTONS
             btnViewReceipt.Click += BtnViewReceipt_Click;
             btnRefund.Click += BtnRefund_Click;
@@ -225,9 +222,6 @@ namespace VRMS.UI.Controls.History
         private void TabControlHistory_SelectedIndexChanged(object sender, EventArgs e)
         {
             ResetDetails();
-
-            if (tabControlHistory.SelectedTab == tabRentals)
-                LoadRentals();
 
             btnViewReceipt.Enabled = false;
             btnRefund.Enabled = false;

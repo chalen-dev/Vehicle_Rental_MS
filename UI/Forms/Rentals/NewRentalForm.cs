@@ -77,7 +77,6 @@ namespace VRMS.UI.Forms.Rentals
 
             dtPickup.Value = DateTime.Today;
             dtReturn.Value = DateTime.Today.AddDays(1);
-            dtReturn.Value = dtReturn.MinDate;
             errLabel.Text = string.Empty;
             errLabel.Visible = false;
             

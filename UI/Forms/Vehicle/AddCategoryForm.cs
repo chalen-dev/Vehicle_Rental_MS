@@ -221,7 +221,6 @@ namespace VRMS.UI.Forms
                 daily,
                 weekly,
                 monthly,
-                hourly,
                 0m,
                 0m);
         }

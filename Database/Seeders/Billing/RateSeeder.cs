@@ -41,7 +41,6 @@ public class RateSeeder : ISeeder
                 rates.Daily,
                 rates.Weekly,
                 rates.Monthly,
-                rates.Hourly,
                 rates.IncludedMileage,
                 rates.ExcessMileage
             );
@@ -77,7 +76,6 @@ public class RateSeeder : ISeeder
                 Daily = 2000m,
                 Weekly = 13000m,
                 Monthly = 50000m,
-                Hourly = 200m,
                 IncludedMileage = 100m,
                 ExcessMileage = 8m
             },
@@ -87,7 +85,6 @@ public class RateSeeder : ISeeder
                 Daily = 3000m,
                 Weekly = 19500m,
                 Monthly = 72000m,
-                Hourly = 300m,
                 IncludedMileage = 100m,
                 ExcessMileage = 9m
             },
@@ -97,7 +94,6 @@ public class RateSeeder : ISeeder
                 Daily = 3500m,
                 Weekly = 22750m,
                 Monthly = 87500m,
-                Hourly = 350m,
                 IncludedMileage = 100m,
                 ExcessMileage = 10m
             },
@@ -107,7 +103,6 @@ public class RateSeeder : ISeeder
                 Daily = 4000m,
                 Weekly = 26000m,
                 Monthly = 100000m,
-                Hourly = 400m,
                 IncludedMileage = 120m,
                 ExcessMileage = 12m
             },
@@ -117,7 +112,6 @@ public class RateSeeder : ISeeder
                 Daily = 3800m,
                 Weekly = 24700m,
                 Monthly = 95000m,
-                Hourly = 380m,
                 IncludedMileage = 120m,
                 ExcessMileage = 11m
             },
@@ -127,7 +121,6 @@ public class RateSeeder : ISeeder
                 Daily = 2200m,
                 Weekly = 14000m,
                 Monthly = 55000m,
-                Hourly = 220m,
                 IncludedMileage = 100m,
                 ExcessMileage = 8m
             }
@@ -139,7 +132,6 @@ public class RateSeeder : ISeeder
         public decimal Daily { get; init; }
         public decimal Weekly { get; init; }
         public decimal Monthly { get; init; }
-        public decimal Hourly { get; init; }
         public decimal IncludedMileage { get; init; }
         public decimal ExcessMileage { get; init; }
     }

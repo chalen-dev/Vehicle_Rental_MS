@@ -10,7 +10,6 @@ public static class SP_RateConfigurations_Create
                                       IN p_daily_rate DECIMAL(10,2),
                                       IN p_weekly_rate DECIMAL(10,2),
                                       IN p_monthly_rate DECIMAL(10,2),
-                                      IN p_hourly_rate DECIMAL(10,2),
                                       IN p_included_mileage_per_day DECIMAL(10,2),
                                       IN p_excess_mileage_rate DECIMAL(10,2)
                                   )
@@ -20,7 +19,6 @@ public static class SP_RateConfigurations_Create
                                           daily_rate,
                                           weekly_rate,
                                           monthly_rate,
-                                          hourly_rate,
                                           included_mileage_per_day,
                                           excess_mileage_rate
                                       )
@@ -29,7 +27,6 @@ public static class SP_RateConfigurations_Create
                                           p_daily_rate,
                                           p_weekly_rate,
                                           p_monthly_rate,
-                                          p_hourly_rate,
                                           p_included_mileage_per_day,
                                           p_excess_mileage_rate
                                       );

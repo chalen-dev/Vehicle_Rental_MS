@@ -397,13 +397,13 @@ public class VehicleService
         decimal daily,
         decimal weekly,
         decimal monthly,
-        decimal hourly,
         decimal includedMileagePerDay,
         decimal excessMileageRate)
     {
-        if (daily < 0 || weekly < 0 || monthly < 0 || hourly < 0)
+        if (daily < 0 || weekly < 0 || monthly < 0)
             throw new InvalidOperationException(
                 "Rates cannot be negative.");
+
 
         if (includedMileagePerDay < 0 || excessMileageRate < 0)
             throw new InvalidOperationException(
@@ -420,7 +420,6 @@ public class VehicleService
                 daily,
                 weekly,
                 monthly,
-                hourly,
                 includedMileagePerDay,
                 excessMileageRate);
         }
@@ -432,7 +431,6 @@ public class VehicleService
                 daily,
                 weekly,
                 monthly,
-                hourly,
                 includedMileagePerDay,
                 excessMileageRate);
         }

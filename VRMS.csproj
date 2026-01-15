@@ -68,8 +68,4 @@
 	  <EmbeddedResource Include="Assets\company_logo.png" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Database\Seeders\Rental\" />
-	</ItemGroup>
-
 </Project>

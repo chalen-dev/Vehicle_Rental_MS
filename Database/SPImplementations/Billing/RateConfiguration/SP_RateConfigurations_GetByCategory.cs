@@ -15,7 +15,6 @@ public static class SP_RateConfigurations_GetByCategory
                                           daily_rate,
                                           weekly_rate,
                                           monthly_rate,
-                                          hourly_rate,
                                           included_mileage_per_day,
                                           excess_mileage_rate
                                       FROM rate_configurations

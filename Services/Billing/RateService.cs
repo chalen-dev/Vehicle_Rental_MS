@@ -87,14 +87,12 @@ public class RateService
         var rate =
             _rateRepo.GetByCategory(vehicleCategoryId);
 
-        var lateHours =
-            (decimal)(actualReturn - expectedReturn).TotalHours;
-
-        // Always round up partial hours
-        lateHours = Math.Ceiling(lateHours);
+        var lateDays =
+            Math.Ceiling(
+                (actualReturn - expectedReturn).TotalDays);
 
         return decimal.Round(
-            lateHours * rate.HourlyRate,
+            (decimal)lateDays * rate.DailyRate,
             2);
     }
 
@@ -162,42 +160,39 @@ public class RateService
         DateTime end,
         RateConfiguration rate)
     {
-        var hours =
-            (decimal)(end - start).TotalHours;
+        var totalDays =
+            Math.Ceiling((end - start).TotalDays);
 
-        if (hours <= 0)
-            return 0m;
+        if (totalDays <= 0)
+            totalDays = 1; // minimum 1 day ALWAYS
 
-        // Always round up partial hours
-        hours = Math.Ceiling(hours);
+        var weeks =
+            Math.Floor(totalDays / 7d);
 
-        var days = Math.Ceiling(hours / 24m);
-        var weeks = Math.Floor(days / 7m);
-        var months = Math.Floor(days / 30m);
+        var months =
+            Math.Floor(totalDays / 30d);
 
         decimal best = decimal.MaxValue;
 
-        // Hourly pricing
-        best = Math.Min(best,
-            hours * rate.HourlyRate);
-
         // Daily pricing
         best = Math.Min(best,
-            days * rate.DailyRate);
+            (decimal)totalDays * rate.DailyRate);
 
-        // Weekly pricing with remaining days
+        // Weekly pricing + remaining days
         best = Math.Min(best,
-            weeks * rate.WeeklyRate +
-            (days % 7m) * rate.DailyRate);
+            (decimal)weeks * rate.WeeklyRate +
+            (decimal)(totalDays % 7d) * rate.DailyRate);
 
-        // Monthly pricing with remaining weeks and days
+        // Monthly pricing + remaining weeks + days
         best = Math.Min(best,
-            months * rate.MonthlyRate +
-            Math.Floor((days % 30m) / 7m)
+            (decimal)months * rate.MonthlyRate +
+            (decimal)Math.Floor((totalDays % 30d) / 7d)
             * rate.WeeklyRate +
-            ((days % 30m) % 7m)
+            (decimal)((totalDays % 30d) % 7d)
             * rate.DailyRate);
 
         return decimal.Round(best, 2);
     }
+
+
 }
