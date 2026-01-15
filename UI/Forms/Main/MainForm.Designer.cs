@@ -25,6 +25,7 @@
             btnCustomers = new Button();
             btnReservation = new Button();
             btnRentals = new Button();
+            btnRentalsCalendar = new Button();
             btnReports = new Button();
             btnHistory = new Button();
             btnAdmin = new Button();
@@ -34,7 +35,6 @@
             logoPictureBox = new PictureBox();
             contentPanel = new Panel();
             mainHeader = new VRMS.Controls.MainHeaderControl();
-            btnRentalsCalendar = new Button();
             sidePanel.SuspendLayout();
             navButtonsPanel.SuspendLayout();
             headerPanel.SuspendLayout();
@@ -161,6 +161,23 @@
             btnRentals.TextAlign = ContentAlignment.MiddleLeft;
             btnRentals.UseVisualStyleBackColor = false;
             // 
+            // btnRentalsCalendar
+            // 
+            btnRentalsCalendar.BackColor = Color.Transparent;
+            btnRentalsCalendar.FlatAppearance.BorderSize = 0;
+            btnRentalsCalendar.FlatAppearance.MouseOverBackColor = Color.FromArgb(44, 62, 80);
+            btnRentalsCalendar.FlatStyle = FlatStyle.Flat;
+            btnRentalsCalendar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnRentalsCalendar.ForeColor = Color.White;
+            btnRentalsCalendar.Location = new Point(19, 395);
+            btnRentalsCalendar.Margin = new Padding(5, 4, 5, 4);
+            btnRentalsCalendar.Name = "btnRentalsCalendar";
+            btnRentalsCalendar.Size = new Size(251, 67);
+            btnRentalsCalendar.TabIndex = 9;
+            btnRentalsCalendar.Text = "🗓️ Rentals Calendar";
+            btnRentalsCalendar.TextAlign = ContentAlignment.MiddleLeft;
+            btnRentalsCalendar.UseVisualStyleBackColor = false;
+            // 
             // btnReports
             // 
             btnReports.BackColor = Color.Transparent;
@@ -282,24 +299,6 @@
             mainHeader.Name = "mainHeader";
             mainHeader.Size = new Size(1294, 133);
             mainHeader.TabIndex = 3;
-            // 
-            // btnRentalsCalendar
-            // 
-            btnRentalsCalendar.BackColor = Color.Transparent;
-            btnRentalsCalendar.FlatAppearance.BorderSize = 0;
-            btnRentalsCalendar.FlatAppearance.MouseOverBackColor = Color.FromArgb(44, 62, 80);
-            btnRentalsCalendar.FlatStyle = FlatStyle.Flat;
-            btnRentalsCalendar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnRentalsCalendar.ForeColor = Color.White;
-            btnRentalsCalendar.Location = new Point(19, 395);
-            btnRentalsCalendar.Margin = new Padding(5, 4, 5, 4);
-            btnRentalsCalendar.Name = "btnRentalsCalendar";
-            btnRentalsCalendar.Size = new Size(251, 67);
-            btnRentalsCalendar.TabIndex = 9;
-            btnRentalsCalendar.Text = "🗓️ Rentals Calendar";
-            btnRentalsCalendar.TextAlign = ContentAlignment.MiddleLeft;
-            btnRentalsCalendar.UseVisualStyleBackColor = false;
-         
             // 
             // MainForm
             // 
