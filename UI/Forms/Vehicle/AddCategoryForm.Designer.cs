@@ -40,6 +40,10 @@
             lblCategoryName = new Label();
             tabRates = new TabPage();
             panelRates = new Panel();
+            groupBox1 = new GroupBox();
+            numericUpDown1 = new NumericUpDown();
+            label1 = new Label();
+            checkBox1 = new CheckBox();
             grpSecurityDeposit = new GroupBox();
             numMileageOverage = new NumericUpDown();
             lblSecurityDeposit = new Label();
@@ -63,10 +67,6 @@
             panelFooter = new Panel();
             btnCancel = new Button();
             btnSave = new Button();
-            groupBox1 = new GroupBox();
-            numericUpDown1 = new NumericUpDown();
-            label1 = new Label();
-            checkBox1 = new CheckBox();
             panelHeader.SuspendLayout();
             panelContent.SuspendLayout();
             tabControl.SuspendLayout();
@@ -74,6 +74,8 @@
             grpCategoryInfo.SuspendLayout();
             tabRates.SuspendLayout();
             panelRates.SuspendLayout();
+            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             grpSecurityDeposit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numMileageOverage).BeginInit();
             grpMonthly.SuspendLayout();
@@ -85,8 +87,6 @@
             grpExistingCategories.SuspendLayout();
             panelListButtons.SuspendLayout();
             panelFooter.SuspendLayout();
-            groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             SuspendLayout();
             // 
             // panelHeader
@@ -141,7 +141,7 @@
             tabCategoryInfo.Location = new Point(4, 32);
             tabCategoryInfo.Name = "tabCategoryInfo";
             tabCategoryInfo.Padding = new Padding(15);
-            tabCategoryInfo.Size = new Size(742, 284);
+            tabCategoryInfo.Size = new Size(897, 284);
             tabCategoryInfo.TabIndex = 0;
             tabCategoryInfo.Text = "Category Information";
             // 
@@ -157,7 +157,7 @@
             grpCategoryInfo.ForeColor = Color.FromArgb(30, 60, 90);
             grpCategoryInfo.Location = new Point(15, 15);
             grpCategoryInfo.Name = "grpCategoryInfo";
-            grpCategoryInfo.Size = new Size(712, 254);
+            grpCategoryInfo.Size = new Size(867, 254);
             grpCategoryInfo.TabIndex = 0;
             grpCategoryInfo.TabStop = false;
             grpCategoryInfo.Text = "Basic Information";
@@ -227,6 +227,58 @@
             panelRates.Size = new Size(867, 254);
             panelRates.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            groupBox1.BackColor = Color.White;
+            groupBox1.Controls.Add(numericUpDown1);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(checkBox1);
+            groupBox1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            groupBox1.ForeColor = Color.FromArgb(30, 60, 90);
+            groupBox1.Location = new Point(471, 10);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(186, 230);
+            groupBox1.TabIndex = 4;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Excess Mileage Rate";
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.DecimalPlaces = 2;
+            numericUpDown1.Font = new Font("Segoe UI", 11F);
+            numericUpDown1.Location = new Point(16, 118);
+            numericUpDown1.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(145, 32);
+            numericUpDown1.TabIndex = 2;
+            numericUpDown1.TextAlign = HorizontalAlignment.Right;
+            numericUpDown1.ThousandsSeparator = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 11F);
+            label1.ForeColor = Color.FromArgb(64, 64, 64);
+            label1.Location = new Point(25, 90);
+            label1.Name = "label1";
+            label1.Size = new Size(53, 25);
+            label1.TabIndex = 1;
+            label1.Text = "Rate:";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Checked = true;
+            checkBox1.CheckState = CheckState.Checked;
+            checkBox1.Font = new Font("Segoe UI", 11F);
+            checkBox1.ForeColor = Color.FromArgb(64, 64, 64);
+            checkBox1.Location = new Point(25, 50);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(102, 29);
+            checkBox1.TabIndex = 0;
+            checkBox1.Text = "Enabled";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
             // grpSecurityDeposit
             // 
             grpSecurityDeposit.BackColor = Color.White;
@@ -240,7 +292,7 @@
             grpSecurityDeposit.Size = new Size(181, 230);
             grpSecurityDeposit.TabIndex = 3;
             grpSecurityDeposit.TabStop = false;
-            grpSecurityDeposit.Text = "Mileage/day(km)";
+            grpSecurityDeposit.Text = "Security Deposit";
             // 
             // numMileageOverage
             // 
@@ -526,58 +578,6 @@
             btnSave.Text = "Save Category";
             btnSave.UseVisualStyleBackColor = false;
             // 
-            // groupBox1
-            // 
-            groupBox1.BackColor = Color.White;
-            groupBox1.Controls.Add(numericUpDown1);
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(checkBox1);
-            groupBox1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            groupBox1.ForeColor = Color.FromArgb(30, 60, 90);
-            groupBox1.Location = new Point(471, 10);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(177, 230);
-            groupBox1.TabIndex = 4;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Security Deposit";
-            // 
-            // numericUpDown1
-            // 
-            numericUpDown1.DecimalPlaces = 2;
-            numericUpDown1.Font = new Font("Segoe UI", 11F);
-            numericUpDown1.Location = new Point(16, 118);
-            numericUpDown1.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(145, 32);
-            numericUpDown1.TabIndex = 2;
-            numericUpDown1.TextAlign = HorizontalAlignment.Right;
-            numericUpDown1.ThousandsSeparator = true;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 11F);
-            label1.ForeColor = Color.FromArgb(64, 64, 64);
-            label1.Location = new Point(25, 90);
-            label1.Name = "label1";
-            label1.Size = new Size(53, 25);
-            label1.TabIndex = 1;
-            label1.Text = "Rate:";
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Checked = true;
-            checkBox1.CheckState = CheckState.Checked;
-            checkBox1.Font = new Font("Segoe UI", 11F);
-            checkBox1.ForeColor = Color.FromArgb(64, 64, 64);
-            checkBox1.Location = new Point(25, 50);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(102, 29);
-            checkBox1.TabIndex = 0;
-            checkBox1.Text = "Enabled";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
             // AddCategoryForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -604,6 +604,9 @@
             grpCategoryInfo.PerformLayout();
             tabRates.ResumeLayout(false);
             panelRates.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             grpSecurityDeposit.ResumeLayout(false);
             grpSecurityDeposit.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numMileageOverage).EndInit();
@@ -619,9 +622,6 @@
             grpExistingCategories.ResumeLayout(false);
             panelListButtons.ResumeLayout(false);
             panelFooter.ResumeLayout(false);
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ResumeLayout(false);
 
         }

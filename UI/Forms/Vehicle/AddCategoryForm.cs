@@ -50,6 +50,9 @@ namespace VRMS.UI.Forms
             chkMileageOverage.CheckedChanged += (_, __) =>
                 numMileageOverage.Enabled =
                     chkMileageOverage.Checked;
+            
+            checkBox1.CheckedChanged += (_, __) =>
+                numericUpDown1.Enabled = checkBox1.Checked;
         }
 
         // =====================================================
@@ -144,6 +147,10 @@ namespace VRMS.UI.Forms
 
             chkMonthlyEnabled.Checked = rates.MonthlyRate > 0;
             nudMonthlyRate.Value = rates.MonthlyRate;
+            
+            checkBox1.Checked = rates.ExcessMileageRate > 0;
+            numericUpDown1.Value = rates.ExcessMileageRate;
+            numericUpDown1.Enabled = checkBox1.Checked;
         }
 
         // =====================================================
@@ -216,13 +223,17 @@ namespace VRMS.UI.Forms
             var hourly =
                 daily > 0 ? Math.Round(daily / 24m, 2) : 0m;
 
+            var excessMileageRate =
+                checkBox1.Checked ? numericUpDown1.Value : 0m;
+
             _vehicleService.UpsertCategoryRates(
                 categoryId,
                 daily,
                 weekly,
                 monthly,
-                0m,
-                0m);
+                0m,                 // included mileage (unused)
+                excessMileageRate); // ← THIS IS THE FIX
+
         }
 
         // =====================================================
@@ -270,6 +281,10 @@ namespace VRMS.UI.Forms
             lblTitle.Text = "Vehicle Category";
             btnSave.Text = "Save Category";
             btnSave.Enabled = false;
+            
+            checkBox1.Checked = true;
+            numericUpDown1.Value = 0;
+            numericUpDown1.Enabled = true;
 
             
         }
