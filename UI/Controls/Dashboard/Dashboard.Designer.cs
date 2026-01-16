@@ -57,15 +57,15 @@
             pnlCardRented = new Panel();
             lblRentedValue = new Label();
             lblRentedTitle = new Label();
-            pnlCardRevenue = new Panel();
-            lblRevenueValue = new Label();
-            lblRevenueTitle = new Label();
             pnlCardOverdue = new Panel();
             lblOverdueValue = new Label();
             lblOverdueTitle = new Label();
             pnlCardMaintenance = new Panel();
             lblMaintenanceValue = new Label();
             lblMaintenanceTitle = new Label();
+            pnlCardRevenue = new Panel();
+            lblRevenueValue = new Label();
+            lblRevenueTitle = new Label();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             pnlHeader.SuspendLayout();
             mainContainer.SuspendLayout();
@@ -84,9 +84,9 @@
             pnlCardTotal.SuspendLayout();
             pnlCardAvailable.SuspendLayout();
             pnlCardRented.SuspendLayout();
-            pnlCardRevenue.SuspendLayout();
             pnlCardOverdue.SuspendLayout();
             pnlCardMaintenance.SuspendLayout();
+            pnlCardRevenue.SuspendLayout();
             SuspendLayout();
             // 
             // pnlHeader
@@ -98,7 +98,7 @@
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.Padding = new Padding(14, 16, 14, 16);
-            pnlHeader.Size = new Size(1200, 80);
+            pnlHeader.Size = new Size(1589, 80);
             pnlHeader.TabIndex = 0;
             // 
             // dateRangePicker
@@ -107,7 +107,7 @@
             dateRangePicker.CustomFormat = "MMMM yyyy";
             dateRangePicker.Font = new Font("Segoe UI", 9F);
             dateRangePicker.Format = DateTimePickerFormat.Custom;
-            dateRangePicker.Location = new Point(871, 21);
+            dateRangePicker.Location = new Point(1260, 21);
             dateRangePicker.Name = "dateRangePicker";
             dateRangePicker.ShowUpDown = true;
             dateRangePicker.Size = new Size(185, 27);
@@ -121,7 +121,7 @@
             btnRefresh.FlatStyle = FlatStyle.Flat;
             btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(1063, 15);
+            btnRefresh.Location = new Point(1452, 15);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(114, 43);
             btnRefresh.TabIndex = 1;
@@ -136,14 +136,14 @@
             mainContainer.Location = new Point(0, 80);
             mainContainer.Name = "mainContainer";
             mainContainer.Padding = new Padding(11, 13, 11, 13);
-            mainContainer.Size = new Size(1200, 827);
+            mainContainer.Size = new Size(1589, 827);
             mainContainer.TabIndex = 1;
             // 
             // rightPanel
             // 
             rightPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             rightPanel.Controls.Add(splitRight);
-            rightPanel.Location = new Point(789, 13);
+            rightPanel.Location = new Point(1178, 13);
             rightPanel.Name = "rightPanel";
             rightPanel.Size = new Size(400, 800);
             rightPanel.TabIndex = 1;
@@ -306,7 +306,7 @@
             leftPanel.Controls.Add(pnlCards);
             leftPanel.Location = new Point(11, 13);
             leftPanel.Name = "leftPanel";
-            leftPanel.Size = new Size(771, 800);
+            leftPanel.Size = new Size(1160, 800);
             leftPanel.TabIndex = 0;
             // 
             // pnlChartArea
@@ -317,7 +317,7 @@
             pnlChartArea.Location = new Point(0, 194);
             pnlChartArea.Name = "pnlChartArea";
             pnlChartArea.Padding = new Padding(11, 13, 11, 13);
-            pnlChartArea.Size = new Size(771, 606);
+            pnlChartArea.Size = new Size(1160, 606);
             pnlChartArea.TabIndex = 1;
             // 
             // lblChartTitle
@@ -341,12 +341,12 @@
             pnlCards.Controls.Add(pnlCardTotal);
             pnlCards.Controls.Add(pnlCardAvailable);
             pnlCards.Controls.Add(pnlCardRented);
-            pnlCards.Controls.Add(pnlCardRevenue);
             pnlCards.Controls.Add(pnlCardOverdue);
             pnlCards.Controls.Add(pnlCardMaintenance);
+            pnlCards.Controls.Add(pnlCardRevenue);
             pnlCards.Location = new Point(0, 0);
             pnlCards.Name = "pnlCards";
-            pnlCards.Size = new Size(771, 202);
+            pnlCards.Size = new Size(1160, 202);
             pnlCards.TabIndex = 0;
             // 
             // pnlCardTotal
@@ -457,42 +457,6 @@
             lblRentedTitle.TabIndex = 1;
             lblRentedTitle.Text = "Active Rents";
             // 
-            // pnlCardRevenue
-            // 
-            pnlCardRevenue.BackColor = Color.FromArgb(142, 68, 173);
-            pnlCardRevenue.Controls.Add(lblRevenueValue);
-            pnlCardRevenue.Controls.Add(lblRevenueTitle);
-            pnlCardRevenue.Cursor = Cursors.Hand;
-            pnlCardRevenue.ForeColor = Color.White;
-            pnlCardRevenue.Location = new Point(489, 7);
-            pnlCardRevenue.Margin = new Padding(6, 7, 6, 7);
-            pnlCardRevenue.Name = "pnlCardRevenue";
-            pnlCardRevenue.Padding = new Padding(11, 13, 11, 13);
-            pnlCardRevenue.Size = new Size(149, 173);
-            pnlCardRevenue.TabIndex = 3;
-            // 
-            // lblRevenueValue
-            // 
-            lblRevenueValue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lblRevenueValue.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
-            lblRevenueValue.Location = new Point(11, 73);
-            lblRevenueValue.Name = "lblRevenueValue";
-            lblRevenueValue.Size = new Size(126, 60);
-            lblRevenueValue.TabIndex = 0;
-            lblRevenueValue.Text = "₱0";
-            lblRevenueValue.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // lblRevenueTitle
-            // 
-            lblRevenueTitle.AutoSize = true;
-            lblRevenueTitle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            lblRevenueTitle.ForeColor = Color.Gainsboro;
-            lblRevenueTitle.Location = new Point(11, 13);
-            lblRevenueTitle.Name = "lblRevenueTitle";
-            lblRevenueTitle.Size = new Size(136, 21);
-            lblRevenueTitle.TabIndex = 1;
-            lblRevenueTitle.Text = "Revenue (Month)";
-            // 
             // pnlCardOverdue
             // 
             pnlCardOverdue.BackColor = Color.FromArgb(192, 57, 43);
@@ -500,7 +464,7 @@
             pnlCardOverdue.Controls.Add(lblOverdueTitle);
             pnlCardOverdue.Cursor = Cursors.Hand;
             pnlCardOverdue.ForeColor = Color.White;
-            pnlCardOverdue.Location = new Point(6, 194);
+            pnlCardOverdue.Location = new Point(489, 7);
             pnlCardOverdue.Margin = new Padding(6, 7, 6, 7);
             pnlCardOverdue.Name = "pnlCardOverdue";
             pnlCardOverdue.Padding = new Padding(11, 13, 11, 13);
@@ -536,7 +500,7 @@
             pnlCardMaintenance.Controls.Add(lblMaintenanceTitle);
             pnlCardMaintenance.Cursor = Cursors.Hand;
             pnlCardMaintenance.ForeColor = Color.White;
-            pnlCardMaintenance.Location = new Point(167, 194);
+            pnlCardMaintenance.Location = new Point(650, 7);
             pnlCardMaintenance.Margin = new Padding(6, 7, 6, 7);
             pnlCardMaintenance.Name = "pnlCardMaintenance";
             pnlCardMaintenance.Padding = new Padding(11, 13, 11, 13);
@@ -565,6 +529,43 @@
             lblMaintenanceTitle.TabIndex = 1;
             lblMaintenanceTitle.Text = "Under Maintenance";
             // 
+            // pnlCardRevenue
+            // 
+            pnlCardRevenue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pnlCardRevenue.BackColor = Color.FromArgb(142, 68, 173);
+            pnlCardRevenue.Controls.Add(lblRevenueValue);
+            pnlCardRevenue.Controls.Add(lblRevenueTitle);
+            pnlCardRevenue.Cursor = Cursors.Hand;
+            pnlCardRevenue.ForeColor = Color.White;
+            pnlCardRevenue.Location = new Point(811, 7);
+            pnlCardRevenue.Margin = new Padding(6, 7, 6, 7);
+            pnlCardRevenue.Name = "pnlCardRevenue";
+            pnlCardRevenue.Padding = new Padding(11, 13, 11, 13);
+            pnlCardRevenue.Size = new Size(343, 173);
+            pnlCardRevenue.TabIndex = 3;
+            // 
+            // lblRevenueValue
+            // 
+            lblRevenueValue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblRevenueValue.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lblRevenueValue.Location = new Point(11, 73);
+            lblRevenueValue.Name = "lblRevenueValue";
+            lblRevenueValue.Size = new Size(320, 60);
+            lblRevenueValue.TabIndex = 0;
+            lblRevenueValue.Text = "₱0";
+            lblRevenueValue.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lblRevenueTitle
+            // 
+            lblRevenueTitle.AutoSize = true;
+            lblRevenueTitle.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            lblRevenueTitle.ForeColor = Color.Gainsboro;
+            lblRevenueTitle.Location = new Point(11, 13);
+            lblRevenueTitle.Name = "lblRevenueTitle";
+            lblRevenueTitle.Size = new Size(136, 21);
+            lblRevenueTitle.TabIndex = 1;
+            lblRevenueTitle.Text = "Revenue (Month)";
+            // 
             // DashboardView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -574,7 +575,7 @@
             Controls.Add(pnlHeader);
             MinimumSize = new Size(1029, 800);
             Name = "DashboardView";
-            Size = new Size(1200, 907);
+            Size = new Size(1589, 907);
             pnlHeader.ResumeLayout(false);
             mainContainer.ResumeLayout(false);
             rightPanel.ResumeLayout(false);
@@ -598,12 +599,12 @@
             pnlCardAvailable.PerformLayout();
             pnlCardRented.ResumeLayout(false);
             pnlCardRented.PerformLayout();
-            pnlCardRevenue.ResumeLayout(false);
-            pnlCardRevenue.PerformLayout();
             pnlCardOverdue.ResumeLayout(false);
             pnlCardOverdue.PerformLayout();
             pnlCardMaintenance.ResumeLayout(false);
             pnlCardMaintenance.PerformLayout();
+            pnlCardRevenue.ResumeLayout(false);
+            pnlCardRevenue.PerformLayout();
             ResumeLayout(false);
         }
 

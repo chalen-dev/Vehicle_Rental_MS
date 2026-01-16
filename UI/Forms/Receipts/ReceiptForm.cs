@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using VRMS.Helpers;
-using VRMS.Services.Rental;
-using VRMS.Services.Customer;
-using VRMS.Services.Fleet;
 using VRMS.UI.ApplicationService;
-
 
 namespace VRMS.UI.Forms.Receipts
 {
@@ -17,9 +12,14 @@ namespace VRMS.UI.Forms.Receipts
     {
         private readonly int _rentalId;
 
-        // REQUIRED constructor (used by History)
+        // ===============================
+        // REQUIRED CONSTRUCTOR (RUNTIME)
+        // ===============================
         public ReceiptForm(int rentalId)
         {
+            if (rentalId <= 0)
+                throw new ArgumentException("Invalid rental ID.");
+
             InitializeComponent();
             _rentalId = rentalId;
 
@@ -28,53 +28,110 @@ namespace VRMS.UI.Forms.Receipts
             btnClose.Click += BtnClose_Click;
         }
 
-        // Parameterless constructor (Designer support)
-        public ReceiptForm()
+        // ===============================
+        // DESIGNER-ONLY CONSTRUCTOR
+        // ===============================
+        // ❌ NEVER USED AT RUNTIME
+        private ReceiptForm()
         {
             InitializeComponent();
-            btnClose.Click += BtnClose_Click;
         }
 
+        // ===============================
+        // LOAD
+        // ===============================
         private void ReceiptForm_Load(object sender, EventArgs e)
         {
             LoadReceipt();
         }
 
+        // ===============================
+        // LOAD RECEIPT DATA
+        // ===============================
         private void LoadReceipt()
         {
             var rentalService = ApplicationServices.RentalService;
             var customerService = ApplicationServices.CustomerService;
             var vehicleService = ApplicationServices.VehicleService;
+            var billingService = ApplicationServices.BillingService;
 
+            // -------- RENTAL --------
             var rental = rentalService.GetRentalById(_rentalId);
             var vehicle = vehicleService.GetVehicleById(rental.VehicleId);
 
+            // -------- CUSTOMER --------
             string customerName = "Walk-in";
-
             if (rental.CustomerId.HasValue)
             {
                 var customer =
                     customerService.GetCustomerById(rental.CustomerId.Value);
 
-                customerName =
-                    $"{customer.FirstName} {customer.LastName}";
+                customerName = $"{customer.FirstName} {customer.LastName}";
             }
 
+            // -------- HEADER --------
             lblReceiptNumber.Text = $"RENT-{rental.Id:D6}";
             lblCustomer.Text = customerName;
-            lblVehicle.Text = $"{vehicle.Make} {vehicle.Model}";
-            lblPeriod.Text =
-                $"{rental.PickupDate:MMM dd, yyyy} → {rental.ExpectedReturnDate:MMM dd, yyyy}";
+            lblVehicle.Text = $"{vehicle.Year} {vehicle.Make} {vehicle.Model}";
             lblStatus.Text = rental.Status.ToString();
 
+            // -------- DATES --------
+            DateTime start = rental.PickupDate;
+            DateTime end =
+                rental.ActualReturnDate ?? rental.ExpectedReturnDate;
+
+            lblPeriod.Text =
+                $"{start:MMM dd, yyyy} → {end:MMM dd, yyyy}";
+
+            lblIssuedDate.Text =
+                DateTime.Now.ToString("MMM dd, yyyy");
+
+            // -------- DURATION --------
+            int days =
+                Math.Max(1, (end.Date - start.Date).Days);
+
+            lblDuration.Text = $"{days} day(s)";
+
+            // -------- ODOMETER --------
+            if (rental.EndOdometer.HasValue)
+            {
+                lblOdometer.Text =
+                    $"{rental.StartOdometer:N0} km → {rental.EndOdometer.Value:N0} km";
+            }
+            else
+            {
+                lblOdometer.Text =
+                    $"{rental.StartOdometer:N0} km";
+            }
+
+            // -------- BILLING (AUTHORITATIVE) --------
+            var invoice =
+                billingService.GetInvoiceByRental(_rentalId);
+
+            if (invoice == null)
+            {
+                lblBillingInfo.Text =
+                    "No invoice has been generated yet.";
+                lblBillingInfo.ForeColor = Color.Gray;
+                return;
+            }
+
+            decimal balance =
+                billingService.GetInvoiceBalance(invoice.Id);
+
             lblBillingInfo.Text =
-                "Billing details are not available yet.";
+                $"Invoice #: INV-{invoice.Id:D6}\n" +
+                $"Generated: {invoice.GeneratedDate:MMM dd, yyyy}\n\n" +
+                $"Total Amount: ₱ {invoice.TotalAmount:N2}\n" +
+                $"Outstanding Balance: ₱ {balance:N2}\n\n" +
+                $"Status: {invoice.Status}";
+
+            lblBillingInfo.ForeColor = Color.Black;
         }
 
         // ===============================
-        // SAVE RECEIPT AS IMAGE
+        // PRINT RECEIPT (PDF)
         // ===============================
-
         private void BtnPrint_Click(object sender, EventArgs e)
         {
             try
@@ -119,7 +176,7 @@ namespace VRMS.UI.Forms.Receipts
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
-                System.Diagnostics.Process.Start("explorer.exe", baseDir);
+                Process.Start("explorer.exe", baseDir);
             }
             catch (Exception ex)
             {
@@ -131,11 +188,11 @@ namespace VRMS.UI.Forms.Receipts
             }
         }
 
-
-
+      
         private void BtnClose_Click(object sender, EventArgs e)
         {
-            Close();
+            DialogResult = DialogResult.OK;
+            Close(); 
         }
     }
 }

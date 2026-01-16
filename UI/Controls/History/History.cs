@@ -23,6 +23,10 @@ namespace VRMS.UI.Controls.History
         private static readonly string PlaceholderImagePath =
             Path.Combine(AppContext.BaseDirectory, "Assets", "img_placeholder.png");
 
+        // 🔒 CRITICAL STATE GUARDS
+        private bool _suspendSelectionEvents;
+        private int? _lastSelectedRentalId;
+
         public History()
         {
             InitializeComponent();
@@ -31,13 +35,9 @@ namespace VRMS.UI.Controls.History
             _customerService = ApplicationServices.CustomerService;
             _vehicleService = ApplicationServices.VehicleService;
 
-            // FORM LOAD
             Load += History_Load;
-
-            // GRID EVENTS
             dgvRentals.SelectionChanged += DgvRentals_SelectionChanged;
 
-            // BUTTONS
             btnViewReceipt.Click += BtnViewReceipt_Click;
             btnRefund.Click += BtnRefund_Click;
         }
@@ -131,20 +131,37 @@ namespace VRMS.UI.Controls.History
                 _ => e.CellStyle.ForeColor
             };
         }
-        
+
         // =====================================================
-        // SELECTION → DETAILS
+        // SELECTION → DETAILS (SAFE)
         // =====================================================
 
         private void DgvRentals_SelectionChanged(object sender, EventArgs e)
         {
+            // 🔥 HARD GUARDS (NON-NEGOTIABLE)
+            if (_suspendSelectionEvents)
+                return;
+
+            if (!IsHandleCreated || IsDisposed || !Visible)
+                return;
+
             if (dgvRentals.SelectedRows.Count == 0)
             {
                 ResetDetails();
+                _lastSelectedRentalId = null;
                 return;
             }
 
-            int rentalId = Convert.ToInt32(dgvRentals.SelectedRows[0].Cells["Id"].Value);
+            int rentalId =
+                Convert.ToInt32(
+                    dgvRentals.SelectedRows[0].Cells["Id"].Value);
+
+            // 🔒 Prevent re-entering same selection
+            if (_lastSelectedRentalId == rentalId)
+                return;
+
+            _lastSelectedRentalId = rentalId;
+
             var rental = _rentalService.GetRentalById(rentalId);
             var billingService = ApplicationServices.BillingService;
 
@@ -170,7 +187,8 @@ namespace VRMS.UI.Controls.History
             string customerName = "Walk-in";
             if (rental.CustomerId.HasValue)
             {
-                var customer = _customerService.GetCustomerById(rental.CustomerId.Value);
+                var customer =
+                    _customerService.GetCustomerById(rental.CustomerId.Value);
                 customerName = $"{customer.FirstName} {customer.LastName}";
             }
 
@@ -196,28 +214,36 @@ namespace VRMS.UI.Controls.History
         }
 
         // =====================================================
-        // VEHICLE IMAGE
+        // VEHICLE IMAGE (SAFE)
         // =====================================================
 
         private void LoadVehicleImage(int vehicleId)
         {
-            picVehicle.Image?.Dispose();
-            picVehicle.Image = null;
+            if (picVehicle.Image != null)
+            {
+                var old = picVehicle.Image;
+                picVehicle.Image = null;
+                old.Dispose();
+            }
 
             var images = _vehicleService.GetVehicleImages(vehicleId);
-            string imagePath = images.Count > 0
-                ? Path.Combine(AppContext.BaseDirectory, "Storage", images[0].ImagePath)
-                : PlaceholderImagePath;
+
+            string imagePath =
+                images.Count > 0
+                    ? Path.Combine(AppContext.BaseDirectory, "Storage", images[0].ImagePath)
+                    : PlaceholderImagePath;
 
             if (!File.Exists(imagePath))
                 return;
 
-            using var fs = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            picVehicle.Image = Image.FromStream(fs);
+            using var fs =
+                new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var temp = Image.FromStream(fs);
+            picVehicle.Image = new Bitmap(temp); // CLONE
         }
 
         // =====================================================
-        // BUTTONS
+        // BUTTONS (CRASH-PROOF)
         // =====================================================
 
         private void BtnViewReceipt_Click(object sender, EventArgs e)
@@ -225,10 +251,32 @@ namespace VRMS.UI.Controls.History
             if (dgvRentals.SelectedRows.Count == 0)
                 return;
 
-            int rentalId = Convert.ToInt32(dgvRentals.SelectedRows[0].Cells["Id"].Value);
+            int rentalId =
+                Convert.ToInt32(
+                    dgvRentals.SelectedRows[0].Cells["Id"].Value);
 
-            using var form = new VRMS.UI.Forms.Receipts.ReceiptForm(rentalId);
-            form.ShowDialog(FindForm());
+            _suspendSelectionEvents = true;
+
+            try
+            {
+                using (var form =
+                       new VRMS.UI.Forms.Receipts.ReceiptForm(rentalId))
+                {
+                    form.ShowDialog(this); // ✅ NOT FindForm()
+                }
+            }
+            finally
+            {
+                dgvRentals.ClearSelection();
+                ResetDetails();
+
+                // Delay re-enabling until UI stabilizes
+                BeginInvoke(new Action(() =>
+                {
+                    _suspendSelectionEvents = false;
+                    _lastSelectedRentalId = null;
+                }));
+            }
         }
 
         private void BtnRefund_Click(object sender, EventArgs e)
@@ -300,18 +348,6 @@ namespace VRMS.UI.Controls.History
             }
         }
 
-
-        // =====================================================
-        // TAB CHANGE
-        // =====================================================
-
-        private void TabControlHistory_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ResetDetails();
-
-            btnViewReceipt.Enabled = false;
-            btnRefund.Enabled = false;
-        }
 
         // =====================================================
         // RESET

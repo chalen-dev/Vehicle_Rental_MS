@@ -19,96 +19,101 @@ namespace VRMS.Helpers
 
             var gfx = XGraphics.FromPdfPage(page);
 
-            var fontTitle = new XFont("Arial", 18, XFontStyle.Bold);
-            var fontHeader = new XFont("Arial", 11, XFontStyle.Bold);
-            var fontBody = new XFont("Arial", 10, XFontStyle.Regular);
+            // Thin receipt fonts - use monospace for receipt look
+            var fontTitle = new XFont("Courier New", 16, XFontStyle.Bold);
+            var fontStore = new XFont("Courier New", 12, XFontStyle.Bold);
+            var fontHeader = new XFont("Courier New", 10, XFontStyle.Bold);
+            var fontBody = new XFont("Courier New", 9, XFontStyle.Regular);
+            var fontSmall = new XFont("Courier New", 8, XFontStyle.Regular);
 
-            double y = 40;
+            double y = 30;
+            double leftMargin = 40;
+            double centerX = page.Width / 2;
 
-            // Title
-            gfx.DrawString(
-                "RENTAL RECEIPT",
-                fontTitle,
-                XBrushes.Black,
-                new XRect(0, y, page.Width, 30),
-                XStringFormats.TopCenter);
-
-            y += 50;
-
-            // Receipt number
-            gfx.DrawString(
-                $"Receipt #: RENT-{rental.Id:D6}",
-                fontBody,
-                XBrushes.Black,
-                40, y);
-
+            // Store header - centered like receipt
+            gfx.DrawString("SNB (SAKYANAN NI BET)", fontStore, XBrushes.Black,
+                new XRect(0, y, page.Width, 20), XStringFormats.TopCenter);
             y += 20;
 
-            gfx.DrawString(
-                $"Date: {DateTime.Now:yyyy-MM-dd}",
-                fontBody,
-                XBrushes.Black,
-                40, y);
+            gfx.DrawString("Vehicle Rental", fontSmall, XBrushes.Black,
+                new XRect(0, y, page.Width, 15), XStringFormats.TopCenter);
+            y += 15;
 
-            y += 30;
-
-            gfx.DrawLine(XPens.Black, 40, y, page.Width - 40, y);
+            gfx.DrawString("09165968511", fontSmall, XBrushes.Black,
+                new XRect(0, y, page.Width, 15), XStringFormats.TopCenter);
             y += 20;
 
-            // Info block
-            DrawRow(gfx, fontHeader, fontBody, "Customer:", customerName, ref y);
-            DrawRow(gfx, fontHeader, fontBody, "Vehicle:",
-                $"{vehicle.Make} {vehicle.Model}", ref y);
-
-            DrawRow(gfx, fontHeader, fontBody, "Rental Period:",
-                $"{rental.PickupDate:d} → {rental.ExpectedReturnDate:d}", ref y);
-
-            DrawRow(gfx, fontHeader, fontBody, "Status:",
-                rental.Status.ToString(), ref y);
-
+            // Separator line
+            DrawCenteredLine(gfx, centerX - 100, y, centerX + 100, y);
             y += 20;
 
-            gfx.DrawLine(XPens.Black, 40, y, page.Width - 40, y);
+            // Receipt title
+            gfx.DrawString("RENTAL RECEIPT", fontTitle, XBrushes.Black,
+                new XRect(0, y, page.Width, 20), XStringFormats.TopCenter);
+            y += 25;
+
+            // Receipt info in simple columns
+            gfx.DrawString($"Receipt #: RENT-{rental.Id:D6}", fontBody, XBrushes.Black, leftMargin, y);
+            gfx.DrawString($"Date: {DateTime.Now:MM/dd/yyyy}", fontBody, XBrushes.Black, page.Width - 200, y);
+            y += 15;
+
+            gfx.DrawString($"Time: {DateTime.Now:hh:mm tt}", fontBody, XBrushes.Black, leftMargin, y);
             y += 20;
 
-            // Billing placeholder
-            gfx.DrawString(
-                "Billing Information",
-                fontHeader,
-                XBrushes.Black,
-                40, y);
-
+            // Simple separator
+            DrawCenteredLine(gfx, centerX - 80, y, centerX + 80, y);
             y += 20;
 
-            gfx.DrawString(
-                "Billing details are not available yet.",
-                fontBody,
-                XBrushes.Gray,
-                40, y);
+            // Simple customer info - using original parameter
+            gfx.DrawString("CUSTOMER:", fontHeader, XBrushes.Black, leftMargin, y);
+            y += 15;
+            gfx.DrawString(customerName, fontBody, XBrushes.Black, leftMargin, y);
+            y += 20;
 
+            // Simple vehicle info - using original logic
+            gfx.DrawString("VEHICLE:", fontHeader, XBrushes.Black, leftMargin, y);
+            y += 15;
+            gfx.DrawString($"{vehicle.Make} {vehicle.Model}", fontBody, XBrushes.Black, leftMargin, y);
+            y += 20;
+
+            // Simple rental period - using original logic
+            gfx.DrawString("RENTAL PERIOD:", fontHeader, XBrushes.Black, leftMargin, y);
+            y += 15;
+            gfx.DrawString($"{rental.PickupDate:MM/dd/yyyy} → {rental.ExpectedReturnDate:MM/dd/yyyy}", fontBody, XBrushes.Black, leftMargin, y);
+            y += 20;
+
+            // Simple status - using original logic
+            gfx.DrawString("STATUS:", fontHeader, XBrushes.Black, leftMargin, y);
+            y += 15;
+            gfx.DrawString(rental.Status.ToString(), fontBody, XBrushes.Black, leftMargin, y);
+            y += 25;
+
+            // Simple separator
+            DrawCenteredLine(gfx, centerX - 80, y, centerX + 80, y);
+            y += 20;
+
+            // Simple billing placeholder - like original but styled
+            gfx.DrawString("BILLING INFORMATION", fontHeader, XBrushes.Black, leftMargin, y);
+            y += 20;
+
+            gfx.DrawString("Details available upon return", fontBody, XBrushes.Gray, leftMargin, y);
             y += 40;
 
-            gfx.DrawString(
-                "Thank you for choosing VRMS",
-                fontBody,
-                XBrushes.Black,
-                new XRect(0, y, page.Width, 20),
-                XStringFormats.TopCenter);
+            // Simple thank you - centered
+            gfx.DrawString("Thank you for choosing SNB", fontBody, XBrushes.Black,
+                new XRect(0, y, page.Width, 20), XStringFormats.TopCenter);
+            y += 15;
+
+            gfx.DrawString("09165968511", fontSmall, XBrushes.Black,
+                new XRect(0, y, page.Width, 15), XStringFormats.TopCenter);
 
             document.Save(filePath);
         }
 
-        private static void DrawRow(
-            XGraphics gfx,
-            XFont header,
-            XFont body,
-            string label,
-            string value,
-            ref double y)
+        private static void DrawCenteredLine(XGraphics gfx, double x1, double y1, double x2, double y2)
         {
-            gfx.DrawString(label, header, XBrushes.Black, 40, y);
-            gfx.DrawString(value, body, XBrushes.Black, 160, y);
-            y += 18;
+            var pen = new XPen(XColor.FromArgb(0, 0, 0), 0.5);
+            gfx.DrawLine(pen, x1, y1, x2, y2);
         }
     }
 }

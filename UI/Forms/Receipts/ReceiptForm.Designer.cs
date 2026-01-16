@@ -4,128 +4,106 @@
     {
         private System.ComponentModel.IContainer components = null;
 
-        private System.Windows.Forms.Panel panelHeader;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblReceiptNumber;
+        private Panel panelHeader;
+        private Panel panelContent;
+        private Panel panelBilling;
+        private Panel panelFooter;
 
-        private System.Windows.Forms.Panel panelContent;
-        private System.Windows.Forms.Label lblCustomerTitle;
-        private System.Windows.Forms.Label lblCustomer;
-        private System.Windows.Forms.Label lblVehicleTitle;
-        private System.Windows.Forms.Label lblVehicle;
-        private System.Windows.Forms.Label lblPeriodTitle;
-        private System.Windows.Forms.Label lblPeriod;
-        private System.Windows.Forms.Label lblStatusTitle;
-        private System.Windows.Forms.Label lblStatus;
-        private System.Windows.Forms.Label lblIssuedTitle;
-        private System.Windows.Forms.Label lblIssuedDate;
-        private System.Windows.Forms.Label lblDurationTitle;
-        private System.Windows.Forms.Label lblDuration;
-        private System.Windows.Forms.Label lblOdometerTitle;
-        private System.Windows.Forms.Label lblOdometer;
+        private Label lblTitle;
+        private Label lblReceiptNumber;
 
-        private System.Windows.Forms.Panel panelBilling;
-        private System.Windows.Forms.Label lblBillingHeader;
-        private System.Windows.Forms.Label lblBillingInfo;
+        private Label lblCustomerTitle;
+        private Label lblCustomer;
+        private Label lblVehicleTitle;
+        private Label lblVehicle;
+        private Label lblPeriodTitle;
+        private Label lblPeriod;
+        private Label lblDurationTitle;
+        private Label lblDuration;
+        private Label lblOdometerTitle;
+        private Label lblOdometer;
+        private Label lblStatusTitle;
+        private Label lblStatus;
+        private Label lblIssuedTitle;
+        private Label lblIssuedDate;
 
-        private System.Windows.Forms.Panel panelFooter;
-        private System.Windows.Forms.Button btnPrint;
-        private System.Windows.Forms.Button btnClose;
+        private Label lblBillingHeader;
+        private Label lblBillingInfo;
+
+        private Button btnPrint;
+        private Button btnClose;
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && components != null)
                 components.Dispose();
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            panelHeader = new Panel();
+            panelContent = new Panel();
+            panelBilling = new Panel();
+            panelFooter = new Panel();
 
-            panelHeader = new System.Windows.Forms.Panel();
-            lblTitle = new System.Windows.Forms.Label();
-            lblReceiptNumber = new System.Windows.Forms.Label();
+            lblTitle = new Label();
+            lblReceiptNumber = new Label();
 
-            panelContent = new System.Windows.Forms.Panel();
-            lblCustomerTitle = new System.Windows.Forms.Label();
-            lblCustomer = new System.Windows.Forms.Label();
-            lblVehicleTitle = new System.Windows.Forms.Label();
-            lblVehicle = new System.Windows.Forms.Label();
-            lblPeriodTitle = new System.Windows.Forms.Label();
-            lblPeriod = new System.Windows.Forms.Label();
-            lblStatusTitle = new System.Windows.Forms.Label();
-            lblStatus = new System.Windows.Forms.Label();
-            lblIssuedTitle = new System.Windows.Forms.Label();
-            lblIssuedDate = new System.Windows.Forms.Label();
-            lblDurationTitle = new System.Windows.Forms.Label();
-            lblDuration = new System.Windows.Forms.Label();
-            lblOdometerTitle = new System.Windows.Forms.Label();
-            lblOdometer = new System.Windows.Forms.Label();
+            lblCustomerTitle = new Label();
+            lblCustomer = new Label();
+            lblVehicleTitle = new Label();
+            lblVehicle = new Label();
+            lblPeriodTitle = new Label();
+            lblPeriod = new Label();
+            lblDurationTitle = new Label();
+            lblDuration = new Label();
+            lblOdometerTitle = new Label();
+            lblOdometer = new Label();
+            lblStatusTitle = new Label();
+            lblStatus = new Label();
+            lblIssuedTitle = new Label();
+            lblIssuedDate = new Label();
 
-            panelBilling = new System.Windows.Forms.Panel();
-            lblBillingHeader = new System.Windows.Forms.Label();
-            lblBillingInfo = new System.Windows.Forms.Label();
+            lblBillingHeader = new Label();
+            lblBillingInfo = new Label();
 
-            panelFooter = new System.Windows.Forms.Panel();
-            btnPrint = new System.Windows.Forms.Button();
-            btnClose = new System.Windows.Forms.Button();
+            btnPrint = new Button();
+            btnClose = new Button();
 
-            panelHeader.SuspendLayout();
-            panelContent.SuspendLayout();
-            panelBilling.SuspendLayout();
-            panelFooter.SuspendLayout();
             SuspendLayout();
 
-            // ================= HEADER =================
-            panelHeader.BackColor = System.Drawing.Color.FromArgb(30, 60, 90);
-            panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            // HEADER
+            panelHeader.Dock = DockStyle.Top;
             panelHeader.Height = 80;
+            panelHeader.BackColor = Color.FromArgb(30, 60, 90);
 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 16F, System.Drawing.FontStyle.Bold);
-            lblTitle.ForeColor = System.Drawing.Color.White;
-            lblTitle.Location = new System.Drawing.Point(20, 15);
             lblTitle.Text = "🧾 Rental Receipt";
+            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Location = new Point(20, 15);
 
-            lblReceiptNumber.AutoSize = true;
-            lblReceiptNumber.Font = new System.Drawing.Font("Segoe UI", 10F);
-            lblReceiptNumber.ForeColor = System.Drawing.Color.Gainsboro;
-            lblReceiptNumber.Location = new System.Drawing.Point(22, 45);
-            lblReceiptNumber.Text = "RENT-000000";
+            lblReceiptNumber.ForeColor = Color.Gainsboro;
+            lblReceiptNumber.Location = new Point(22, 45);
 
             panelHeader.Controls.Add(lblTitle);
             panelHeader.Controls.Add(lblReceiptNumber);
 
-            // ================= CONTENT =================
-            panelContent.Dock = System.Windows.Forms.DockStyle.Top;
-            panelContent.Padding = new System.Windows.Forms.Padding(20);
-            panelContent.Height = 300;
+            // CONTENT
+            panelContent.Dock = DockStyle.Top;
+            panelContent.Height = 260;
+            panelContent.Padding = new Padding(20);
 
-            AddLabel(lblCustomerTitle, "Customer:", 20, 20);
-            AddValue(lblCustomer, 140, 18);
+            int y = 20;
+            AddPair(lblCustomerTitle, "Customer:", lblCustomer, y); y += 32;
+            AddPair(lblVehicleTitle, "Vehicle:", lblVehicle, y); y += 32;
+            AddPair(lblPeriodTitle, "Period:", lblPeriod, y); y += 32;
+            AddPair(lblDurationTitle, "Duration:", lblDuration, y); y += 32;
+            AddPair(lblOdometerTitle, "Odometer:", lblOdometer, y); y += 32;
+            AddPair(lblStatusTitle, "Status:", lblStatus, y); y += 32;
+            AddPair(lblIssuedTitle, "Issued:", lblIssuedDate, y);
 
-            AddLabel(lblVehicleTitle, "Vehicle:", 20, 55);
-            AddValue(lblVehicle, 140, 53);
-
-            AddLabel(lblPeriodTitle, "Rental Period:", 20, 90);
-            AddValue(lblPeriod, 140, 88);
-
-            AddLabel(lblDurationTitle, "Duration:", 20, 125);
-            AddValue(lblDuration, 140, 123);
-
-            AddLabel(lblOdometerTitle, "Odometer:", 20, 160);
-            AddValue(lblOdometer, 140, 158);
-
-            AddLabel(lblStatusTitle, "Status:", 20, 195);
-            AddValue(lblStatus, 140, 193);
-
-            AddLabel(lblIssuedTitle, "Issued:", 20, 230);
-            AddValue(lblIssuedDate, 140, 228);
-
-            panelContent.Controls.AddRange(new System.Windows.Forms.Control[]
+            panelContent.Controls.AddRange(new Control[]
             {
                 lblCustomerTitle, lblCustomer,
                 lblVehicleTitle, lblVehicle,
@@ -136,87 +114,61 @@
                 lblIssuedTitle, lblIssuedDate
             });
 
-            // ================= BILLING =================
-            panelBilling.Dock = System.Windows.Forms.DockStyle.Fill;
-            panelBilling.Padding = new System.Windows.Forms.Padding(20);
-            panelBilling.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+            // BILLING
+            panelBilling.Dock = DockStyle.Fill;
+            panelBilling.Padding = new Padding(20);
+            panelBilling.BackColor = Color.FromArgb(248, 249, 250);
 
-            lblBillingHeader.Text = "Billing Information";
-            lblBillingHeader.Font = new System.Drawing.Font("Segoe UI Semibold", 11F);
-            lblBillingHeader.Location = new System.Drawing.Point(20, 15);
+            lblBillingHeader.Text = "Billing";
+            lblBillingHeader.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblBillingHeader.Location = new Point(20, 15);
 
-            lblBillingInfo.Text = "Billing details are not available yet.";
-            lblBillingInfo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            lblBillingInfo.ForeColor = System.Drawing.Color.Gray;
-            lblBillingInfo.Location = new System.Drawing.Point(20, 45);
-            lblBillingInfo.Size = new System.Drawing.Size(440, 50);
+            lblBillingInfo.Location = new Point(20, 45);
+            lblBillingInfo.Size = new Size(460, 120);
 
             panelBilling.Controls.Add(lblBillingHeader);
             panelBilling.Controls.Add(lblBillingInfo);
 
-            // ================= FOOTER =================
-            panelFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
+            // FOOTER
+            panelFooter.Dock = DockStyle.Bottom;
             panelFooter.Height = 60;
-            panelFooter.Padding = new System.Windows.Forms.Padding(15);
-            panelFooter.BackColor = System.Drawing.Color.WhiteSmoke;
+            panelFooter.Padding = new Padding(15);
 
-            btnPrint.Text = "🖨 Print";
+            btnPrint.Text = "Print";
+            btnPrint.Dock = DockStyle.Left;
             btnPrint.Width = 120;
-            btnPrint.Dock = System.Windows.Forms.DockStyle.Left;
-            btnPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnPrint.FlatAppearance.BorderSize = 0;
-            btnPrint.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
-            btnPrint.ForeColor = System.Drawing.Color.White;
 
             btnClose.Text = "Close";
+            btnClose.Dock = DockStyle.Right;
             btnClose.Width = 100;
-            btnClose.Dock = System.Windows.Forms.DockStyle.Right;
-            btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            btnClose.FlatAppearance.BorderSize = 0;
-            btnClose.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
-            btnClose.ForeColor = System.Drawing.Color.White;
 
             panelFooter.Controls.Add(btnPrint);
             panelFooter.Controls.Add(btnClose);
 
-            // ================= FORM =================
+            // FORM (ORDER IS CRITICAL)
             Controls.Add(panelBilling);
             Controls.Add(panelContent);
             Controls.Add(panelFooter);
             Controls.Add(panelHeader);
 
-            Text = "Receipt";
-            ClientSize = new System.Drawing.Size(520, 520);
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            ClientSize = new Size(520, 560);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            StartPosition = FormStartPosition.CenterParent;
             MaximizeBox = false;
             MinimizeBox = false;
+            Text = "Receipt";
 
-            panelHeader.ResumeLayout(false);
-            panelHeader.PerformLayout();
-            panelContent.ResumeLayout(false);
-            panelBilling.ResumeLayout(false);
-            panelFooter.ResumeLayout(false);
             ResumeLayout(false);
         }
 
-        #endregion
-
-        // ================= HELPERS =================
-        private void AddLabel(System.Windows.Forms.Label lbl, string text, int x, int y)
+        private void AddPair(Label title, string text, Label value, int y)
         {
-            lbl.Text = text;
-            lbl.Font = new System.Drawing.Font("Segoe UI", 9F);
-            lbl.ForeColor = System.Drawing.Color.Gray;
-            lbl.Location = new System.Drawing.Point(x, y);
-            lbl.AutoSize = true;
-        }
+            title.Text = text;
+            title.ForeColor = Color.Gray;
+            title.Location = new Point(20, y);
 
-        private void AddValue(System.Windows.Forms.Label lbl, int x, int y)
-        {
-            lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
-            lbl.Location = new System.Drawing.Point(x, y);
-            lbl.AutoSize = true;
+            value.Location = new Point(150, y);
+            value.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
         }
     }
 }
