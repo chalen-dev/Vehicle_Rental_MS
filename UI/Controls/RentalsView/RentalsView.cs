@@ -7,7 +7,6 @@ using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
 using VRMS.UI.ApplicationService;
 using VRMS.UI.Forms.Rentals;
-// Added
 
 namespace VRMS.UI.Controls.RentalsView
 {
@@ -23,6 +22,17 @@ namespace VRMS.UI.Controls.RentalsView
         private readonly ToolTip _toolTip = new ToolTip();
         private static readonly string PlaceholderImagePath = Path.Combine("Assets", "img_placeholder.png");
 
+        // Sorting variables
+        private SortDirection _currentSortDirection = SortDirection.Ascending;
+        private string _currentSortColumn = "";
+
+        // Enum for sort direction
+        private enum SortDirection
+        {
+            Ascending,
+            Descending
+        }
+
         public RentalsView()
         {
             InitializeComponent();
@@ -35,8 +45,100 @@ namespace VRMS.UI.Controls.RentalsView
 
             Load += RentalsView_Load;
             dgvRentals.SelectionChanged += DgvRentals_SelectionChanged;
+            dgvRentals.ColumnHeaderMouseClick += DgvRentals_ColumnHeaderMouseClick;
         }
 
+        private void DgvRentals_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // Only handle column header clicks (row index -1)
+            if (e.RowIndex == -1 && e.ColumnIndex >= 0)
+            {
+                var column = dgvRentals.Columns[e.ColumnIndex];
+                var columnName = column.DataPropertyName;
+
+                // Toggle sort direction if clicking the same column
+                if (_currentSortColumn == columnName)
+                {
+                    _currentSortDirection = _currentSortDirection == SortDirection.Ascending
+                        ? SortDirection.Descending
+                        : SortDirection.Ascending;
+                }
+                else
+                {
+                    // New column, default to ascending
+                    _currentSortColumn = columnName;
+                    _currentSortDirection = SortDirection.Ascending;
+                }
+
+                // Update sort indicators in column headers
+                UpdateSortIndicators(column);
+
+                // Apply the sort
+                SortData();
+            }
+        }
+
+        private void UpdateSortIndicators(DataGridViewColumn sortedColumn)
+        {
+            // Clear all sort indicators
+            foreach (DataGridViewColumn column in dgvRentals.Columns)
+            {
+                column.HeaderCell.SortGlyphDirection = SortOrder.None;
+            }
+
+            // Set sort indicator for the current sorted column
+            sortedColumn.HeaderCell.SortGlyphDirection = _currentSortDirection == SortDirection.Ascending
+                ? SortOrder.Ascending
+                : SortOrder.Descending;
+        }
+
+        private void SortData()
+        {
+            if (dgvRentals.DataSource is List<RentalGridRow> rows && rows.Count > 0)
+            {
+                var sortedList = _currentSortDirection == SortDirection.Ascending
+                    ? SortAscending(rows, _currentSortColumn)
+                    : SortDescending(rows, _currentSortColumn);
+
+                dgvRentals.DataSource = null;
+                dgvRentals.DataSource = sortedList;
+
+                // Maintain selection if possible
+                if (dgvRentals.SelectedRows.Count > 0 && dgvRentals.Rows.Count > 0)
+                {
+                    dgvRentals.Rows[0].Selected = true;
+                }
+
+                // Reapply cell formatting
+                dgvRentals.Refresh();
+            }
+        }
+
+        private List<RentalGridRow> SortAscending(List<RentalGridRow> rows, string propertyName)
+        {
+            return propertyName switch
+            {
+                "RentalId" => rows.OrderBy(r => r.RentalId).ToList(),
+                "CustomerName" => rows.OrderBy(r => r.CustomerName).ToList(),
+                "PickupDate" => rows.OrderBy(r => r.PickupDate).ToList(),
+                "ExpectedReturnDate" => rows.OrderBy(r => r.ExpectedReturnDate).ToList(),
+                "Status" => rows.OrderBy(r => r.Status.ToString()).ToList(),
+                _ => rows
+            };
+        }
+
+        private List<RentalGridRow> SortDescending(List<RentalGridRow> rows, string propertyName)
+        {
+            return propertyName switch
+            {
+                "RentalId" => rows.OrderByDescending(r => r.RentalId).ToList(),
+                "CustomerName" => rows.OrderByDescending(r => r.CustomerName).ToList(),
+                "PickupDate" => rows.OrderByDescending(r => r.PickupDate).ToList(),
+                "ExpectedReturnDate" => rows.OrderByDescending(r => r.ExpectedReturnDate).ToList(),
+                "Status" => rows.OrderByDescending(r => r.Status.ToString()).ToList(),
+                _ => rows
+            };
+        }
 
         private void RentalsView_Load(object sender, EventArgs e)
         {
@@ -83,8 +185,6 @@ namespace VRMS.UI.Controls.RentalsView
                     customerName = $"{customer.FirstName} {customer.LastName}";
                 }
 
-
-
                 return new RentalGridRow
                 {
                     RentalId = r.Id,
@@ -96,9 +196,13 @@ namespace VRMS.UI.Controls.RentalsView
             }).ToList();
 
             ApplyFilters();
+
+            // Apply any existing sort after loading data
+            if (!string.IsNullOrEmpty(_currentSortColumn))
+            {
+                SortData();
+            }
         }
-
-
 
         private void LoadStatusFilter()
         {
@@ -116,9 +220,17 @@ namespace VRMS.UI.Controls.RentalsView
 
             var search = txtSearch.Text.Trim();
             if (!string.IsNullOrWhiteSpace(search))
-                filtered = filtered.Where(r => r.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase));
+                filtered = filtered.Where(r => r.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                                              r.RentalId.ToString().Contains(search));
 
             dgvRentals.DataSource = filtered.ToList();
+
+            // Apply any existing sort after filtering
+            if (!string.IsNullOrEmpty(_currentSortColumn))
+            {
+                SortData();
+            }
+
             UpdateActionButtons();
         }
 
@@ -132,11 +244,9 @@ namespace VRMS.UI.Controls.RentalsView
                     _billingService,
                     _rateService);
 
-
             if (form.ShowDialog(FindForm()) == DialogResult.OK)
                 LoadRentals();
         }
-
 
         private bool _returnInProgress = false;
 
@@ -187,9 +297,6 @@ namespace VRMS.UI.Controls.RentalsView
             form.ShowDialog(this);
         }
 
-        // =================
-
-
         private void DgvRentals_SelectionChanged(object? sender, EventArgs e)
         {
             UpdateActionButtons();
@@ -232,7 +339,6 @@ namespace VRMS.UI.Controls.RentalsView
                 customerName = $"{customer.FirstName} {customer.LastName}";
             }
 
-
             // =========================
             // BASIC UI FIELDS
             // =========================
@@ -259,13 +365,11 @@ namespace VRMS.UI.Controls.RentalsView
                 lblDetailAmount.Text = "Total: ₱ --";
             }
 
-
             // =========================
             // IMAGE
             // =========================
             LoadVehicleImage(vehicle.Id);
         }
-
 
         private void LoadVehicleImage(int vehicleId)
         {
@@ -329,5 +433,15 @@ namespace VRMS.UI.Controls.RentalsView
                 btnReturn.ForeColor = Color.DarkGray;
             }
         }
+    }
+
+    // RentalGridRow class (if not already defined elsewhere)
+    public class RentalGridRow
+    {
+        public int RentalId { get; set; }
+        public string CustomerName { get; set; } = string.Empty;
+        public DateTime PickupDate { get; set; }
+        public DateTime ExpectedReturnDate { get; set; }
+        public RentalStatus Status { get; set; }
     }
 }

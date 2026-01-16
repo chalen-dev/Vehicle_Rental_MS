@@ -1,4 +1,5 @@
-﻿using VRMS.DTOs.Vehicle;
+﻿using System.ComponentModel;
+using VRMS.DTOs.Vehicle;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Helpers;
@@ -20,7 +21,15 @@ namespace VRMS.UI.Controls.VehiclesView
         private readonly RentalService _rentalService;
 
         private VehicleAdvancedFilterDto? _advancedFilter;
+        private SortDirection _currentSortDirection = SortDirection.Ascending;
+        private string _currentSortColumn = "";
 
+        // Enum for sort direction
+        private enum SortDirection
+        {
+            Ascending,
+            Descending
+        }
 
         public VehiclesView()
         {
@@ -33,6 +42,7 @@ namespace VRMS.UI.Controls.VehiclesView
 
             Load += VehiclesView_Load;
             dgvVehicles.SelectionChanged += DgvVehicles_SelectionChanged;
+            dgvVehicles.ColumnHeaderMouseClick += DgvVehicles_ColumnHeaderMouseClick;
 
             flowLayoutPanelFeatures.AutoSize = true;
             flowLayoutPanelFeatures.WrapContents = true;
@@ -47,10 +57,104 @@ namespace VRMS.UI.Controls.VehiclesView
             btnUnderMaintenance.Click += btnUnderMaintenance_Click;
             btnAdd.Click += btnAdd_Click;
             btnEdit.Click += btnEdit_Click;
-           
+
             btnAddCategory.Click += btnAddCategory_Click;
         }
 
+        private void DgvVehicles_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // Only handle column header clicks (row index -1)
+            if (e.RowIndex == -1 && e.ColumnIndex >= 0)
+            {
+                var column = dgvVehicles.Columns[e.ColumnIndex];
+                var columnName = column.DataPropertyName;
+
+                // Toggle sort direction if clicking the same column
+                if (_currentSortColumn == columnName)
+                {
+                    _currentSortDirection = _currentSortDirection == SortDirection.Ascending
+                        ? SortDirection.Descending
+                        : SortDirection.Ascending;
+                }
+                else
+                {
+                    // New column, default to ascending
+                    _currentSortColumn = columnName;
+                    _currentSortDirection = SortDirection.Ascending;
+                }
+
+                // Update sort indicators in column headers
+                UpdateSortIndicators(column);
+
+                // Apply the sort
+                SortData();
+            }
+        }
+
+        private void UpdateSortIndicators(DataGridViewColumn sortedColumn)
+        {
+            // Clear all sort indicators
+            foreach (DataGridViewColumn column in dgvVehicles.Columns)
+            {
+                column.HeaderCell.SortGlyphDirection = SortOrder.None;
+            }
+
+            // Set sort indicator for the current sorted column
+            sortedColumn.HeaderCell.SortGlyphDirection = _currentSortDirection == SortDirection.Ascending
+                ? SortOrder.Ascending
+                : SortOrder.Descending;
+        }
+
+        private void SortData()
+        {
+            if (dgvVehicles.DataSource is List<Vehicle> vehicles && vehicles.Count > 0)
+            {
+                var sortedList = _currentSortDirection == SortDirection.Ascending
+                    ? SortAscending(vehicles, _currentSortColumn)
+                    : SortDescending(vehicles, _currentSortColumn);
+
+                dgvVehicles.DataSource = null;
+                dgvVehicles.DataSource = sortedList;
+
+                // Maintain selection if possible
+                if (dgvVehicles.SelectedRows.Count > 0 && dgvVehicles.Rows.Count > 0)
+                {
+                    dgvVehicles.Rows[0].Selected = true;
+                }
+            }
+        }
+
+        private List<Vehicle> SortAscending(List<Vehicle> vehicles, string propertyName)
+        {
+            return propertyName switch
+            {
+                "Make" => vehicles.OrderBy(v => v.Make).ToList(),
+                "Model" => vehicles.OrderBy(v => v.Model).ToList(),
+                "Year" => vehicles.OrderBy(v => v.Year).ToList(),
+                "LicensePlate" => vehicles.OrderBy(v => v.LicensePlate).ToList(),
+                "Transmission" => vehicles.OrderBy(v => v.Transmission.ToString()).ToList(),
+                "FuelType" => vehicles.OrderBy(v => v.FuelType.ToString()).ToList(),
+                "StatusDisplay" => vehicles.OrderBy(v => v.Status.ToString()).ToList(),
+                "Odometer" => vehicles.OrderBy(v => v.Odometer).ToList(),
+                _ => vehicles
+            };
+        }
+
+        private List<Vehicle> SortDescending(List<Vehicle> vehicles, string propertyName)
+        {
+            return propertyName switch
+            {
+                "Make" => vehicles.OrderByDescending(v => v.Make).ToList(),
+                "Model" => vehicles.OrderByDescending(v => v.Model).ToList(),
+                "Year" => vehicles.OrderByDescending(v => v.Year).ToList(),
+                "LicensePlate" => vehicles.OrderByDescending(v => v.LicensePlate).ToList(),
+                "Transmission" => vehicles.OrderByDescending(v => v.Transmission.ToString()).ToList(),
+                "FuelType" => vehicles.OrderByDescending(v => v.FuelType.ToString()).ToList(),
+                "StatusDisplay" => vehicles.OrderByDescending(v => v.Status.ToString()).ToList(),
+                "Odometer" => vehicles.OrderByDescending(v => v.Odometer).ToList(),
+                _ => vehicles
+            };
+        }
 
         private void CmbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -153,6 +257,7 @@ namespace VRMS.UI.Controls.VehiclesView
             dgvVehicles.ReadOnly = true;
             dgvVehicles.Columns.Clear();
 
+            // Add columns with proper DataPropertyName
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Make", DataPropertyName = "Make" });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Model", DataPropertyName = "Model" });
             dgvVehicles.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Year", DataPropertyName = "Year" });
@@ -205,6 +310,12 @@ namespace VRMS.UI.Controls.VehiclesView
 
             lblVehicleCount.Text = $"Total: {vehicles.Count} vehicles";
             ClearVehiclePreview();
+
+            // Apply any existing sort after loading data
+            if (!string.IsNullOrEmpty(_currentSortColumn))
+            {
+                SortData();
+            }
         }
 
         private VehicleAdvancedFilterDto? BuildAdvancedFilter()
