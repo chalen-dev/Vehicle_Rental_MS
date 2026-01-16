@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using VRMS.Database;
 using VRMS.DTOs.Damage;
+using VRMS.DTOs.Rental;
 using VRMS.Enums;
 using VRMS.Models.Damages;
 

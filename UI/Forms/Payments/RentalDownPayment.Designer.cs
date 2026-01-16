@@ -184,6 +184,9 @@
             txtAmountPaid.Name = "txtAmountPaid";
             txtAmountPaid.Size = new Size(211, 32);
             txtAmountPaid.TabIndex = 0;
+            txtAmountPaid.ReadOnly = true;
+            txtAmountPaid.TabStop = false;
+            txtAmountPaid.BackColor = SystemColors.Control;
             // 
             // lblLabelAmount
             // 

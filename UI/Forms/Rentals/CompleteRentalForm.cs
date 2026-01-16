@@ -94,6 +94,7 @@ namespace VRMS.UI.Forms.Rentals
             ConfigureDamageGrid();
             UpdateBillingUI();
             LoadDamages();
+            UpdateMileageOveragePreview();
         }
 
         // =====================================================
@@ -105,7 +106,10 @@ namespace VRMS.UI.Forms.Rentals
             {
                 numOdometer.Value = _rental.StartOdometer + 1;
             }
+
+            UpdateMileageOveragePreview(); // 👈 ADD THIS
         }
+
 
         // =====================================================
         // DAMAGE GRID - FIXED VERSION
@@ -209,23 +213,20 @@ namespace VRMS.UI.Forms.Rentals
 
             try
             {
-                // Ensure invoice exists (NO state change)
-                _billingService.GetOrCreateInvoice(_rentalId);
-
-                // Show payment form FIRST
-                using (var paymentForm = new PaymentForm(_rentalId))
-                {
-                    if (paymentForm.ShowDialog(this) != DialogResult.OK)
-                        return; // DO NOTHING if payment cancelled
-                }
-
-                // NOW finalize rental (AUTHORITATIVE)
+                // FINALIZE RENTAL FIRST (this finalizes the invoice)
                 _rentalService.CompleteRental(
                     rentalId: _rentalId,
                     actualReturnDate: dtReturns.Value,
                     endOdometer: (int)numOdometer.Value,
                     endFuelLevel: (FuelLevel)cbFuels.SelectedIndex
                 );
+
+                // NOW open payment form (invoice is finalized but unpaid)
+                using (var paymentForm = new PaymentForm(_rentalId))
+                {
+                    if (paymentForm.ShowDialog(this) != DialogResult.OK)
+                        return; // payment cancelled, invoice stays unpaid
+                }
 
                 DialogResult = DialogResult.OK;
                 Close();
@@ -239,6 +240,7 @@ namespace VRMS.UI.Forms.Rentals
                     MessageBoxIcon.Error);
             }
         }
+
 
         // =====================================================
         // CANCEL
@@ -291,14 +293,47 @@ namespace VRMS.UI.Forms.Rentals
                         dtReturns.Value,
                         vehicle.VehicleCategoryId);
 
+                UpdateMileageOveragePreview(); 
                 UpdateBillingUI();
             }
             catch
             {
                 _lateFees = 0m;
+                lblMileageOverageFeesValue.Text = "₱ 0.00"; 
                 UpdateBillingUI();
             }
         }
+
+        
+        // =====================================================
+        // MILEAGE OVERAGE PREVIEW (UI ONLY)
+        // =====================================================
+        private void UpdateMileageOveragePreview()
+        {
+            try
+            {
+                var vehicle =
+                    _vehicleService.GetVehicleById(_rental.VehicleId);
+        
+                var mileageFee =
+                    _rateService.CalculateMileageOverage(
+                        startOdometer: _rental.StartOdometer,
+                        endOdometer: (int)numOdometer.Value,
+                        pickup: _rental.PickupDate,
+                        returnDate: dtReturns.Value,
+                        vehicleCategoryId: vehicle.VehicleCategoryId
+                    );
+        
+                lblMileageOverageFeesValue.Text =
+                    $"₱ {mileageFee:N2}";
+            }
+            catch
+            {
+                // Safety: never let UI preview crash the form
+                lblMileageOverageFeesValue.Text = "₱ 0.00";
+            }
+        }
+
 
         // =====================================================
         // VIEW DAMAGE DETAILS - FIXED VERSION (NOW WORKS!)

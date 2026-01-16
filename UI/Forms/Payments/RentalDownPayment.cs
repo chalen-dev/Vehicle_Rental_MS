@@ -66,6 +66,11 @@ namespace VRMS.UI.Forms.Payments
                     .ToList();
 
             cbPaymentMethod.SelectedItem = PaymentMethod.Cash;
+            
+            txtAmountPaid.Text = _securityDeposit.ToString("N2");
+            txtAmountPaid.ReadOnly = true;
+            txtAmountPaid.TabStop = false;
+            txtAmountPaid.Text = _securityDeposit.ToString("N2");
         }
 
 
@@ -85,37 +90,16 @@ namespace VRMS.UI.Forms.Payments
                 return;
             }
 
-            if (!decimal.TryParse(txtAmountPaid.Text, out var amountPaid) || amountPaid <= 0)
-            {
-                MessageBox.Show(
-                    "Please enter a valid payment amount.",
-                    "Validation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-                return;
-            }
-            
-            // Deposit-only payment (MUST be exact)
-            if (amountPaid != _securityDeposit)
-            {
-                MessageBox.Show(
-                    $"Security deposit must be exactly ₱{_securityDeposit:N2}.",
-                    "Invalid Payment",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+            var amountPaid = _securityDeposit;
 
-                txtAmountPaid.Focus();
-                txtAmountPaid.SelectAll();
-                return;
-            }
-
-            // ✅ VALID RANGE
             PaidAmount = amountPaid;
             SelectedPaymentMethod = method;
 
             DialogResult = DialogResult.OK;
             Close();
         }
+
+
 
 
 

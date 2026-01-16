@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using VRMS.DTOs.Damage;
+using VRMS.DTOs.Rental;
 using VRMS.Enums;
 using VRMS.Services.Damage;
 using VRMS.Services.Fleet;

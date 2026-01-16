@@ -1,4 +1,4 @@
-﻿namespace VRMS.DTOs.Damage
+﻿namespace VRMS.DTOs.Rental
 {
     public class RentalVehicleInfoDto
     {
