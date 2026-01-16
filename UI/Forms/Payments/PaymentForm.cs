@@ -35,7 +35,6 @@ namespace VRMS.Forms
             };
 
             // live change calculation
-            txtAmountPaid.TextChanged += TxtAmountPaid_TextChanged;
         }
 
 
@@ -131,6 +130,9 @@ namespace VRMS.Forms
 
                 // Grand total / balance (use authoritative balance from BillingService)
                 lblGrandTotal.Text = $"TOTAL DUE: ₱{_currentBalance:N2}";
+                
+                // Force payment amount to exact total due
+                txtAmountPaid.Text = _currentBalance.ToString("N2");
 
                 // Reset change label
                 lblChange.Text = "Change: ₱ --";
@@ -163,36 +165,22 @@ namespace VRMS.Forms
                 return;
             }
 
-            if (!decimal.TryParse(
-                    txtAmountPaid.Text,
-                    NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                    CultureInfo.CurrentCulture,
-                    out var amount) || amount <= 0)
-            {
-                MessageBox.Show("Invalid amount.");
-                return;
-            }
-
-            // cbPaymentMethod is bound to enum values
             if (!(cbPaymentMethod.SelectedItem is PaymentMethod method))
             {
-                // Fallback: try parse string
-                if (!Enum.TryParse<PaymentMethod>(cbPaymentMethod.SelectedItem.ToString(), true, out method))
+                if (!Enum.TryParse<PaymentMethod>(
+                        cbPaymentMethod.SelectedItem.ToString(),
+                        true,
+                        out method))
                 {
                     MessageBox.Show("Invalid payment method.");
                     return;
                 }
             }
 
+            var amount = _currentBalance;
+
             try
             {
-                // Final payment must not exceed balance (billing service enforces this too)
-                if (amount > _currentBalance)
-                {
-                    MessageBox.Show($"Payment exceeds outstanding balance of ₱{_currentBalance:N2}.");
-                    return;
-                }
-
                 _billingService.AddPayment(
                     invoiceId: _invoice.Id,
                     amount: amount,
@@ -209,44 +197,6 @@ namespace VRMS.Forms
                 MessageBox.Show(ex.Message, "Payment Failed");
             }
         }
-
-
-
-        private void btnCancel_Click(object sender, EventArgs e) { }
-        private void TxtAmountPaid_TextChanged(object? sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtAmountPaid.Text))
-            {
-                lblChange.Text = "Change: ₱ --";
-                lblChange.ForeColor = Color.FromArgb(41, 128, 185);
-                return;
-            }
-
-            if (decimal.TryParse(
-                    txtAmountPaid.Text,
-                    NumberStyles.Number | NumberStyles.AllowCurrencySymbol,
-                    CultureInfo.CurrentCulture,
-                    out var amount))
-            {
-                var change = amount - _currentBalance;
-
-                if (change >= 0m)
-                {
-                    lblChange.Text = $"Change: ₱{change:N2}";
-                    lblChange.ForeColor = Color.FromArgb(41, 128, 185); // blueish
-                }
-                else
-                {
-                    lblChange.Text = $"Underpaid: ₱{Math.Abs(change):N2}";
-                    lblChange.ForeColor = Color.FromArgb(231, 76, 60); // redish
-                }
-            }
-            else
-            {
-                lblChange.Text = "Change: ₱ --";
-                lblChange.ForeColor = Color.FromArgb(41, 128, 185);
-            }
-        }
-
+        
     }
 }

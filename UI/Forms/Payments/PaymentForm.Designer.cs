@@ -216,6 +216,9 @@
             txtAmountPaid.Name = "txtAmountPaid";
             txtAmountPaid.Size = new Size(185, 32);
             txtAmountPaid.TabIndex = 3;
+            txtAmountPaid.ReadOnly = true;
+            txtAmountPaid.TabStop = false;
+            txtAmountPaid.BackColor = SystemColors.Control;
             // 
             // label9
             // 
