@@ -118,8 +118,7 @@ namespace VRMS.UI.Controls.Admin
 
             btnEnableAccount.Enabled =
                 user.Status == AccountStatus.Disabled;
-
-            btnEditUser.Enabled = true;
+            
             btnRemoveAccount.Enabled = !isSelf;
         }
 

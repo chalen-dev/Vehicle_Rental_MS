@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using VRMS.Enums;
+using VRMS.Models.Billing;
 using VRMS.Services.Rental;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
@@ -16,6 +17,8 @@ namespace VRMS.UI.Controls.History
         private readonly RentalService _rentalService;
         private readonly CustomerService _customerService;
         private readonly VehicleService _vehicleService;
+        private Invoice? _selectedInvoice;
+        private Payment? _lastPayment;
 
         private static readonly string PlaceholderImagePath =
             Path.Combine(AppContext.BaseDirectory, "Assets", "img_placeholder.png");
@@ -160,6 +163,25 @@ namespace VRMS.UI.Controls.History
             _lastSelectedRentalId = rentalId;
 
             var rental = _rentalService.GetRentalById(rentalId);
+            var billingService = ApplicationServices.BillingService;
+
+            // Load invoice (may be null)
+            _selectedInvoice = billingService.GetInvoiceByRental(rentalId);
+
+            _lastPayment = null;
+
+            if (_selectedInvoice != null)
+            {
+                var payments =
+                    billingService.GetPaymentsByInvoice(_selectedInvoice.Id);
+
+                // Get the most recent NON-refund payment
+                _lastPayment = payments
+                    .Where(p => p.PaymentType != PaymentType.Refund)
+                    .OrderByDescending(p => p.PaymentDate)
+                    .FirstOrDefault();
+            }
+
             var vehicle = _vehicleService.GetVehicleById(rental.VehicleId);
 
             string customerName = "Walk-in";
@@ -185,7 +207,10 @@ namespace VRMS.UI.Controls.History
             panelDetailsContent.Visible = true;
 
             btnViewReceipt.Enabled = true;
-            btnRefund.Enabled = false;
+            btnRefund.Enabled =
+                _selectedInvoice != null &&
+                _lastPayment != null &&
+                _selectedInvoice.TotalAmount > 0m;
         }
 
         // =====================================================
@@ -256,12 +281,73 @@ namespace VRMS.UI.Controls.History
 
         private void BtnRefund_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Refunds are disabled until billing is complete.",
-                "Info",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            if (_selectedInvoice == null || _lastPayment == null)
+            {
+                MessageBox.Show(
+                    "No refundable payment found.",
+                    "Refund",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+            var rentalId =
+                Convert.ToInt32(dgvRentals.SelectedRows[0].Cells["Id"].Value);
+
+            var rental =
+                _rentalService.GetRentalById(rentalId);
+
+            var vehicle =
+                _vehicleService.GetVehicleById(rental.VehicleId);
+
+            string customerName = "Walk-in";
+            if (rental.CustomerId.HasValue)
+            {
+                var customer =
+                    _customerService.GetCustomerById(rental.CustomerId.Value);
+                customerName = $"{customer.FirstName} {customer.LastName}";
+            }
+
+            using var form = new VRMS.UI.Forms.Payments.RefundForm(
+                transactionId: _lastPayment.Id,
+                customer: customerName,
+                vehicle: $"{vehicle.Make} {vehicle.Model}",
+                originalAmount: _lastPayment.Amount,
+                paymentMethod: _lastPayment.PaymentMethod.ToString(),
+                transactionDate: _lastPayment.PaymentDate
+            );
+
+            if (form.ShowDialog(FindForm()) != DialogResult.OK)
+                return;
+
+            try
+            {
+                ApplicationServices.BillingService.IssueRefund(
+                    invoiceId: _selectedInvoice.Id,
+                    amount: _lastPayment.Amount,
+                    method: _lastPayment.PaymentMethod,
+                    date: DateTime.UtcNow
+                );
+
+                MessageBox.Show(
+                    "Refund issued successfully.",
+                    "Refund",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                LoadRentals();
+                ResetDetails();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Refund Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
+
 
         // =====================================================
         // RESET

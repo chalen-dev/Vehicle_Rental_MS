@@ -354,12 +354,27 @@ public class BillingService
             throw new InvalidOperationException(
                 "Refund exceeds paid amount.");
 
-        return _paymentRepo.Create(
-            invoiceId,
-            amount,
-            method,
-            PaymentType.Refund,
-            date);
+        var refundPaymentId =
+            _paymentRepo.Create(
+                invoiceId,
+                amount,
+                method,
+                PaymentType.Refund,
+                date);
+
+        //  AFTER REFUND, CHECK BALANCE
+        var remainingBalance = GetInvoiceBalance(invoiceId);
+
+        // IF FULLY REFUNDED → COMPLETE RENTAL
+        if (remainingBalance == 0m)
+        {
+            _rentalRepo.UpdateStatus(
+                invoice.RentalId,
+                RentalStatus.Completed);
+        }
+
+        return refundPaymentId;
+
 
     }
 
