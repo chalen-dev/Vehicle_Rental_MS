@@ -12,7 +12,6 @@ namespace VRMS.UI.Forms.Maintenance
         private VehicleDto? currentVehicle;
         private readonly VehicleService _vehicleService;
 
-
         // Flags for parent form
         public bool RecordCreated { get; private set; } = false;
         private bool VehicleStatusUpdated { get; set; } = false;
@@ -28,8 +27,6 @@ namespace VRMS.UI.Forms.Maintenance
             LoadVehicleInfo();
             LoadHistory();
         }
-
-
 
         private void InitializeForm()
         {
@@ -59,7 +56,6 @@ namespace VRMS.UI.Forms.Maintenance
                 lblVehicleModel.Text = $"Model: {currentVehicle.Model}";
                 lblPlateNo.Text = currentVehicle.LicensePlate;
 
-
                 // Update button visibility
                 UpdateMarkAvailableButtonVisibility();
             }
@@ -68,30 +64,24 @@ namespace VRMS.UI.Forms.Maintenance
 
         private void UpdateMarkAvailableButtonVisibility()
         {
-            if (currentVehicle != null)
-            {
-                btnMarkAvailable.Visible =
-                    currentVehicle.Status == VehicleStatus.UnderMaintenance;
-
-                btnMarkAvailable.Enabled =
-                    currentVehicle.Status == VehicleStatus.UnderMaintenance;
-            }
-            else
+            if (currentVehicle == null)
             {
                 btnMarkAvailable.Visible = false;
                 btnMarkAvailable.Enabled = false;
+                return;
             }
-        }
 
+            // Button is ALWAYS VISIBLE AND CLICKABLE when vehicle is Under Maintenance
+            btnMarkAvailable.Visible = currentVehicle.Status == VehicleStatus.UnderMaintenance;
+            btnMarkAvailable.Enabled = currentVehicle.Status == VehicleStatus.UnderMaintenance;
+        }
 
         private void LoadHistory()
         {
             if (currentVehicle == null)
                 return;
 
-            var records =
-                _vehicleService.GetMaintenanceByVehicle(
-                    currentVehicle.Id);
+            var records = _vehicleService.GetMaintenanceByVehicle(currentVehicle.Id);
 
             dgvHistory.DataSource = null;
             dgvHistory.DataSource = records.Select(r => new
@@ -106,11 +96,14 @@ namespace VRMS.UI.Forms.Maintenance
                 r.PerformedBy
             }).ToList();
 
-            lblRecordCount.Text =
-                $"{records.Count} maintenance records";
+            lblRecordCount.Text = $"{records.Count} maintenance records";
+            lblStatusMessage.Text = $"Loaded history for {currentVehicle.Make} {currentVehicle.Model}";
 
-            lblStatusMessage.Text =
-                $"Loaded history for {currentVehicle.Make} {currentVehicle.Model}";
+            // Select the first row if available
+            if (dgvHistory.Rows.Count > 0)
+            {
+                dgvHistory.Rows[0].Selected = true;
+            }
         }
 
         private void WireComboBoxes()
@@ -118,9 +111,7 @@ namespace VRMS.UI.Forms.Maintenance
             // ============================
             // Maintenance TYPE
             // ============================
-            cmbMaintenanceType.DataSource =
-                EnumComboHelper.ToComboItems<MaintenanceType>();
-
+            cmbMaintenanceType.DataSource = EnumComboHelper.ToComboItems<MaintenanceType>();
             cmbMaintenanceType.DisplayMember = "Display";
             cmbMaintenanceType.ValueMember = "Value";
             cmbMaintenanceType.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -134,19 +125,15 @@ namespace VRMS.UI.Forms.Maintenance
                 MaintenanceStatus.InProgress
             };
 
-            cmbStatus.DataSource =
-                EnumComboHelper
-                    .ToComboItems<MaintenanceStatus>()
-                    .Where(i => allowedStatuses.Contains(i.Value))
-                    .ToList();
+            cmbStatus.DataSource = EnumComboHelper
+                .ToComboItems<MaintenanceStatus>()
+                .Where(i => allowedStatuses.Contains(i.Value))
+                .ToList();
 
             cmbStatus.DisplayMember = "Display";
             cmbStatus.ValueMember = "Value";
             cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
-
         }
-
-
 
         // ========== EVENT HANDLERS ==========
 
@@ -179,15 +166,10 @@ namespace VRMS.UI.Forms.Maintenance
                 Type = ((EnumComboItem<MaintenanceType>)cmbMaintenanceType.SelectedItem!).Value,
                 Status = ((EnumComboItem<MaintenanceStatus>)cmbStatus.SelectedItem!).Value,
                 StartDate = dtpStart.Value.Date,
-                EndDate = chkHasEndDate.Checked
-                    ? dtpEnd.Value.Date
-                    : null,
+                EndDate = chkHasEndDate.Checked ? dtpEnd.Value.Date : null,
                 Cost = nudCost.Value,
                 PerformedBy = Session.CurrentUser?.Username ?? "SYSTEM"
             };
-
-            // effective end for overlap checks
-            var effectiveEnd = record.EndDate ?? record.StartDate.AddYears(10);
 
             // Check for overlapping rentals
             var overlappingRentals = _vehicleService.GetOverlappingRentalsForVehicle(
@@ -262,8 +244,7 @@ namespace VRMS.UI.Forms.Maintenance
 
             tabControlMain.SelectedTab = tabHistory;
 
-            lblStatusMessage.Text =
-                $"Maintenance '{record.Title}' saved.";
+            lblStatusMessage.Text = $"Maintenance '{record.Title}' saved.";
         }
 
         private void dgvHistory_SelectionChanged(object? sender, EventArgs e)
@@ -296,15 +277,12 @@ namespace VRMS.UI.Forms.Maintenance
             lblDetailType.Text = EnumComboHelper.ToDisplay(record.Type);
             lblDetailStatus.Text = EnumComboHelper.ToDisplay(record.Status);
             lblDetailStartDate.Text = record.StartDate.ToString("yyyy-MM-dd");
-            lblDetailEndDate.Text =
-                record.EndDate?.ToString("yyyy-MM-dd") ?? "N/A";
+            lblDetailEndDate.Text = record.EndDate?.ToString("yyyy-MM-dd") ?? "N/A";
             lblDetailCost.Text = $"₱{record.Cost:N2}";
-            txtDetailDescription.Text =
-                string.IsNullOrWhiteSpace(record.Description)
-                    ? "(No description)"
-                    : record.Description;
+            txtDetailDescription.Text = string.IsNullOrWhiteSpace(record.Description)
+                ? "(No description)"
+                : record.Description;
         }
-
 
         private void ResetRecordDetails()
         {
@@ -317,35 +295,130 @@ namespace VRMS.UI.Forms.Maintenance
             txtDetailDescription.Text = "No record selected";
         }
 
-
-
-
         private void btnMarkAvailable_Click(object sender, EventArgs e)
         {
-            if (dgvHistory.SelectedRows.Count == 0)
+            // 1. Validation: Vehicle must be under maintenance
+            if (currentVehicle == null || currentVehicle.Status != VehicleStatus.UnderMaintenance)
+            {
+                MessageBox.Show(
+                    "This vehicle is not under maintenance.",
+                    "Cannot Mark Available",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 2. Get ALL active maintenance records for confirmation
+            var allActiveMaintenance = _vehicleService.GetMaintenanceByVehicle(currentVehicle.Id)
+                .Where(r => r.Status != MaintenanceStatus.Completed)
+                .ToList();
+
+            // 3. Show appropriate confirmation message
+            string confirmationMessage;
+
+            if (allActiveMaintenance.Count > 0)
+            {
+                var activeList = string.Join("\n", allActiveMaintenance.Select(r =>
+                    $"• {r.Title} ({EnumComboHelper.ToDisplay(r.Status)})"));
+
+                confirmationMessage =
+                    $"This will close {allActiveMaintenance.Count} active maintenance record(s) and mark the vehicle as AVAILABLE:\n\n" +
+                    $"{activeList}\n\n" +
+                    $"Proceed?";
+            }
+            else
+            {
+                confirmationMessage =
+                    "This vehicle has no active maintenance records.\n\n" +
+                    "Do you want to mark it as AVAILABLE?";
+            }
+
+            var confirm = MessageBox.Show(
+                confirmationMessage,
+                "Confirm Mark Available",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirm != DialogResult.Yes)
                 return;
 
-            int maintenanceId =
-                Convert.ToInt32(
-                    dgvHistory.SelectedRows[0]
-                        .Cells["Id"].Value);
+            try
+            {
+                // 4. Close ALL active maintenance records first (if any)
+                foreach (var maintenance in allActiveMaintenance)
+                {
+                    _vehicleService.CloseMaintenance(
+                        maintenance.Id,
+                        DateTime.Today,
+                        MaintenanceStatus.Completed,
+                        VehicleStatus.Available);
+                }
 
-            _vehicleService.CloseMaintenance(
-                maintenanceId,
-                DateTime.Today,
-                MaintenanceStatus.Completed,
-                VehicleStatus.Available);
+                // 5. Update vehicle status ONLY if not already Available
+                // This prevents the "Available → Available" error
+                if (currentVehicle.Status != VehicleStatus.Available)
+                {
+                    // Only update status if it's actually changing
+                    _vehicleService.UpdateVehicleStatus(currentVehicle.Id, VehicleStatus.Available);
+                    currentVehicle.Status = VehicleStatus.Available;
+                    VehicleStatusUpdated = true;
+                }
+                else
+                {
+                    // Vehicle is already Available (edge case)
+                    VehicleStatusUpdated = false;
+                }
 
-            currentVehicle!.Status = VehicleStatus.Available;
-            VehicleStatusUpdated = true;
+                // 6. Refresh UI
+                LoadHistory();
+                UpdateMarkAvailableButtonVisibility();
 
-            LoadHistory();
-            UpdateMarkAvailableButtonVisibility();
+                // 7. Show success message
+                if (allActiveMaintenance.Count > 0)
+                {
+                    lblStatusMessage.Text = $"Vehicle marked AVAILABLE. {allActiveMaintenance.Count} maintenance record(s) closed.";
+                    MessageBox.Show(
+                        $"Vehicle successfully marked as AVAILABLE.\n" +
+                        $"{allActiveMaintenance.Count} maintenance record(s) were closed.",
+                        "Success",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                else
+                {
+                    lblStatusMessage.Text = "Vehicle marked as AVAILABLE.";
+                    MessageBox.Show(
+                        "Vehicle status updated to AVAILABLE.",
+                        "Success",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle specific error messages better
+                if (ex.Message.Contains("Illegal vehicle status transition"))
+                {
+                    MessageBox.Show(
+                        "The vehicle is already marked as Available.",
+                        "Already Available",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
 
-            lblStatusMessage.Text =
-                "Vehicle marked AVAILABLE and maintenance closed.";
+                    // Refresh UI to reflect actual state
+                    LoadHistory();
+                    UpdateMarkAvailableButtonVisibility();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"Failed to mark vehicle available: {ex.Message}",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
         }
-
 
         private void btnClear_Click(object sender, EventArgs e)
         {
@@ -494,8 +567,7 @@ namespace VRMS.UI.Forms.Maintenance
 
                     UpdateRetireButtonUI();
 
-                    lblStatusMessage.Text =
-                        "Vehicle restored and marked AVAILABLE.";
+                    lblStatusMessage.Text = "Vehicle restored and marked AVAILABLE.";
                 }
                 catch (Exception ex)
                 {
@@ -544,8 +616,7 @@ namespace VRMS.UI.Forms.Maintenance
 
                 UpdateRetireButtonUI();
 
-                lblStatusMessage.Text =
-                    "Vehicle successfully retired.";
+                lblStatusMessage.Text = "Vehicle successfully retired.";
             }
             catch (Exception ex)
             {
@@ -557,7 +628,6 @@ namespace VRMS.UI.Forms.Maintenance
             }
         }
 
-        
         private void UpdateRetireButtonUI()
         {
             if (currentVehicle == null)
@@ -583,7 +653,5 @@ namespace VRMS.UI.Forms.Maintenance
                 btnRetire.ForeColor = Color.White;
             }
         }
-
-
     }
 }
