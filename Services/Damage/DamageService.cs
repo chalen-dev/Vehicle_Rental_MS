@@ -63,11 +63,7 @@ namespace VRMS.Services.Damage
                 description,
                 estimatedCost);
         }
-        public List<(int DamageReportId, string Description, decimal EstimatedCost)>
-    GetApprovedDamagesByRental(int rentalId)
-        {
-            return _reportRepo.GetApprovedByRental(rentalId);
-        }
+
         public void UpdateDamage(
             int damageId,
             DamageType damageType,
