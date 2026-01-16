@@ -28,88 +28,155 @@ public class CustomerSeeder : ISeeder
         // -------------------------------------------------
 
         var licenseLee = EnsureLicense(
-            licenseNumber: "DL-PH-0001",
-            issueDate: new DateTime(2018, 5, 1),
-            expiryDate: new DateTime(2028, 12, 31)
+            "DL-PH-0001",
+            new DateTime(2018, 5, 1),
+            new DateTime(2028, 12, 31)
         );
 
         var licenseDustin = EnsureLicense(
-            licenseNumber: "DL-PH-0002",
-            issueDate: new DateTime(2019, 6, 15),
-            expiryDate: new DateTime(2027, 6, 30)
+            "DL-PH-0002",
+            new DateTime(2019, 6, 15),
+            new DateTime(2027, 6, 30)
         );
 
         var licenseChael = EnsureLicense(
-            licenseNumber: "DL-PH-0100",
-            issueDate: new DateTime(2020, 1, 1),
-            expiryDate: new DateTime(2030, 1, 1)
-        );
-        
-        var licenseCorp = EnsureLicense(
-            licenseNumber: "DL-PH-0003",
-            issueDate: new DateTime(2026, 11, 15),
-            expiryDate: new DateTime(2027, 6, 30)
+            "DL-PH-0100",
+            new DateTime(2020, 1, 1),
+            new DateTime(2030, 1, 1)
         );
 
+        var licenseCorp = EnsureLicense(
+            "DL-PH-0003",
+            new DateTime(2026, 11, 15),
+            new DateTime(2027, 6, 30)
+        );
 
         // -------------------------------------------------
         // CUSTOMERS
         // -------------------------------------------------
 
         SeedCustomer(
-            firstName: "Lee",
-            lastName: "Singson",
-            email: "leesingeon@email.com",
-            phone: "09171234567",
-            address: "Quezon City, Metro Manila",
-            dob: new DateTime(1992, 4, 12),
-            category: CustomerCategory.Individual,
-            frequent: true,
-            blacklisted: false,
-            licenseId: licenseLee,
-            photoFileName: "lee.jpg"
+            "Lee",
+            "Singson",
+            "leesingson@email.com",
+            "09171234567",
+            "Quezon City, Metro Manila",
+            new DateTime(1992, 4, 12),
+            CustomerCategory.Individual,
+            true,
+            false,
+            licenseLee
         );
 
         SeedCustomer(
-            firstName: "Dustin",
-            lastName: "Angway",
-            email: "dustin.angway@email.com",
-            phone: "09179876543",
-            address: "Cebu City, Cebu",
-            dob: new DateTime(1995, 9, 3),
-            category: CustomerCategory.Individual,
-            frequent: true,
-            blacklisted: false,
-            licenseId: licenseDustin,
-            photoFileName: "dustin.jpg"
-        );
-        
-        SeedCustomer(
-            firstName: "Chael",
-            lastName: "Lusaya",
-            email: "chael@gmail.com",
-            phone: "02812345671",
-            address: "Makati City, Metro Manila",
-            dob: new DateTime(2005, 1, 1), // incorporation date
-            category: CustomerCategory.Corporate,
-            frequent: true,
-            blacklisted: false,
-            licenseId: licenseChael,
-            photoFileName: "chael.jpg"
+            "Dustin",
+            "Angway",
+            "dustin.angway@email.com",
+            "09179876543",
+            "Cebu City, Cebu",
+            new DateTime(1995, 9, 3),
+            CustomerCategory.Individual,
+            true,
+            false,
+            licenseDustin
         );
 
         SeedCustomer(
-            firstName: "ACME",
-            lastName: "Logistics Inc.",
-            email: "fleet@acmelogistics.com",
-            phone: "0281234567",
-            address: "Makati City, Metro Manila",
-            dob: new DateTime(2005, 1, 1), // incorporation date
-            category: CustomerCategory.Corporate,
-            frequent: true,
-            blacklisted: false,
-            licenseId: licenseCorp,
-            photoFileName: "acme.jpg"
+            "Chael",
+            "Lusaya",
+            "chael@gmail.com",
+            "02812345671",
+            "Makati City, Metro Manila",
+            new DateTime(2005, 1, 1),
+            CustomerCategory.Corporate,
+            true,
+            false,
+            licenseChael
+        );
+
+        SeedCustomer(
+            "ACME",
+            "Logistics Inc.",
+            "fleet@acmelogistics.com",
+            "0281234567",
+            "Makati City, Metro Manila",
+            new DateTime(2005, 1, 1),
+            CustomerCategory.Corporate,
+            true,
+            false,
+            licenseCorp
+        );
+
+        // -------------------------------------------------
+        // MORE SEEDED CUSTOMERS
+        // -------------------------------------------------
+
+        SeedCustomer(
+            "Maria",
+            "Santos",
+            "maria.santos@email.com",
+            "09175550111",
+            "Pasig City, Metro Manila",
+            new DateTime(1993, 2, 14),
+            CustomerCategory.Individual,
+            false,
+            false,
+            EnsureLicense(
+                "DL-PH-0101",
+                new DateTime(2017, 3, 10),
+                new DateTime(2027, 3, 10)
+            )
+        );
+
+        SeedCustomer(
+            "Joshua",
+            "Reyes",
+            "joshua.reyes@email.com",
+            "09178881234",
+            "Taguig City, Metro Manila",
+            new DateTime(1990, 11, 5),
+            CustomerCategory.Individual,
+            true,
+            false,
+            EnsureLicense(
+                "DL-PH-0102",
+                new DateTime(2016, 8, 20),
+                new DateTime(2026, 8, 20)
+            )
+        );
+
+        SeedCustomer(
+            "TechNova",
+            "Solutions Inc.",
+            "admin@technova.com",
+            "0289001122",
+            "BGC, Taguig City",
+            new DateTime(2012, 6, 1),
+            CustomerCategory.Corporate,
+            true,
+            false,
+            EnsureLicense(
+                "DL-PH-0103",
+                new DateTime(2021, 1, 1),
+                new DateTime(2028, 1, 1)
+            )
+        );
+
+        SeedCustomer(
+            "GreenLine",
+            "Transport Corp.",
+            "fleet@greenline.com",
+            "0289556677",
+            "Quezon City, Metro Manila",
+            new DateTime(2010, 9, 15),
+            CustomerCategory.Corporate,
+            false,
+            false,
+            EnsureLicense(
+                "DL-PH-0104",
+                new DateTime(2020, 5, 5),
+                new DateTime(2030, 5, 5)
+            )
         );
     }
 
@@ -127,13 +194,18 @@ public class CustomerSeeder : ISeeder
         var existing =
             _licenseService.GetDriversLicenseByNumber(licenseNumber);
 
-        return existing?.Id
-               ?? _licenseService.CreateDriversLicense(
-                   licenseNumber,
-                   issueDate,
-                   expiryDate,
-                   issuingCountry
-               );
+        var licenseId =
+            existing?.Id
+            ?? _licenseService.CreateDriversLicense(
+                licenseNumber,
+                issueDate,
+                expiryDate,
+                issuingCountry
+            );
+
+        AddLicensePlaceholders(licenseId);
+
+        return licenseId;
     }
 
     private void SeedCustomer(
@@ -146,8 +218,8 @@ public class CustomerSeeder : ISeeder
         CustomerCategory category,
         bool frequent,
         bool blacklisted,
-        int licenseId,
-        string? photoFileName)
+        int licenseId
+    )
     {
         var existing = _customerService
             .GetAllCustomers()
@@ -168,45 +240,61 @@ public class CustomerSeeder : ISeeder
                                 licenseId
                             );
 
-        if (!string.IsNullOrWhiteSpace(photoFileName))
-            AddPhotoIfExists(customerId, photoFileName);
+        AddCustomerProfile(customerId);
     }
 
-    private static string GetImageBasePath()
+    private static string GetSeedAssetPath(string fileName)
     {
         return Path.Combine(
             AppContext.BaseDirectory,
             "Assets",
             "Seed",
-            "Customers"
+            fileName
         );
     }
 
-    private void AddPhotoIfExists(
-        int customerId,
-        string imageFileName)
+    private void AddCustomerProfile(int customerId)
     {
-        var fullPath = Path.Combine(
-            GetImageBasePath(),
-            imageFileName
-        );
+        var profilePath = GetSeedAssetPath("profile_img.png");
 
-        if (!File.Exists(fullPath))
+        if (!File.Exists(profilePath))
         {
-            Console.WriteLine(
-                $"      [WARN] Customer image not found: {imageFileName}");
+            Console.WriteLine("      [WARN] profile_img.png missing.");
             return;
         }
 
-        using var stream = File.OpenRead(fullPath);
+        using var stream = File.OpenRead(profilePath);
 
         _customerService.SetCustomerPhoto(
             customerId,
             stream,
-            imageFileName
+            "profile_img.png"
+        );
+    }
+
+    private void AddLicensePlaceholders(int licenseId)
+    {
+        var placeholderPath = GetSeedAssetPath("img_placeholder.png");
+
+        if (!File.Exists(placeholderPath))
+        {
+            Console.WriteLine("      [WARN] img_placeholder.png missing.");
+            return;
+        }
+
+        using var front = File.OpenRead(placeholderPath);
+        using var back  = File.OpenRead(placeholderPath);
+
+        _licenseService.SetFrontPhoto(
+            licenseId,
+            front,
+            "img_placeholder.png"
         );
 
-        Console.WriteLine(
-            $"      Seeded customer photo: {imageFileName}");
+        _licenseService.SetBackPhoto(
+            licenseId,
+            back,
+            "img_placeholder.png"
+        );
     }
 }
