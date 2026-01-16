@@ -11,11 +11,14 @@ public static class SP_Dashboard_MonthlyRevenue
                                   )
                                   BEGIN
                                       SELECT
-                                          IFNULL(SUM(total_amount), 0) AS monthly_revenue
-                                      FROM invoices
-                                      WHERE status = 'Paid'
-                                        AND YEAR(generated_date) = p_year
-                                        AND MONTH(generated_date) = p_month;
+                                          IFNULL(SUM(p.amount), 0) AS monthly_revenue
+                                      FROM payments p
+                                      WHERE p.payment_type = 'Final'
+                                        AND YEAR(p.payment_date) = p_year
+                                        AND MONTH(p.payment_date) = p_month;
                                   END;
+                                  
+                                  
+                                  
                                   """;
 }

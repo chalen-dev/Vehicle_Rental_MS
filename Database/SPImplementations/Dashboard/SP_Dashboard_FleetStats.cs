@@ -9,10 +9,18 @@ public static class SP_Dashboard_FleetStats
                                   BEGIN
                                       SELECT
                                           COUNT(*) AS total_vehicles,
-                                          IFNULL(SUM(status = 'Available'), 0) AS available_vehicles,
-                                          IFNULL(SUM(status = 'UnderMaintenance'), 0) AS under_maintenance_vehicles
+
+                                          SUM(
+                                              LOWER(status) = 'available'
+                                          ) AS available_vehicles,
+
+                                          SUM(
+                                              LOWER(status) IN ('undermaintenance', 'maintenance')
+                                          ) AS under_maintenance_vehicles
+
                                       FROM vehicles
-                                      WHERE status != 'Retired';
+                                      WHERE LOWER(status) != 'retired';
                                   END;
+                                  
                                   """;
 }

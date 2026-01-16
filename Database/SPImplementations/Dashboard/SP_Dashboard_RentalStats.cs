@@ -8,9 +8,21 @@ public static class SP_Dashboard_RentalStats
                                   CREATE PROCEDURE sp_dashboard_rental_stats()
                                   BEGIN
                                       SELECT
-                                          IFNULL(SUM(status = 'Active'), 0) AS active_rentals,
-                                          IFNULL(SUM(status = 'Late'), 0) AS overdue_rentals
+                                          -- Active rentals: not yet returned
+                                          SUM(
+                                              actual_return_date IS NULL
+                                              AND status = 'Active'
+                                          ) AS active_rentals,
+
+                                          -- Overdue rentals: past expected return date and not yet returned
+                                          SUM(
+                                              actual_return_date IS NULL
+                                              AND status = 'Active'
+                                              AND expected_return_date < NOW()
+                                          ) AS overdue_rentals
                                       FROM rentals;
                                   END;
+                                  
+                                  
                                   """;
 }
