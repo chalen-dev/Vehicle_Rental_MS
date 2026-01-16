@@ -62,70 +62,85 @@ namespace VRMS.Database.Seeders.Rentals
             int vehicleId,
             List<Models.Customers.Customer> customers)
         {
-            var now = DateTime.UtcNow;
-
-            var pastStart = new DateTime(2018, 1, 1);
-            var pastEnd = now.AddDays(-1);
-
-            var futureStart = now.AddDays(1);
-            var futureEnd = now.AddDays(180);
-
             var vehicle = _vehicleService.GetVehicleById(vehicleId);
             var baseOdo = vehicle.Odometer;
 
-            int PickCustomer() =>
-                customers[_rand.Next(customers.Count)].Id;
+            int PickCustomer(int i) =>
+                customers[i % customers.Count].Id;
 
-            // -------------------------
-            // PAST COMPLETED RENTALS
-            // -------------------------
-            for (int i = 0; i < 4; i++)
+            // -----------------------------
+            // HARD LIMIT WINDOW
+            // -----------------------------
+            DateTime windowStart = new DateTime(2025, 8, 1, 8, 0, 0);
+            DateTime windowEnd   = new DateTime(2026, 2, 28, 20, 0, 0);
+
+            // -----------------------------
+            // PATTERNS PER VEHICLE
+            // rentalDays, gapDays
+            // -----------------------------
+            var patterns = new List<(int rent, int gap)[]>
             {
-                var pickup = RandomDate(pastStart, pastEnd);
-                var days = _rand.Next(1, 21);
-                var expected = pickup.AddDays(days);
-                var actual = expected.AddDays(_rand.Next(-1, 5));
-                if (actual <= pickup)
-                    actual = pickup.AddDays(1);
+                new[] { (2,1), (5,2) },          // Vehicle pattern A
+                new[] { (3,0), (3,1) },          // Pattern B
+                new[] { (7,2) },                 // Pattern C
+                new[] { (1,0), (1,0), (4,2) },   // Pattern D
+                new[] { (5,3) }                  // Pattern E
+            };
 
-                CreateCompletedRental(
-                    PickCustomer(),
-                    vehicleId,
-                    pickup,
-                    expected,
-                    actual,
-                    baseOdo);
-            }
+            var pattern = patterns[vehicleId % patterns.Count];
 
-            // -------------------------
-            // ACTIVE RENTAL
-            // -------------------------
-            var activePickup = RandomDate(now.AddDays(-3), now);
-            var activeExpected = activePickup.AddDays(_rand.Next(1, 14));
+            // -----------------------------
+            // SEED SEQUENTIALLY
+            // -----------------------------
+            DateTime cursor = windowStart;
+            int customerCursor = 0;
 
-            CreateActiveRental(
-                PickCustomer(),
-                vehicleId,
-                activePickup,
-                activeExpected,
-                baseOdo);
-
-            // -------------------------
-            // FUTURE RESERVED RENTALS
-            // -------------------------
-            for (int i = 0; i < 2; i++)
+            while (cursor < windowEnd)
             {
-                var pickup = RandomDate(futureStart, futureEnd);
-                var expected = pickup.AddDays(_rand.Next(1, 14));
+                foreach (var (rentDays, gapDays) in pattern)
+                {
+                    if (cursor >= windowEnd)
+                        break;
 
-                CreateReservedRental(
-                    PickCustomer(),
-                    vehicleId,
-                    pickup,
-                    expected,
-                    baseOdo);
+                    DateTime pickup = cursor;
+                    DateTime expected = pickup.AddDays(rentDays);
+                    DateTime actual = expected; // NO SAME-DAY FUCKERY
+
+                    if (expected > windowEnd)
+                        return;
+
+                    try
+                    {
+                        CreateCompletedRental(
+                            PickCustomer(customerCursor++),
+                            vehicleId,
+                            pickup,
+                            expected,
+                            actual,
+                            baseOdo
+                        );
+                    }
+                    catch
+                    {
+                        // Seeder must NEVER stop
+                    }
+
+                    // -----------------------------
+                    // MOVE FORWARD — THIS IS THE KEY
+                    // +1 DAY GUARANTEE
+                    // -----------------------------
+                    cursor = actual
+                        .Date
+                        .AddDays(1 + gapDays)
+                        .AddHours(8);
+                }
             }
         }
+
+
+
+
+
 
         private void CreateCompletedRental(
             int customerId,
@@ -170,7 +185,14 @@ namespace VRMS.Database.Seeders.Rentals
 
                 _rentalRepo.UpdateStatus(rentalId, status);
 
+                // Finalize invoice (creates totals)
                 SafeFinalizeInvoice(rentalId);
+
+                //  NEW: Seed payment AFTER finalization
+                SeedFinalPayment(
+                    rentalId,
+                    actual.AddDays(_rand.Next(0, 3)) // payment same day or within 2 days
+                );
 
                 Console.WriteLine($"    [OK] Completed rental #{rentalId} (cust:{customerId})");
             }
@@ -278,5 +300,49 @@ namespace VRMS.Database.Seeders.Rentals
                 Console.WriteLine($"      [WARN] FinalizeInvoice failed for {rentalId}: {ex.Message}");
             }
         }
+        
+        private void SeedFinalPayment(int rentalId, DateTime paymentDate)
+        {
+            try
+            {
+                // Get the invoice tied to this rental
+                var invoice = _billingService.GetInvoiceByRental(rentalId);
+                if (invoice == null)
+                    return;
+
+                // Skip if already paid or nothing to pay
+                if (invoice.Status == InvoiceStatus.Paid)
+                    return;
+
+                if (invoice.TotalAmount <= 0m)
+                    return;
+
+                // Deterministic but varied payment method
+                var methods = new[]
+                {
+                    PaymentMethod.Cash,
+                    PaymentMethod.CreditCard,
+                    PaymentMethod.DebitCard,
+                    PaymentMethod.Online
+                };
+
+                var method =
+                    methods[_rand.Next(methods.Length)];
+
+                // ONE final payment = full amount
+                _billingService.AddPayment(
+                    invoiceId: invoice.Id,
+                    amount: invoice.TotalAmount,
+                    method: method,
+                    paymentType: PaymentType.Final,
+                    date: paymentDate
+                );
+            }
+            catch
+            {
+                // Seeder must never stop
+            }
+        }
+
     }
 }
