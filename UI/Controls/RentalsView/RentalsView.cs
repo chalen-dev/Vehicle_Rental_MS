@@ -171,9 +171,24 @@ namespace VRMS.UI.Controls.RentalsView
 
         private void BtnViewDetails_Click(object sender, EventArgs e)
         {
-            using var form = new RentalDetailsForm();
+            if (dgvRentals.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a rental first.");
+                return;
+            }
+
+            if (dgvRentals.SelectedRows[0].DataBoundItem is not RentalGridRow row)
+            {
+                MessageBox.Show("Invalid selection.");
+                return;
+            }
+
+            using var form = new RentalDetailsForm(row.RentalId);
             form.ShowDialog(this);
         }
+
+        // =================
+
 
         private void DgvRentals_SelectionChanged(object? sender, EventArgs e)
         {

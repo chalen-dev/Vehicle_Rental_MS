@@ -38,6 +38,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvDamages = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.flpEvidence = new System.Windows.Forms.FlowLayoutPanel();
             this.pbEvidence = new System.Windows.Forms.PictureBox();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeader = new System.Windows.Forms.Label();
@@ -181,6 +182,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.flpEvidence);
             this.groupBox3.Controls.Add(this.pbEvidence);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.groupBox3.Location = new System.Drawing.Point(579, 222);
@@ -190,14 +192,27 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Photo Evidence";
             // 
+            // flpEvidence
+            // 
+            this.flpEvidence.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flpEvidence.AutoScroll = true;
+            this.flpEvidence.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.flpEvidence.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flpEvidence.Location = new System.Drawing.Point(6, 210);
+            this.flpEvidence.Name = "flpEvidence";
+            this.flpEvidence.Size = new System.Drawing.Size(369, 118);
+            this.flpEvidence.TabIndex = 1;
+            // 
             // pbEvidence
             // 
+            this.pbEvidence.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbEvidence.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pbEvidence.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbEvidence.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbEvidence.Location = new System.Drawing.Point(3, 23);
+            this.pbEvidence.Location = new System.Drawing.Point(6, 23);
             this.pbEvidence.Name = "pbEvidence";
-            this.pbEvidence.Size = new System.Drawing.Size(375, 308);
+            this.pbEvidence.Size = new System.Drawing.Size(369, 181);
             this.pbEvidence.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbEvidence.TabIndex = 0;
             this.pbEvidence.TabStop = false;
@@ -255,6 +270,7 @@
         private System.Windows.Forms.DataGridView dgvDamages;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.PictureBox pbEvidence;
+        private System.Windows.Forms.FlowLayoutPanel flpEvidence;
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblHeader;
         private System.Windows.Forms.Button btnClose;
