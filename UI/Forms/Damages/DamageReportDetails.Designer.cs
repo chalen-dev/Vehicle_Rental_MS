@@ -35,8 +35,6 @@
             splitContainerMain = new SplitContainer();
             pnlReportInfo = new Panel();
             gbDamageDetails = new GroupBox();
-            txtRepairNotes = new TextBox();
-            lblRepairNotes = new Label();
             txtRepairCost = new TextBox();
             lblRepairCost = new Label();
             txtSeverity = new TextBox();
@@ -75,8 +73,6 @@
             pnlActions = new Panel();
             gbStatusActions = new GroupBox();
             button1 = new Button();
-            cbStatus = new ComboBox();
-            lblStatus = new Label();
             btnEdit = new Button();
             btnSave = new Button();
             btnClose = new Button();
@@ -107,7 +103,7 @@
             // 
             // pnlHeader
             // 
-            pnlHeader.BackColor = Color.FromArgb(52, 152, 219);
+            pnlHeader.BackColor = Color.FromArgb(52, 73, 94);
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
@@ -134,7 +130,7 @@
             pnlMain.Location = new Point(0, 80);
             pnlMain.Name = "pnlMain";
             pnlMain.Padding = new Padding(15);
-            pnlMain.Size = new Size(1200, 670);
+            pnlMain.Size = new Size(1200, 746);
             pnlMain.TabIndex = 1;
             // 
             // splitContainerMain
@@ -152,7 +148,7 @@
             // 
             splitContainerMain.Panel2.Controls.Add(pnlImages);
             splitContainerMain.Panel2.Padding = new Padding(10, 0, 0, 0);
-            splitContainerMain.Size = new Size(870, 640);
+            splitContainerMain.Size = new Size(870, 716);
             splitContainerMain.SplitterDistance = 580;
             splitContainerMain.SplitterWidth = 10;
             splitContainerMain.TabIndex = 0;
@@ -165,13 +161,11 @@
             pnlReportInfo.Dock = DockStyle.Fill;
             pnlReportInfo.Location = new Point(0, 0);
             pnlReportInfo.Name = "pnlReportInfo";
-            pnlReportInfo.Size = new Size(570, 640);
+            pnlReportInfo.Size = new Size(570, 716);
             pnlReportInfo.TabIndex = 0;
             // 
             // gbDamageDetails
             // 
-            gbDamageDetails.Controls.Add(txtRepairNotes);
-            gbDamageDetails.Controls.Add(lblRepairNotes);
             gbDamageDetails.Controls.Add(txtRepairCost);
             gbDamageDetails.Controls.Add(lblRepairCost);
             gbDamageDetails.Controls.Add(txtSeverity);
@@ -182,38 +176,17 @@
             gbDamageDetails.Controls.Add(lblDamageDescription);
             gbDamageDetails.Dock = DockStyle.Fill;
             gbDamageDetails.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            gbDamageDetails.Location = new Point(0, 380);
+            gbDamageDetails.Location = new Point(0, 415);
             gbDamageDetails.Name = "gbDamageDetails";
-            gbDamageDetails.Size = new Size(570, 260);
+            gbDamageDetails.Size = new Size(570, 301);
             gbDamageDetails.TabIndex = 2;
             gbDamageDetails.TabStop = false;
             gbDamageDetails.Text = "Damage Details";
             // 
-            // txtRepairNotes
-            // 
-            txtRepairNotes.Font = new Font("Segoe UI", 10F);
-            txtRepairNotes.Location = new Point(20, 205);
-            txtRepairNotes.Multiline = true;
-            txtRepairNotes.Name = "txtRepairNotes";
-            txtRepairNotes.ReadOnly = true;
-            txtRepairNotes.ScrollBars = ScrollBars.Vertical;
-            txtRepairNotes.Size = new Size(530, 40);
-            txtRepairNotes.TabIndex = 9;
-            // 
-            // lblRepairNotes
-            // 
-            lblRepairNotes.AutoSize = true;
-            lblRepairNotes.Font = new Font("Segoe UI", 10F);
-            lblRepairNotes.Location = new Point(16, 180);
-            lblRepairNotes.Name = "lblRepairNotes";
-            lblRepairNotes.Size = new Size(112, 23);
-            lblRepairNotes.TabIndex = 8;
-            lblRepairNotes.Text = "Repair Notes:";
-            // 
             // txtRepairCost
             // 
             txtRepairCost.Font = new Font("Segoe UI", 10F);
-            txtRepairCost.Location = new Point(300, 135);
+            txtRepairCost.Location = new Point(296, 135);
             txtRepairCost.Name = "txtRepairCost";
             txtRepairCost.ReadOnly = true;
             txtRepairCost.Size = new Size(250, 30);
@@ -223,7 +196,7 @@
             // 
             lblRepairCost.AutoSize = true;
             lblRepairCost.Font = new Font("Segoe UI", 10F);
-            lblRepairCost.Location = new Point(296, 110);
+            lblRepairCost.Location = new Point(292, 110);
             lblRepairCost.Name = "lblRepairCost";
             lblRepairCost.Size = new Size(101, 23);
             lblRepairCost.TabIndex = 6;
@@ -232,7 +205,7 @@
             // txtSeverity
             // 
             txtSeverity.Font = new Font("Segoe UI", 10F);
-            txtSeverity.Location = new Point(20, 135);
+            txtSeverity.Location = new Point(16, 63);
             txtSeverity.Name = "txtSeverity";
             txtSeverity.ReadOnly = true;
             txtSeverity.Size = new Size(250, 30);
@@ -242,7 +215,7 @@
             // 
             lblSeverity.AutoSize = true;
             lblSeverity.Font = new Font("Segoe UI", 10F);
-            lblSeverity.Location = new Point(16, 110);
+            lblSeverity.Location = new Point(20, 38);
             lblSeverity.Name = "lblSeverity";
             lblSeverity.Size = new Size(73, 23);
             lblSeverity.TabIndex = 4;
@@ -270,19 +243,19 @@
             // txtDamageDescription
             // 
             txtDamageDescription.Font = new Font("Segoe UI", 10F);
-            txtDamageDescription.Location = new Point(20, 65);
+            txtDamageDescription.Location = new Point(20, 191);
             txtDamageDescription.Multiline = true;
             txtDamageDescription.Name = "txtDamageDescription";
             txtDamageDescription.ReadOnly = true;
             txtDamageDescription.ScrollBars = ScrollBars.Vertical;
-            txtDamageDescription.Size = new Size(250, 40);
+            txtDamageDescription.Size = new Size(526, 89);
             txtDamageDescription.TabIndex = 1;
             // 
             // lblDamageDescription
             // 
             lblDamageDescription.AutoSize = true;
             lblDamageDescription.Font = new Font("Segoe UI", 10F);
-            lblDamageDescription.Location = new Point(16, 40);
+            lblDamageDescription.Location = new Point(29, 157);
             lblDamageDescription.Name = "lblDamageDescription";
             lblDamageDescription.Size = new Size(169, 23);
             lblDamageDescription.TabIndex = 0;
@@ -304,7 +277,7 @@
             gbVehicleInfo.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             gbVehicleInfo.Location = new Point(0, 180);
             gbVehicleInfo.Name = "gbVehicleInfo";
-            gbVehicleInfo.Size = new Size(570, 200);
+            gbVehicleInfo.Size = new Size(570, 235);
             gbVehicleInfo.TabIndex = 1;
             gbVehicleInfo.TabStop = false;
             gbVehicleInfo.Text = "Vehicle Information";
@@ -312,7 +285,7 @@
             // txtVehicleColor
             // 
             txtVehicleColor.Font = new Font("Segoe UI", 10F);
-            txtVehicleColor.Location = new Point(300, 150);
+            txtVehicleColor.Location = new Point(300, 165);
             txtVehicleColor.Name = "txtVehicleColor";
             txtVehicleColor.ReadOnly = true;
             txtVehicleColor.Size = new Size(250, 30);
@@ -322,7 +295,7 @@
             // 
             lblVehicleColor.AutoSize = true;
             lblVehicleColor.Font = new Font("Segoe UI", 10F);
-            lblVehicleColor.Location = new Point(296, 125);
+            lblVehicleColor.Location = new Point(296, 140);
             lblVehicleColor.Name = "lblVehicleColor";
             lblVehicleColor.Size = new Size(114, 23);
             lblVehicleColor.TabIndex = 8;
@@ -331,7 +304,7 @@
             // txtVehicleModel
             // 
             txtVehicleModel.Font = new Font("Segoe UI", 10F);
-            txtVehicleModel.Location = new Point(20, 150);
+            txtVehicleModel.Location = new Point(20, 165);
             txtVehicleModel.Name = "txtVehicleModel";
             txtVehicleModel.ReadOnly = true;
             txtVehicleModel.Size = new Size(250, 30);
@@ -341,7 +314,7 @@
             // 
             lblVehicleModel.AutoSize = true;
             lblVehicleModel.Font = new Font("Segoe UI", 10F);
-            lblVehicleModel.Location = new Point(16, 125);
+            lblVehicleModel.Location = new Point(16, 140);
             lblVehicleModel.Name = "lblVehicleModel";
             lblVehicleModel.Size = new Size(121, 23);
             lblVehicleModel.TabIndex = 6;
@@ -350,7 +323,7 @@
             // txtVehicleMake
             // 
             txtVehicleMake.Font = new Font("Segoe UI", 10F);
-            txtVehicleMake.Location = new Point(300, 80);
+            txtVehicleMake.Location = new Point(300, 95);
             txtVehicleMake.Name = "txtVehicleMake";
             txtVehicleMake.ReadOnly = true;
             txtVehicleMake.Size = new Size(250, 30);
@@ -360,7 +333,7 @@
             // 
             lblVehicleMake.AutoSize = true;
             lblVehicleMake.Font = new Font("Segoe UI", 10F);
-            lblVehicleMake.Location = new Point(296, 55);
+            lblVehicleMake.Location = new Point(296, 70);
             lblVehicleMake.Name = "lblVehicleMake";
             lblVehicleMake.Size = new Size(114, 23);
             lblVehicleMake.TabIndex = 4;
@@ -369,7 +342,7 @@
             // txtLicensePlate
             // 
             txtLicensePlate.Font = new Font("Segoe UI", 10F);
-            txtLicensePlate.Location = new Point(20, 80);
+            txtLicensePlate.Location = new Point(20, 95);
             txtLicensePlate.Name = "txtLicensePlate";
             txtLicensePlate.ReadOnly = true;
             txtLicensePlate.Size = new Size(250, 30);
@@ -505,7 +478,7 @@
             pnlImages.Dock = DockStyle.Fill;
             pnlImages.Location = new Point(10, 0);
             pnlImages.Name = "pnlImages";
-            pnlImages.Size = new Size(270, 640);
+            pnlImages.Size = new Size(270, 716);
             pnlImages.TabIndex = 0;
             // 
             // gbDamageImages
@@ -515,7 +488,7 @@
             gbDamageImages.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             gbDamageImages.Location = new Point(0, 0);
             gbDamageImages.Name = "gbDamageImages";
-            gbDamageImages.Size = new Size(270, 640);
+            gbDamageImages.Size = new Size(270, 716);
             gbDamageImages.TabIndex = 0;
             gbDamageImages.TabStop = false;
             gbDamageImages.Text = "Damage Images";
@@ -532,7 +505,7 @@
             flowLayoutPanelImages.Location = new Point(3, 26);
             flowLayoutPanelImages.Name = "flowLayoutPanelImages";
             flowLayoutPanelImages.Padding = new Padding(10);
-            flowLayoutPanelImages.Size = new Size(264, 611);
+            flowLayoutPanelImages.Size = new Size(264, 687);
             flowLayoutPanelImages.TabIndex = 0;
             // 
             // pbDamageImage1
@@ -586,14 +559,12 @@
             pnlActions.Location = new Point(885, 15);
             pnlActions.Name = "pnlActions";
             pnlActions.Padding = new Padding(10, 0, 0, 0);
-            pnlActions.Size = new Size(300, 640);
+            pnlActions.Size = new Size(300, 716);
             pnlActions.TabIndex = 1;
             // 
             // gbStatusActions
             // 
             gbStatusActions.Controls.Add(button1);
-            gbStatusActions.Controls.Add(cbStatus);
-            gbStatusActions.Controls.Add(lblStatus);
             gbStatusActions.Controls.Add(btnEdit);
             gbStatusActions.Controls.Add(btnSave);
             gbStatusActions.Controls.Add(btnClose);
@@ -601,7 +572,7 @@
             gbStatusActions.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             gbStatusActions.Location = new Point(10, 0);
             gbStatusActions.Name = "gbStatusActions";
-            gbStatusActions.Size = new Size(290, 640);
+            gbStatusActions.Size = new Size(290, 716);
             gbStatusActions.TabIndex = 0;
             gbStatusActions.TabStop = false;
             gbStatusActions.Text = "Status & Actions";
@@ -619,28 +590,6 @@
             button1.TabIndex = 5;
             button1.Text = "Delete Report";
             button1.UseVisualStyleBackColor = false;
-            // 
-            // cbStatus
-            // 
-            cbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbStatus.Enabled = false;
-            cbStatus.Font = new Font("Segoe UI", 10F);
-            cbStatus.FormattingEnabled = true;
-            cbStatus.Items.AddRange(new object[] { "Pending", "Under Review", "Approved", "In Repair", "Completed", "Rejected" });
-            cbStatus.Location = new Point(20, 70);
-            cbStatus.Name = "cbStatus";
-            cbStatus.Size = new Size(250, 31);
-            cbStatus.TabIndex = 0;
-            // 
-            // lblStatus
-            // 
-            lblStatus.AutoSize = true;
-            lblStatus.Font = new Font("Segoe UI", 10F);
-            lblStatus.Location = new Point(16, 40);
-            lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(116, 23);
-            lblStatus.TabIndex = 1;
-            lblStatus.Text = "Report Status:";
             // 
             // btnEdit
             // 
@@ -687,7 +636,7 @@
             pnlFooter.BackColor = Color.FromArgb(241, 241, 241);
             pnlFooter.Controls.Add(lblFooterInfo);
             pnlFooter.Dock = DockStyle.Bottom;
-            pnlFooter.Location = new Point(0, 750);
+            pnlFooter.Location = new Point(0, 826);
             pnlFooter.Name = "pnlFooter";
             pnlFooter.Size = new Size(1200, 30);
             pnlFooter.TabIndex = 2;
@@ -708,7 +657,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1200, 780);
+            ClientSize = new Size(1200, 856);
             Controls.Add(pnlMain);
             Controls.Add(pnlFooter);
             Controls.Add(pnlHeader);
@@ -740,7 +689,6 @@
             ((System.ComponentModel.ISupportInitialize)pbDamageImage4).EndInit();
             pnlActions.ResumeLayout(false);
             gbStatusActions.ResumeLayout(false);
-            gbStatusActions.PerformLayout();
             pnlFooter.ResumeLayout(false);
             pnlFooter.PerformLayout();
             ResumeLayout(false);
@@ -783,8 +731,6 @@
         private System.Windows.Forms.Label lblSeverity;
         private System.Windows.Forms.TextBox txtRepairCost;
         private System.Windows.Forms.Label lblRepairCost;
-        private System.Windows.Forms.TextBox txtRepairNotes;
-        private System.Windows.Forms.Label lblRepairNotes;
         private System.Windows.Forms.Panel pnlImages;
         private System.Windows.Forms.GroupBox gbDamageImages;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelImages;
@@ -794,8 +740,6 @@
         private System.Windows.Forms.PictureBox pbDamageImage4;
         private System.Windows.Forms.Panel pnlActions;
         private System.Windows.Forms.GroupBox gbStatusActions;
-        private System.Windows.Forms.ComboBox cbStatus;
-        private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;

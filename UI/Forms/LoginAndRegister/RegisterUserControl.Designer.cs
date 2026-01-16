@@ -18,7 +18,6 @@
         private void InitializeComponent()
         {
             pnlMain = new Panel();
-            lblStaffNotice = new Label();
             lblSub = new Label();
             lblTitle = new Label();
             label1 = new Label();
@@ -37,7 +36,6 @@
             // pnlMain
             // 
             pnlMain.BackColor = Color.White;
-            pnlMain.Controls.Add(lblStaffNotice);
             pnlMain.Controls.Add(lblSub);
             pnlMain.Controls.Add(lblTitle);
             pnlMain.Controls.Add(label1);
@@ -52,20 +50,8 @@
             pnlMain.Controls.Add(btnCancel);
             pnlMain.Location = new Point(57, 27);
             pnlMain.Name = "pnlMain";
-            pnlMain.Size = new Size(503, 747);
+            pnlMain.Size = new Size(503, 674);
             pnlMain.TabIndex = 0;
-            // 
-            // lblStaffNotice
-            // 
-            lblStaffNotice.BackColor = Color.FromArgb(236, 240, 241);
-            lblStaffNotice.Font = new Font("Segoe UI", 9F);
-            lblStaffNotice.ForeColor = Color.FromArgb(52, 73, 94);
-            lblStaffNotice.Location = new Point(38, 127);
-            lblStaffNotice.Name = "lblStaffNotice";
-            lblStaffNotice.Padding = new Padding(10);
-            lblStaffNotice.Size = new Size(425, 104);
-            lblStaffNotice.TabIndex = 0;
-            lblStaffNotice.Text = "This registration page is for staff members only.\n\nCustomer accounts are created by staff. If you are a customer, please ask a staff member for assistance.";
             // 
             // lblSub
             // 
@@ -93,7 +79,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label1.Location = new Point(38, 246);
+            label1.Location = new Point(41, 135);
             label1.Name = "label1";
             label1.Size = new Size(78, 20);
             label1.TabIndex = 3;
@@ -102,7 +88,7 @@
             // txtUsername
             // 
             txtUsername.Font = new Font("Segoe UI", 10F);
-            txtUsername.Location = new Point(41, 276);
+            txtUsername.Location = new Point(38, 158);
             txtUsername.Name = "txtUsername";
             txtUsername.Size = new Size(422, 30);
             txtUsername.TabIndex = 4;
@@ -111,7 +97,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label4.Location = new Point(38, 330);
+            label4.Location = new Point(38, 205);
             label4.Name = "label4";
             label4.Size = new Size(104, 20);
             label4.TabIndex = 5;
@@ -120,7 +106,7 @@
             // txtEmail
             // 
             txtEmail.Font = new Font("Segoe UI", 10F);
-            txtEmail.Location = new Point(41, 360);
+            txtEmail.Location = new Point(41, 228);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(422, 30);
             txtEmail.TabIndex = 6;
@@ -129,7 +115,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label2.Location = new Point(38, 468);
+            label2.Location = new Point(39, 327);
             label2.Name = "label2";
             label2.Size = new Size(73, 20);
             label2.TabIndex = 7;
@@ -138,7 +124,7 @@
             // txtPassword
             // 
             txtPassword.Font = new Font("Segoe UI", 10F);
-            txtPassword.Location = new Point(41, 499);
+            txtPassword.Location = new Point(42, 358);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '●';
             txtPassword.Size = new Size(422, 30);
@@ -148,7 +134,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            label3.Location = new Point(38, 553);
+            label3.Location = new Point(39, 412);
             label3.Name = "label3";
             label3.Size = new Size(132, 20);
             label3.TabIndex = 9;
@@ -157,7 +143,7 @@
             // txtConfirmPass
             // 
             txtConfirmPass.Font = new Font("Segoe UI", 10F);
-            txtConfirmPass.Location = new Point(41, 584);
+            txtConfirmPass.Location = new Point(42, 443);
             txtConfirmPass.Name = "txtConfirmPass";
             txtConfirmPass.PasswordChar = '●';
             txtConfirmPass.Size = new Size(422, 30);
@@ -170,7 +156,7 @@
             btnRegister.FlatStyle = FlatStyle.Flat;
             btnRegister.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnRegister.ForeColor = Color.White;
-            btnRegister.Location = new Point(41, 633);
+            btnRegister.Location = new Point(41, 518);
             btnRegister.Name = "btnRegister";
             btnRegister.Size = new Size(423, 55);
             btnRegister.TabIndex = 11;
@@ -184,7 +170,7 @@
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             btnCancel.ForeColor = Color.FromArgb(149, 165, 166);
-            btnCancel.Location = new Point(177, 695);
+            btnCancel.Location = new Point(172, 603);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(149, 40);
             btnCancel.TabIndex = 12;
@@ -198,7 +184,7 @@
             BackColor = Color.FromArgb(236, 240, 241);
             Controls.Add(pnlMain);
             Name = "RegisterUserControl";
-            Size = new Size(617, 813);
+            Size = new Size(617, 732);
             pnlMain.ResumeLayout(false);
             pnlMain.PerformLayout();
             ResumeLayout(false);
@@ -209,7 +195,6 @@
         private Panel pnlMain;
         private Label lblTitle;
         private Label lblSub;
-        private Label lblStaffNotice;
         private Label label1;
         private TextBox txtUsername;
         private Label label4;

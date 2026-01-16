@@ -8,7 +8,6 @@ namespace VRMS.Repositories.Damages;
 
 public class DamageReportRepository
 {
-
     // ----------------------------
     // DAMAGE REPORTS
     // ----------------------------
@@ -23,11 +22,18 @@ public class DamageReportRepository
         return Convert.ToInt32(table.Rows[0]["damage_report_id"]);
     }
 
-
     public void Approve(int damageReportId)
     {
         DB.Execute(
             "CALL sp_damage_reports_approve(@id);",
+            ("@id", damageReportId)
+        );
+    }
+
+    public void Delete(int damageReportId)
+    {
+        DB.Execute(
+            "CALL sp_damage_reports_delete(@id);",
             ("@id", damageReportId)
         );
     }
@@ -62,50 +68,6 @@ public class DamageReportRepository
         );
     }
 
-    private static DamageReport Map(DataRow row)
-    {
-        string? photoPath =
-            row["photo_path"] == DBNull.Value
-                ? null
-                : row["photo_path"].ToString();
-
-        return new DamageReport
-        {
-            Id = Convert.ToInt32(row["id"]),
-            DamageId = Convert.ToInt32(row["damage_id"]),
-            PhotoPath = photoPath ?? string.Empty,
-            Approved = Convert.ToBoolean(row["approved"])
-        };
-
-    }
-    
-    // ----------------------------
-    // BILLING SUPPORT
-    // ----------------------------
-    // Returns approved damages for a rental, with cost info
-    public List<(int DamageReportId, string Description, decimal EstimatedCost)>
-        GetApprovedByRental(int rentalId)
-    {
-        var table = DB.Query(
-            "CALL sp_damage_reports_get_approved_by_rental(@rid);",
-            ("@rid", rentalId)
-        );
-
-        var list =
-            new List<(int, string, decimal)>();
-
-        foreach (DataRow row in table.Rows)
-        {
-            list.Add((
-                Convert.ToInt32(row["id"]),
-                row["description"].ToString()!,
-                Convert.ToDecimal(row["estimated_cost"])
-            ));
-        }
-
-        return list;
-    }
-    
     public List<DamageReport> GetByDamage(int damageId)
     {
         var table = DB.Query(
@@ -121,11 +83,57 @@ public class DamageReportRepository
             """,
             ("@did", damageId)
         );
-    
+
         var list = new List<DamageReport>();
         foreach (DataRow row in table.Rows)
             list.Add(Map(row));
-    
+
         return list;
+    }
+
+    // ----------------------------
+    // BILLING SUPPORT
+    // ----------------------------
+
+    public List<(int DamageReportId, string Description, decimal EstimatedCost)>
+        GetApprovedByRental(int rentalId)
+    {
+        var table = DB.Query(
+            "CALL sp_damage_reports_get_approved_by_rental(@rid);",
+            ("@rid", rentalId)
+        );
+
+        var list = new List<(int, string, decimal)>();
+
+        foreach (DataRow row in table.Rows)
+        {
+            list.Add((
+                Convert.ToInt32(row["id"]),
+                row["description"].ToString()!,
+                Convert.ToDecimal(row["estimated_cost"])
+            ));
+        }
+
+        return list;
+    }
+
+    // ----------------------------
+    // MAPPING
+    // ----------------------------
+
+    private static DamageReport Map(DataRow row)
+    {
+        string? photoPath =
+            row["photo_path"] == DBNull.Value
+                ? null
+                : row["photo_path"].ToString();
+
+        return new DamageReport
+        {
+            Id = Convert.ToInt32(row["id"]),
+            DamageId = Convert.ToInt32(row["damage_id"]),
+            PhotoPath = photoPath ?? string.Empty,
+            Approved = Convert.ToBoolean(row["approved"])
+        };
     }
 }

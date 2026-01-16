@@ -4,6 +4,8 @@ using System.IO;
 using System.Windows.Forms;
 using VRMS.Models.Damages;
 using VRMS.Services.Damage;
+using VRMS.UI.ApplicationService;
+using VRMS.UI.Config.Support;
 
 namespace VRMS.UI.Forms.Damages
 {
@@ -16,8 +18,8 @@ namespace VRMS.UI.Forms.Damages
         private readonly int _damageId;
         private readonly DamageService _damageService;
 
-        private DamageReport _report = null!;
         private Damage _damage = null!;
+        private DamageReport _report = null!;
 
         private bool _editMode;
 
@@ -38,6 +40,9 @@ namespace VRMS.UI.Forms.Damages
             btnEdit.Click += BtnEdit_Click;
             btnSave.Click += BtnSave_Click;
             btnClose.Click += (_, __) => Close();
+
+            // DELETE BUTTON (button1 in designer)
+            button1.Click += BtnDelete_Click;
         }
 
         // =====================================================
@@ -58,114 +63,95 @@ namespace VRMS.UI.Forms.Damages
         {
             try
             {
-                // ----------------------------
-                // DAMAGE
-                // ----------------------------
-                _damage =
-                    _damageService.GetDamageById(_damageId);
+                _damage = _damageService.GetDamageById(_damageId);
 
-                // ----------------------------
-                // DAMAGE REPORTS (PHOTOS)
-                // ----------------------------
                 var reports =
                     _damageService.GetReportsByDamage(_damageId);
 
                 if (reports.Count == 0)
                     throw new InvalidOperationException(
-                        "No damage reports found for this damage.");
+                        "No damage reports found.");
 
-                // TEMPORARY: use the FIRST report
                 _report = reports[0];
 
-
-                // ----------------------------
-                // REPORT INFO (PLACEHOLDERS)
-                // ----------------------------
+                // -----------------------------
+                // REPORT INFO
+                // -----------------------------
                 txtReportId.Text = _report.Id.ToString();
-                txtReportedBy.Text = "System";
+
+                txtReportedBy.Text =
+                    Session.CurrentUser != null
+                        ? (!string.IsNullOrWhiteSpace(Session.CurrentUser.FullName)
+                            ? Session.CurrentUser.FullName
+                            : Session.CurrentUser.Username)
+                        : "System";
+
                 dtpReportDate.Value = DateTime.Now;
-                txtLocation.Text = "N/A";
-                
+                txtLocation.Text = "Return Inspection";
 
-                // ----------------------------
-                // VEHICLE INFO (VIA DAMAGE → RENTAL)
-                // ----------------------------
+                // -----------------------------
+                // VEHICLE INFO (READ-ONLY)
+                // -----------------------------
+                var vehicleInfo =
+                    _damageService.GetVehicleInfoByDamage(_damage.Id);
+
+                var rental =
+                    ApplicationServices.RentalService
+                        .GetRentalById(vehicleInfo.RentalNumber);
+
                 var vehicle =
-                    _damageService.GetVehicleInfoByDamage(
-                        _damage.Id);
+                    ApplicationServices.VehicleService
+                        .GetVehicleById(rental.VehicleId);
 
-                txtVIN.Text = "N/A";
-                txtLicensePlate.Text = vehicle.PlateNumber;
+                txtVIN.Text = vehicle.VIN;
+                txtLicensePlate.Text = vehicle.LicensePlate;
+                txtVehicleMake.Text = vehicle.Make;
+                txtVehicleModel.Text = vehicle.Model;
+                txtVehicleColor.Text = vehicle.Color;
 
-                // vehicle_model already contains "Make Model"
-                txtVehicleMake.Text = vehicle.VehicleModel;
-                txtVehicleModel.Text = vehicle.VehicleModel;
-
-                txtVehicleColor.Text = "N/A";
-
-
-                // ----------------------------
+                // -----------------------------
                 // DAMAGE DETAILS
-                // ----------------------------
+                // -----------------------------
                 txtDamageDescription.Text = _damage.Description;
                 txtDamageType.Text = _damage.DamageType.ToString();
-                txtSeverity.Text = "N/A";
-                txtRepairCost.Text = _damage.EstimatedCost.ToString("₱#,##0.00");
-                txtRepairNotes.Text = string.Empty;
-
-                // ----------------------------
-                // STATUS (ONLY WHAT DB SUPPORTS)
-                // ----------------------------
-                cbStatus.Items.Clear();
-                cbStatus.Items.Add("Pending");
-                cbStatus.Items.Add("Approved");
-
-                cbStatus.SelectedIndex =
-                    _report.Approved ? 1 : 0;
+                txtSeverity.Text = CalculateSeverity(_damage.EstimatedCost);
+                txtRepairCost.Text = _damage.EstimatedCost.ToString("0.00");
 
                 LoadAllPhotos(reports);
+
+                // DELETE DISABLED IF APPROVED
+                button1.Enabled = !_report.Approved;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     ex.Message,
-                    "Failed to Load Damage Report",
+                    "Load Failed",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-
                 Close();
             }
         }
 
         // =====================================================
-        // PHOTO LOADING (SAFE)
+        // PHOTOS (SAFE)
         // =====================================================
-        
-        private void LoadAllPhotos(List<DamageReport> reports)
-        {
-            // 1. Clear existing images
-            foreach (Control c in flowLayoutPanelImages.Controls)
-            {
-                if (c is PictureBox pb && pb.Image != null)
-                {
-                    pb.Image.Dispose();
-                }
-            }
 
+        private void LoadAllPhotos(
+            System.Collections.Generic.List<DamageReport> reports)
+        {
             flowLayoutPanelImages.Controls.Clear();
 
-            // 2. Add one PictureBox per valid photo
             foreach (var report in reports)
             {
                 if (string.IsNullOrWhiteSpace(report.PhotoPath))
-                    continue; // IMPORTANT: skips the empty one
+                    continue;
 
-                string fullPath =
+                var fullPath =
                     Path.Combine(
                         AppContext.BaseDirectory,
                         "Storage",
-                        report.PhotoPath
-                    );
+                        report.PhotoPath);
 
                 if (!File.Exists(fullPath))
                     continue;
@@ -176,43 +162,21 @@ namespace VRMS.UI.Forms.Damages
                     Height = 180,
                     SizeMode = PictureBoxSizeMode.Zoom,
                     BorderStyle = BorderStyle.FixedSingle,
-                    Margin = new Padding(5),
-                    Cursor = Cursors.Hand
+                    Margin = new Padding(5)
                 };
 
-                // Safe image loading (NO FILE LOCK)
-                using (var temp = Image.FromFile(fullPath))
+                using (var fs = new FileStream(
+                           fullPath,
+                           FileMode.Open,
+                           FileAccess.Read,
+                           FileShare.ReadWrite))
                 {
-                    pb.Image = new Bitmap(temp);
+                    pb.Image = Image.FromStream(fs);
                 }
-
-                // Optional: click to open full image
-                pb.Click += (_, __) =>
-                {
-                    using var viewer = new Form
-                    {
-                        Text = "Damage Photo",
-                        Width = 800,
-                        Height = 600
-                    };
-
-                    var img = new PictureBox
-                    {
-                        Dock = DockStyle.Fill,
-                        SizeMode = PictureBoxSizeMode.Zoom,
-                        Image = new Bitmap(pb.Image)
-                    };
-
-                    viewer.Controls.Add(img);
-                    viewer.ShowDialog();
-                };
 
                 flowLayoutPanelImages.Controls.Add(pb);
             }
         }
-
-
-
 
         // =====================================================
         // EDIT MODE
@@ -222,40 +186,49 @@ namespace VRMS.UI.Forms.Damages
         {
             _editMode = enabled;
 
-            cbStatus.Enabled = enabled;
+            txtDamageDescription.ReadOnly = !enabled;
+            txtRepairCost.ReadOnly = !enabled;
+
             btnSave.Enabled = enabled;
             btnEdit.Enabled = !enabled;
         }
 
-        // =====================================================
-        // EDIT
-        // =====================================================
-
         private void BtnEdit_Click(object? sender, EventArgs e)
         {
+            if (_report.Approved)
+            {
+                MessageBox.Show(
+                    "Approved reports cannot be edited.",
+                    "Edit Blocked",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
             SetEditMode(true);
         }
 
         // =====================================================
-        // SAVE (APPROVAL ONLY)
+        // SAVE (DAMAGE UPDATE)
         // =====================================================
 
         private void BtnSave_Click(object? sender, EventArgs e)
         {
             try
             {
-                bool approveSelected =
-                    cbStatus.SelectedItem?.ToString() == "Approved";
+                if (!decimal.TryParse(txtRepairCost.Text, out var cost))
+                    throw new InvalidOperationException(
+                        "Invalid repair cost.");
 
-                // DB only supports approving ONCE
-                if (approveSelected && !_report.Approved)
-                {
-                    _damageService.ApproveDamageReport(
-                        _report.Id);
-                }
+                _damageService.UpdateDamage(
+                    _damage.Id,
+                    _damage.DamageType,
+                    _damage.Severity,
+                    txtDamageDescription.Text.Trim(),
+                    cost);
 
                 MessageBox.Show(
-                    "Damage report updated successfully.",
+                    "Damage updated successfully.",
                     "Success",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -271,6 +244,65 @@ namespace VRMS.UI.Forms.Damages
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        // =====================================================
+        // DELETE REPORT
+        // =====================================================
+
+        private void BtnDelete_Click(object? sender, EventArgs e)
+        {
+            if (_report.Approved)
+            {
+                MessageBox.Show(
+                    "Approved reports cannot be deleted.",
+                    "Delete Blocked",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            var confirm =
+                MessageBox.Show(
+                    "Delete this damage report?\nThis cannot be undone.",
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            try
+            {
+                _damageService.DeleteDamageReport(_report.Id);
+
+                MessageBox.Show(
+                    "Damage report deleted.",
+                    "Deleted",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Delete Failed",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        // =====================================================
+        // SEVERITY (DERIVED)
+        // =====================================================
+
+        private static string CalculateSeverity(decimal cost)
+        {
+            if (cost <= 1000m) return "Minor";
+            if (cost <= 5000m) return "Moderate";
+            return "Severe";
         }
     }
 }
